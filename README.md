@@ -1,3 +1,2 @@
-# Thesis_Bioloid
-
+# Thesis Bioloid
  Sebastian Lind and Tobias Laving
