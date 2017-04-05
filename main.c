@@ -18,10 +18,10 @@ int main (int argc, char **argv) {
 
       RS232_SendBuf(COMPORT, send_buffer, SEND_CHARS);
       int o = 10000;
-      while( o > 1){
+      while(o > 1){
         o--;
       }
-      RS232_SendBuf(COMPORT, 'o', SEND_CHARS);
+      RS232_SendBuf(COMPORT, send_buffer1 , SEND_CHARS);
       // and/or:
       //RS232_PollComport(COMPORT, receive_buffer, RECEIVE_CHARS);
 
