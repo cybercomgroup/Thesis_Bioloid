@@ -9,6 +9,7 @@ int main (int argc, char **argv) {
    unsigned char receive_buffer[RECEIVE_CHARS];
    unsigned char send_byte = 42;
    unsigned char send_buffer[SEND_CHARS] = {'l'};
+   unsigned char send_buffer1[SEND_CHARS] = {'o'};
 
    RS232_OpenComport(COMPORT, BAUDRATE, "8N1");
    while(1) {
@@ -20,7 +21,7 @@ int main (int argc, char **argv) {
       while( o > 1){
         o--;
       }
-      RS232_SendBuf(COMPORT, "o", SEND_CHARS);
+      RS232_SendBuf(COMPORT, 'o', SEND_CHARS);
       // and/or:
       //RS232_PollComport(COMPORT, receive_buffer, RECEIVE_CHARS);
 
