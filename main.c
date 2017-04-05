@@ -1,6 +1,6 @@
 #include "rs232.h"
 
-#define COMPORT         16       // this is '/dev/ttyUSB0' (for arduino) or choose wherever you added '/dev/ttyAMA0' (for raspberry pi UART pins) to the list
+#define COMPORT         5       // this is '/dev/ttyUSB0' (for arduino) or choose wherever you added '/dev/ttyAMA0' (for raspberry pi UART pins) to the list
 #define BAUDRATE      9600   // or whatever baudrate you want
 #define RECEIVE_CHARS   8      // or whatever size of buffer you want to receive
 #define SEND_CHARS      1      // or whatever size of buffer you want to send
