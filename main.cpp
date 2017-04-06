@@ -7,7 +7,7 @@
 using namespace std;
 
 #define RECEIVE_CHARS   8      // or whatever size of buffer you want to receive
-#define SEND_CHARS      1      // or whatever size of buffer you want to send
+#define SEND_CHARS      10      // or whatever size of buffer you want to send
 
 void testMode();
 
@@ -15,12 +15,12 @@ void testMode();
 void cParser(int argN, char *argv[]);
 
 bool test = false;
-int comport = 16;
-int baudrate = 57600;
+int comport = 16; //pNUMBER
+int baudrate = 57600; //bNUMBER
 
 /*
 Usage:
-
+To change running parameters use instuctions above
 */
 int main (int argc, char *argv[]) {
   //Set up:
@@ -45,10 +45,18 @@ int main (int argc, char *argv[]) {
   {
     while(1)
     {
+      if(test)
+      {
+        testMode();
+      }
+      else
+      {
+
+      }
+
       // change send_byte and/or send_buffer with what you want to send. Then:
       //RS232_SendByte(COMPORT, send_byte); // or:
 
-      testMode();
 
       //RS232_SendBuf(comport, send_buffer, SEND_CHARS);
       // and/or:
@@ -68,10 +76,41 @@ int main (int argc, char *argv[]) {
 
 void testMode()
 {
-  cout<<"Write buffer to send:"<<endl;
+  int c = 0;
   unsigned char send_buffer[SEND_CHARS];
-  cin >> send_buffer;
-  RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+  while(1)
+  {
+    cout<<"Tests:"<<endl;
+    cout<<"1 - Write buffer"<<endl;
+    cout<<"2 - Write byte"<<endl;
+    cin>>c;
+    if(!cin.fail() || c > 3)
+    {
+      switch(c)
+      {
+        case 1:
+          cout<<"Write buffer to send:"<<endl;
+          cin >> send_buffer;
+          RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        break;
+        case 2:
+          cout<<"Write byte to send:"<<endl;
+          cin >> send_buffer;
+          RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        break;
+        default:
+        break;
+      }
+    }
+    else if(c==3)
+    {
+      return;
+    }
+    else
+    {
+      cout<<"Please provide proper input"<<endl;
+    }
+  }
 }
 
 void cParser(int argN, char *argv[])
