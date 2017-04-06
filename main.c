@@ -21,7 +21,7 @@ int main (int argc, char **argv) {
       while(o > 1){
         o--;
       }
-      RS232_SendBuf(COMPORT, send_buffer1 , SEND_CHARS);
+      RS232_SendBuf(COMPORT, send_buffer1, SEND_CHARS);
       // and/or:
       //RS232_PollComport(COMPORT, receive_buffer, RECEIVE_CHARS);
 
