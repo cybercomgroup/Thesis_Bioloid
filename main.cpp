@@ -96,7 +96,7 @@ void testMode()
         case 2:
           cout<<"Write byte to send:"<<endl;
           cin >> send_buffer;
-          RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+          RS232_SendByte(comport, send_buffer, SEND_CHARS);
         break;
         default:
         break;
