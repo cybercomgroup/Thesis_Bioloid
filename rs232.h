@@ -33,13 +33,15 @@
 #ifndef rs232_INCLUDED
 #define rs232_INCLUDED
 
+#include <iostream>
+#include <string>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include <stdio.h>
 #include <string.h>
-
 
 
 #if defined(__linux__) || defined(__FreeBSD__)
@@ -83,5 +85,3 @@ int RS232_GetPortnr(const char *);
 #endif
 
 #endif
-
-

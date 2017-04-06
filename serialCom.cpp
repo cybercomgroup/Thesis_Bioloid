@@ -31,9 +31,10 @@
 /* For more info and how to use this library, visit: http://www.teuniz.net/RS-232/ */
 
 
-#include "rs232.h"
 
-#pragma GCC diagnostic ignored "-Wwrite-strings"
+#include <iostream>
+#include <string>
+
 
 #if defined(__linux__) || defined(__FreeBSD__)   /* Linux & FreeBSD */
 
@@ -57,15 +58,16 @@ char *comports[RS232_PORTNR]={"/dev/ttyS0","/dev/ttyS1","/dev/ttyS2","/dev/ttyS3
 
 int RS232_OpenComport(int comport_number, int baudrate, const char *mode)
 {
+  string kek;
   int baudr,
       status;
 
   if((comport_number>=RS232_PORTNR)||(comport_number<0))
   {
-    printf("Illegal comport number\n");
+    printf("illegal comport number\n");
     return(1);
   }
-  
+
   switch(baudrate)
   {
     case      50 : baudr = B50;
