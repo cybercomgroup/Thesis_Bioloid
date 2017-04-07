@@ -9,7 +9,7 @@ using namespace std;
 #define RECEIVE_CHARS   8      // or whatever size of buffer you want to receive
 #define SEND_CHARS      10      // or whatever size of buffer you want to send
 
-void testMode();
+void manualMode();
 
 //Parser and global belonging variables
 void cParser(int argN, char *argv[]);
@@ -20,7 +20,8 @@ int baudrate = 57600; //bNUMBER
 
 /*
 Usage:
-To change running parameters use instuctions above
+To change running parameters use add the arguments described above when running the program.
+Example: ./main p123 sets the comport to 123
 */
 int main (int argc, char *argv[]) {
   //Set up:
@@ -47,7 +48,7 @@ int main (int argc, char *argv[]) {
     {
       if(test)
       {
-        testMode();
+        manualMode();
       }
       else
       {
@@ -74,10 +75,11 @@ int main (int argc, char *argv[]) {
   return 0;
 }
 
-void testMode()
+void manualMode()
 {
   int c = 0;
   unsigned char send_buffer[SEND_CHARS];
+  unsigned char send_byte = 42;
   while(1)
   {
     cout<<"Tests:"<<endl;
@@ -96,7 +98,7 @@ void testMode()
         case 2:
           cout<<"Write byte to send:"<<endl;
           cin >> send_buffer;
-          RS232_SendByte(comport, send_buffer, SEND_CHARS);
+          RS232_SendByte(comport, send_byte);
         break;
         default:
         break;
@@ -116,9 +118,14 @@ void testMode()
 void cParser(int argN, char *argv[])
 {
   int number;
+  string input;
   for(int i = 1; i < argN; i++)
   {
-    number = stoi(string(argv[i]).substr(1).c_str(),nullptr);
+    input = argv[i];
+    if(input.length() > 1)
+    {
+      number = stoi(string(argv[i]).substr(1).c_str(),nullptr);
+    }
     switch(argv[i][0])
     {
         case 't':
