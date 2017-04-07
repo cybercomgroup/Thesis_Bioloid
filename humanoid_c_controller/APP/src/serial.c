@@ -92,7 +92,7 @@ char* std_getString(char* str, int size){
 		str[len] = c;
 		len++;
 
-		if(c='\n'){len = size+1;}
+		if(c=='\n'){len = size+1;}
 	}
 	return str;
 }
@@ -238,9 +238,8 @@ int GetChar(void) {
 }
 
 //##############################################################################
-char* GetString(char* s) {
-	return std_gets(s);
-}
+
+
 
 //##############################################################################
 void Printu32d(u32 lNum) {
