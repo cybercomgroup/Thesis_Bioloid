@@ -1,2 +1,1 @@
-# Thesis Bioloid
- Sebastian Lind and Tobias Laving
+# Bioloid-Humanoid-Robot
