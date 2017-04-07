@@ -78,6 +78,7 @@ int main (int argc, char *argv[]) {
 void manualMode()
 {
   int c = 0;
+  unsigned char receive_buffer[RECEIVE_CHARS];
   unsigned char send_buffer[SEND_CHARS];
   unsigned char send_byte = 42;
   while(1)
@@ -85,6 +86,7 @@ void manualMode()
     cout<<"Tests:"<<endl;
     cout<<"1 - Write buffer"<<endl;
     cout<<"2 - Write byte"<<endl;
+    cout<<"0 - Exit"<<endl;
     cin>>c;
     if(!cin.fail() || c > 3)
     {
@@ -104,7 +106,7 @@ void manualMode()
         break;
       }
     }
-    else if(c==3)
+    else if(c==0)
     {
       return;
     }
@@ -112,6 +114,9 @@ void manualMode()
     {
       cout<<"Please provide proper input"<<endl;
     }
+    cout<<"Respone:"<<endl;
+    RS232_PollComport(comport, receive_buffer, RECEIVE_CHARS);
+    cout<<receive_buffer<<endl;
   }
 }
 
