@@ -1,7 +1,7 @@
 # setup
 # modified by zerom for WinARM 8/2010
 
-COMPILE_OPTS = -mcpu=cortex-m3 -mthumb -Wall -g -Os -fno-common 
+COMPILE_OPTS = -mcpu=cortex-m3 -mthumb -Wall -g -Os -fno-common  -std=c99
 INCLUDE_DIRS = -I. -Istm32f10x_lib/inc -ICM530_HW/inc -IAPP/inc 
 #INCLUDE_DIRS = -I.
 LIBRARY_DIRS = -Lstm32f10x_lib
@@ -56,8 +56,17 @@ MAIN_OBJS = \
  APP/src/Big_main.o \
  APP/src/BioloidEx.o \
  APP/src/serial.o \
+ APP/src/motion.o \
+ APP/src/pose.o \
  APP/src/dynamixel.o \
  APP/src/zigbee.o \
+ APP/src/globaldata.o \
+ APP/src/printf.o \
+ APP/src/gyro.o \
+ APP/src/hw_setup.o \
+ APP/src/hw_functions.o \
+ APP/src/walk.o \
+ APP/src/time.o \
  CM530_HW/src/adc.o \
  CM530_HW/src/button.o \
  CM530_HW/src/led.o \

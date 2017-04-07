@@ -17,6 +17,7 @@
 #include "adc.h"
 #include "button.h"
 #include "mic.h"
+#include "motion.h"
 //#include <stdlib.h>
 
 int main(void) {
@@ -30,6 +31,9 @@ int main(void) {
 	ReceivedCommand = tmpComm;
 	PrintString("Starting Program by turning on POWER LED!\r\n");
 	SetLED(POWER, 1);
+	printf("Loading motion pages...\n");
+		motionPageInit();
+		gyro_init();
 
 	while(1){
 
@@ -167,6 +171,10 @@ int main(void) {
 			PlayNote(300, NOTE_E, 1);    // 2500 Hz ~ Ds_7/Eb_7
 			mDelay(2000);
 		}
+		else if (ReceivedData == 'w'){
+			executeMotion(26);
+			Buzzed(150,150);
+		}
 		else if(ReadButton(UP)){
 			PrintString("\nUP UP UP is pressed!\n");
 			//Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
@@ -202,7 +210,7 @@ int main(void) {
 //			}
 		}
 		//mDelay(1000);
-		mDelay(100);
+		mDelay(3000);
 	}
 
     PrintString("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
