@@ -9,10 +9,24 @@
 #include "dynamixel.h"
 #include "system_func.h"
 #include "dynamixel_address_tables.h"
+#include "global.h"
+
+// define the positions of the bytes in the packet
+#define ID					(2)
+#define LENGTH				(3)
+#define INSTRUCTION			(4)
+#define ERRBIT				(4)
+#define PARAMETER			(5)
 
 
+// Global hardware def variables
+extern const uint8 AX12_IDS[NUM_AX12_SERVOS];
+
+// create the arrays that contain the instruction and status packet
 u8 gbInstructionPacket[DXL_MAXNUM_TXPARAM] = { 0 };
 u8 gbStatusPacket[DXL_MAXNUM_RXPARAM] = { 0 };
+
+//locasl shared variables
 u8 gbRxPacketLength = 0;
 u8 gbRxGetLength = 0;
 volatile u16 gbCommStatus = DXL_RXSUCCESS;
