@@ -82,20 +82,6 @@ int std_getchar(void) {
 	return c;
 }
 
-char* std_getString(char* str, int size){
-	char c;
-	int len = 0;
-
-	while(len < size){
-		c = std_getchar();
-
-		str[len] = c;
-		len++;
-
-		if(c=='\n'){len = size+1;}
-	}
-	return str;
-}
 ////##############################################################################
 //char* std_gets(char* str) {
 //	u8 len = 0;
@@ -135,7 +121,6 @@ char* std_getString(char* str, int size){
 //}
 
 //##############################################################################
-/*
 char* std_gets(char *str) {
 	u8 c, len = 0;
 
@@ -166,7 +151,6 @@ char* std_gets(char *str) {
 
 	return str;
 }
-*/
 //##############################################################################
 void PrintCommStatus(u16 Status) {
 	if (Status & DXL_TXFAIL)
@@ -238,8 +222,9 @@ int GetChar(void) {
 }
 
 //##############################################################################
-
-
+char* GetString(char* s) {
+	return std_gets(s);
+}
 
 //##############################################################################
 void Printu32d(u32 lNum) {
