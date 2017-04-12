@@ -39,7 +39,7 @@ typedef volatile signed char  const vsc8;   /* Read Only */
 typedef unsigned long  u32;
 typedef unsigned short u16;
 typedef unsigned char  u8;
-typedef unsigned char byte;
+
 
 typedef unsigned long  const uc32;  /* Read Only */
 typedef unsigned short const uc16;  /* Read Only */

@@ -20,7 +20,7 @@
 
 
 // Global hardware def variables
-extern const uint8 AX12_IDS[NUM_AX12_SERVOS];
+extern const u8 AX12_IDS[NUM_AX12_SERVOS];
 
 // create the arrays that contain the instruction and status packet
 u8 gbInstructionPacket[DXL_MAXNUM_TXPARAM] = { 0 };
@@ -304,7 +304,7 @@ u8 dxl_get_highbyte(u16 word) {
 }
 
 //##############################################################################
-void dxl_ping(u8 id) {
+u8 dxl_ping(u8 id) {
 	while (giBusUsing)
 		;
 
@@ -313,6 +313,21 @@ void dxl_ping(u8 id) {
 	gbInstructionPacket[DXL_PKT_LEN] = 2;
 
 	dxl_txrx_packet();
+
+	if (gbCommStatus == DXL_RXSUCCESS)
+		{
+			//printf("Sending ping to dxl %d success: %d\n", id, (int)gbStatusPacket[ERRBIT]);
+			// return the error code
+			return (int)gbStatusPacket[ERRBIT];
+		// check if servo exists (via timeout)
+		} else if( gbCommStatus == DXL_RXTIMEOUT )
+		{
+			//printf("Sending ping to dxl %d timed out\n", id);
+			return -1;
+		} else {
+			//printf("Sending ping to dxl %d failed. comStatus: %d\n", id, gbCommStatus);
+			return 0;
+		}
 }
 
 //##############################################################################
@@ -335,7 +350,7 @@ u8 dxl_read_byte(u8 id, u8 address) {
 }
 
 //##############################################################################
-void dxl_write_byte(u8 id, u8 address, u8 value) {
+u8 dxl_write_byte(u8 id, u8 address, u8 value) {
 	while (giBusUsing)
 		;
 
@@ -346,6 +361,8 @@ void dxl_write_byte(u8 id, u8 address, u8 value) {
 	gbInstructionPacket[DXL_PKT_LEN] = 4;
 
 	dxl_txrx_packet();
+
+	return gbCommStatus;
 }
 
 //##############################################################################
@@ -369,7 +386,7 @@ u16 dxl_read_word(u8 id, u8 address) {
 }
 
 //##############################################################################
-void dxl_write_word(u8 id, u8 address, u16 value) {
+u16 dxl_write_word(u8 id, u8 address, u16 value) {
 	while (giBusUsing)
 		;
 
@@ -381,6 +398,8 @@ void dxl_write_word(u8 id, u8 address, u16 value) {
 	gbInstructionPacket[DXL_PKT_LEN] = 5;
 
 	dxl_txrx_packet();
+
+	return gbCommStatus;
 }
 
 //##############################################################################

@@ -22,7 +22,7 @@
 #define _GLOBAL_H_
 
 #include "stdint.h"
-#include "typedefs.h"
+//#include "typedefs.h"
 
 #ifdef __cplusplus
 extern "C" {

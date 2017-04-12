@@ -17,12 +17,17 @@
 #include "adc.h"
 #include "button.h"
 #include "mic.h"
+#include "motion_f.h"
 //#include <stdlib.h>
 
 int main(void) {
 
 	// Must include this line in all programs using "cm530.h/.c"
 	SysInit();
+
+
+	//printf("Loading motion pages...\n");
+		motionPageInit();
 
 	byte	ReceivedData;
 	char    tmpComm[128];
@@ -67,7 +72,7 @@ int main(void) {
 //		Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
 
 
-		ReceivedData = std_getchar();;
+		ReceivedData = std_getchar();
 
 		//if(strcmp(ReceivedCommand, "led on") == 0){
 		if(ReceivedData == 'l'){
@@ -166,6 +171,11 @@ int main(void) {
 			PrintString(")\n");
 			PlayNote(300, NOTE_E, 1);    // 2500 Hz ~ Ds_7/Eb_7
 			mDelay(2000);
+		}
+		else if (ReceivedData == 's'){
+			executeMotion(MOTION_STAND);
+			Buzzed(150,150);
+			Buzzed(200,150);
 		}
 		else if(ReadButton(UP)){
 			PrintString("\nUP UP UP is pressed!\n");
