@@ -97,7 +97,7 @@ void motionPageInit()
 		if (AX12_ENABLED[i] != AX12Servos[i])
 		{
 			// configuration does not match
-			printf("\nConfiguration of enabled AX-12 servos does not match motion.h. ABORT!\n");
+			PrintString("\nConfiguration of enabled AX-12 servos does not match motion.h. ABORT!\n");
 			exit(-1);
 		}
 	}
@@ -364,7 +364,7 @@ uint8 executeMotionSequence()
 	{
 		// if walking we can't wait for motion to finish, go by step time instead
 //		if( walk_getWalkState() != 0 ) {
-			if ( (millis()-step_start_time) >= CurrentMotion.PlayTime[current_step-1] ) {
+			if ( (getMillis()-step_start_time) >= CurrentMotion.PlayTime[current_step-1] ) {
 				// step time is up, update state
 				motion_state = STEP_FINISHED;
 			} else {
@@ -385,7 +385,7 @@ uint8 executeMotionSequence()
 //		}
 	} else if( motion_state == STEP_IN_PAUSE ) {
 		// check if we still need to wait for pause time to expire
-		if ( (millis()-pause_start_time) >= CurrentMotion.PauseTime[current_step-1] )
+		if ( (getMillis()-pause_start_time) >= CurrentMotion.PauseTime[current_step-1] )
 		{
 			// pause is finished, update state
 			motion_state = PAUSE_FINISHED;
@@ -407,7 +407,7 @@ uint8 executeMotionSequence()
 			if(error_status != 0) {
 				// there has been an error, disable torque
 				comm_status = dxl_write_byte(BROADCAST_ID, DXL_TORQUE_ENABLE, 0);
-				printf("\nexecuteMotionSequence Alarm ID%i - Error Code %i\n", AX12_IDS[i], error_status);
+				PrintString("\nexecuteMotionSequence Alarm ID%i - Error Code %i\n", AX12_IDS[i], error_status);
 				motion_state = MOTION_ALARM;
 				return motion_state;
 			}
@@ -438,13 +438,13 @@ uint8 executeMotionSequence()
 	// first we deal with state changes at the end of a motion page
 	if ( current_step == CurrentMotion.Steps && (motion_state == STEP_FINISHED || motion_state == PAUSE_FINISHED) )
 	{
-		printf("Motion step finished: nextPage %d\n", CurrentMotion.NextPage);
+		PrintString("Motion step finished: nextPage %d\n", CurrentMotion.NextPage);
 		// check if we just finished an exit page
 		if ( exit_flag == 1 )
 		{
 			if ( CurrentMotion.ExitPage != 0 ) {
 				// go to next exit page, then check again.
-				printf("Going to exit page (from exit page): %d\n", CurrentMotion.ExitPage);
+				PrintString("Going to exit page (from exit page): %d\n", CurrentMotion.ExitPage);
 				current_motion_page = CurrentMotion.ExitPage;
 			} else {
 				// yes, reset flag and change motion state and then return to not complicate things
@@ -492,7 +492,7 @@ uint8 executeMotionSequence()
 		// Option 5 - repeat the current motion page
 		else if ( CurrentMotion.RepeatTime > repeat_counter )
 		{
-			printf("Repeating motion page (%d'th time): %d\n", repeat_counter+1, current_motion_page);
+			PrintString("Repeating motion page (%d'th time): %d\n", repeat_counter+1, current_motion_page);
 			// Update step, repeat counter and motion status
 			current_step = 1;
 			repeat_counter++;
@@ -504,13 +504,13 @@ uint8 executeMotionSequence()
 		// Option 6 - switch to NextPage motion page
 		else if ( CurrentMotion.NextPage > 0 && CurrentMotion.NextPage <= NUM_MOTION_PAGES )
 		{
-			printf("Switching to next motion page: %d -> %d\n", current_motion_page, CurrentMotion.NextPage);
+			PrintString("Switching to next motion page: %d -> %d\n", current_motion_page, CurrentMotion.NextPage);
 			current_motion_page = CurrentMotion.NextPage;
 		}
 		// Nothing else to do - stop motion
 		else
 		{
-			printf("Finished motion page: %d\n", current_motion_page);
+			PrintString("Finished motion page: %d\n", current_motion_page);
 			motion_state = MOTION_STOPPED;
 			return motion_state;
 		}
@@ -525,10 +525,10 @@ uint8 executeMotionSequence()
 			step_start_time = executeMotionStep(current_step);
 		} else {
 			// this shouldn't really happen, but we need to cater to the eventuality
-			comm_status = dxl_write_byte(BROADCAST_ID, DXL_TORQUE_ENABLE, 0);
+			dxl_write_byte(BROADCAST_ID, DXL_TORQUE_ENABLE, 0);
 			motion_state = MOTION_ALARM;
 		}
-		current_motion_start_time = millis();
+		current_motion_start_time = getMillis();
 		
 		// either way we are finished here - return
 		return motion_state;
@@ -541,7 +541,7 @@ uint8 executeMotionSequence()
 		if ( CurrentMotion.PauseTime[current_step-1] > 0 && bioloid_command != COMMAND_STOP )
 		{
 			// set the timer for the pause
-			pause_start_time = millis();
+			pause_start_time = getMillis();
 			motion_state = STEP_IN_PAUSE;
 			return motion_state;
 		} else {
@@ -603,7 +603,7 @@ uint8 executeMotionSequence()
 			// unpack the new motion page and start the motion
 			unpackMotion(next_motion_page);
 			current_motion_page = next_motion_page;
-			current_motion_start_time = millis();
+			current_motion_start_time = getMillis();
 			next_motion_page = 0;
 			// also need to set walk state if it's a walk command
 			if ( bioloid_command >= COMMAND_WALK_FORWARD && bioloid_command < COMMAND_WALK_READY ) {
@@ -674,8 +674,8 @@ void unpackMotion2(int StartPage) {
 			if ( CurrentMotion.StepValues[step][i] > 1023 )
 			{
 				// obviously have unpacked rubbish, stop right here
-				printf("\nUnpack Motion Page %i, Step %i - rubbish data. STOP.", StartPage, step+1);
-				printf("\nServo ID%i, Step Value = %i, Min = %i, Max = %i \n", AX12_IDS[i], CurrentMotion.StepValues[step][i], SERVO_MIN_VALUES[i],SERVO_MAX_VALUES[i] );
+				PrintString("\nUnpack Motion Page %i, Step %i - rubbish data. STOP.", StartPage, step+1);
+				PrintString("\nServo ID%i, Step Value = %i, Min = %i, Max = %i \n", AX12_IDS[i], CurrentMotion.StepValues[step][i], SERVO_MIN_VALUES[i],SERVO_MAX_VALUES[i] );
 				exit(-1);
 			}
 		}
@@ -738,8 +738,8 @@ void unpackMotion(int StartPage)
 			if ( CurrentMotion.StepValues[s][i] > SERVO_MAX_VALUES[i] || CurrentMotion.StepValues[s][i] < SERVO_MIN_VALUES[i] )
 			{
 				// obviously have unpacked rubbish, stop right here
-				printf("\nUnpack Motion Page %i, Step %i - rubbish data. STOP.", StartPage, s+1);
-				printf("\nServo ID%i, Step Value = %i, Min = %i, Max = %i \n", AX12_IDS[i], CurrentMotion.StepValues[s][i], SERVO_MIN_VALUES[i],SERVO_MAX_VALUES[i] );
+				PrintString("\nUnpack Motion Page %i, Step %i - rubbish data. STOP.", StartPage, s+1);
+				PrintString("\nServo ID%i, Step Value = %i, Min = %i, Max = %i \n", AX12_IDS[i], CurrentMotion.StepValues[s][i], SERVO_MIN_VALUES[i],SERVO_MAX_VALUES[i] );
 				exit(-1);
 			}
 		}
@@ -840,7 +840,7 @@ unsigned long executeMotionStep(int Step)
 		//for (int j=0; j<NUM_AX12_SERVOS; j++)
 		//	{ goalPose[j] = CurrentMotion.StepValues[Step-1][j]; }
 		// take the time
-		step_start_time = millis();
+		step_start_time = getMillis();
 		// execute the pose without waiting for completion
 		moveToGoalPose(CurrentMotion.PlayTime[Step-1], CurrentMotion.StepValues[Step-1], DONT_WAIT_FOR_POSE_FINISH);
 		// return the start time to keep track of step timing
@@ -867,16 +867,15 @@ int setMotionPageJointFlexibility()
 			// translation is bit shift operation (see AX-12 manual)
 			complianceSlope = 1<<CurrentMotion.JointFlex[i]; 
 			commStatus = dxl_write_byte(AX12_IDS[i], DXL_CCW_COMPLIANCE_SLOPE, complianceSlope);
-			if(commStatus != COMM_RXSUCCESS) {
+			if(commStatus != DXL_RXSUCCESS) {
 				// there has been an error, print and break
-				printf("\nsetMotionPageJointFlexibility CCW ID%i - ", AX12_IDS[i]);
-				dxl_printCommStatus(commStatus);
+				PrintString("\nsetMotionPageJointFlexibility CCW ID%i - ", AX12_IDS[i]);
 				return -1;
 			}
-			commStatus = dxl_write_byte(AX12_IDS[i], DXL_CW_COMPLIANCE_SLOPE, complianceSlope);
-			if(commStatus != COMM_RXSUCCESS) {
+			dxl_write_byte(AX12_IDS[i], DXL_CW_COMPLIANCE_SLOPE, complianceSlope);
+			if(commStatus != DXL_RXSUCCESS) {
 				// there has been an error, print and break
-				printf("\nsetMotionPageJointFlexibility CW ID%i - ", AX12_IDS[i]);
+				PrintString("\nsetMotionPageJointFlexibility CW ID%i - ", AX12_IDS[i]);
 				dxl_printCommStatus(commStatus);
 				return -1;
 			}
@@ -895,7 +894,7 @@ int checkMotionStepFinished()
 	// use the same logic as when walking, only go on expected time.
 	//TEST:
 	//printf("checkMotionStepFinished %d %d %d\n", step_start_time,  CurrentMotion.PlayTime[current_step-1], millis() );
-	if (millis() < step_start_time + CurrentMotion.PlayTime[current_step-1]) {
+	if (getMillis() < step_start_time + CurrentMotion.PlayTime[current_step-1]) {
 		return 1;
 	}
 	return 0;
@@ -944,23 +943,12 @@ int executeMotion(int StartPage)
 	for (uint8 i=0; i<NUM_AX12_SERVOS; i++) {
 		// translation is bit shift operation (see AX-12 manual)
 		complianceSlope = 1<<CurrentMotion.JointFlex[i]; 
-		commStatus = dxl_write_byte(AX12_IDS[i], DXL_CCW_COMPLIANCE_SLOPE, complianceSlope);
-		if(commStatus != COMM_RXSUCCESS) {
-			// there has been an error, print and break
-			printf("executeMotion Joint Flex %i - ", AX12_IDS[i]);
-			dxl_printCommStatus(commStatus);
-			return 0;
-		}
-		commStatus = dxl_write_byte(AX12_IDS[i], DXL_CW_COMPLIANCE_SLOPE, complianceSlope);
-		if(commStatus != COMM_RXSUCCESS) {
-			// there has been an error, print and break
-			printf("executeMotion Joint Flex %i - ", AX12_IDS[i]);
-			dxl_printCommStatus(commStatus);
-			return 0;
-		}
+		dxl_write_byte(AX12_IDS[i], DXL_CCW_COMPLIANCE_SLOPE, complianceSlope);
+		dxl_write_byte(AX12_IDS[i], DXL_CW_COMPLIANCE_SLOPE, complianceSlope);
+
 	}
 	
-	total_time = millis();
+	total_time = getMillis();
 	
 	// in case the motion repeats we need a loop
 	for (int r=1; r<=CurrentMotion.RepeatTime; r++)
@@ -972,19 +960,19 @@ int executeMotion(int StartPage)
 			for (int j=0; j<NUM_AX12_SERVOS; j++)
 				{ goalPose[j] = CurrentMotion.StepValues[s][j]; }
 			// take the time
-			pre_step_time = millis();
+			pre_step_time = getMillis();
 			// execute each pose 
 			moveToGoalPose(CurrentMotion.PlayTime[s], goalPose, WAIT_FOR_POSE_FINISH);
 			// store the time
-			step_times[s] = millis() - pre_step_time;
+			step_times[s] = getMillis() - pre_step_time;
 			
 			// now pause if required
 			if(CurrentMotion.PauseTime[s] > 0) 
-				{ delay_ms(CurrentMotion.PauseTime[s]); }
+				{ mDelay(CurrentMotion.PauseTime[s]); }
 		}
 	}
 	
-	total_time = millis() - total_time; 
+	total_time = getMillis() - total_time;
 
 	// TEST: printf("\nMotion %i Timing :", StartPage);
 	// TEST: for (int s=0; s<CurrentMotion.Steps; s++) { printf(" %lu,", step_times[s]); }
@@ -1028,23 +1016,23 @@ u32 getCurrentMotionStartTime() {
 
 // for debugging
 void printCurrentMotionPage() {
-	printf("motion.c: CurrentMotion:\n");
-	printf(" RepeatTime=%d \n Steps=%d \n SpeedRate10=%d \n InertialForce=%d \n NextPage=%d \n ExitPage=%d \n", CurrentMotion.RepeatTime, CurrentMotion.Steps, CurrentMotion.SpeedRate10, CurrentMotion.InertialForce, CurrentMotion.NextPage, CurrentMotion.ExitPage);
+	PrintString("motion.c: CurrentMotion:\n");
+	PrintString(" RepeatTime=%d \n Steps=%d \n SpeedRate10=%d \n InertialForce=%d \n NextPage=%d \n ExitPage=%d \n", CurrentMotion.RepeatTime, CurrentMotion.Steps, CurrentMotion.SpeedRate10, CurrentMotion.InertialForce, CurrentMotion.NextPage, CurrentMotion.ExitPage);
 	for (int s=0; s<CurrentMotion.Steps; s++)
 	{
-		printf(" Steps:\n");
-		printf("   step %i: play=%d pause=%d\n  ", s, CurrentMotion.PlayTime[s], CurrentMotion.PauseTime[s]);
+		PrintString(" Steps:\n");
+		PrintString("   step %i: play=%d pause=%d\n  ", s, CurrentMotion.PlayTime[s], CurrentMotion.PauseTime[s]);
 		for (int i=0; i<NUM_AX12_SERVOS; i++)
 		{
-			printf("%d ", CurrentMotion.StepValues[s][i]);
+			PrintString("%d ", CurrentMotion.StepValues[s][i]);
 		}
-		printf("\n");
+		PrintString("\n");
 	}
-	printf("Joint flex:\n ");
+	PrintString("Joint flex:\n ");
 	for (int i=0; i<NUM_AX12_SERVOS; i++)
 	{
-		printf("%d ", CurrentMotion.JointFlex[i]);
+		PrintString("%d ", CurrentMotion.JointFlex[i]);
 	}
-	printf("\n");
+	PrintString("\n");
 }
 

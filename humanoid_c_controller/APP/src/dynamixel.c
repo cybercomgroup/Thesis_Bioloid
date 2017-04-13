@@ -10,11 +10,21 @@
 #include "system_func.h"
 #include "dynamixel_address_tables.h"
 
+// define the positions of the bytes in the packet
+#define ID					(2)
+#define LENGTH				(3)
+#define INSTRUCTION			(4)
+#define ERRBIT				(4)
+#define PARAMETER			(5)
+
 
 u8 gbInstructionPacket[DXL_MAXNUM_TXPARAM] = { 0 };
 u8 gbStatusPacket[DXL_MAXNUM_RXPARAM] = { 0 };
 u8 gbRxPacketLength = 0;
 u8 gbRxGetLength = 0;
+
+
+
 volatile u16 gbCommStatus = DXL_RXSUCCESS;
 volatile u8 giBusUsing = 0;
 
@@ -290,7 +300,7 @@ u8 dxl_get_highbyte(u16 word) {
 }
 
 //##############################################################################
-void dxl_ping(u8 id) {
+int dxl_ping(u8 id) {
 	while (giBusUsing)
 		;
 
@@ -299,6 +309,22 @@ void dxl_ping(u8 id) {
 	gbInstructionPacket[DXL_PKT_LEN] = 2;
 
 	dxl_txrx_packet();
+
+
+	if (gbCommStatus == DXL_RXSUCCESS)
+	{
+		//printf("Sending ping to dxl %d success: %d\n", id, (int)gbStatusPacket[ERRBIT]);
+		// return the error code
+		return (int)gbStatusPacket[ERRBIT];
+	// check if servo exists (via timeout)
+	} else if( gbCommStatus == DXL_RXTIMEOUT )
+	{
+		//printf("Sending ping to dxl %d timed out\n", id);
+		return -1;
+	} else {
+		//printf("Sending ping to dxl %d failed. comStatus: %d\n", id, gbCommStatus);
+		return 0;
+	}
 }
 
 //##############################################################################
@@ -321,7 +347,7 @@ u8 dxl_read_byte(u8 id, u8 address) {
 }
 
 //##############################################################################
-void dxl_write_byte(u8 id, u8 address, u8 value) {
+int dxl_write_byte(u8 id, u8 address, u8 value) {
 	while (giBusUsing)
 		;
 
@@ -332,6 +358,8 @@ void dxl_write_byte(u8 id, u8 address, u8 value) {
 	gbInstructionPacket[DXL_PKT_LEN] = 4;
 
 	dxl_txrx_packet();
+
+	return gbCommStatus;
 }
 
 //##############################################################################
@@ -355,7 +383,7 @@ u16 dxl_read_word(u8 id, u8 address) {
 }
 
 //##############################################################################
-void dxl_write_word(u8 id, u8 address, u16 value) {
+int dxl_write_word(u8 id, u8 address, u16 value) {
 	while (giBusUsing)
 		;
 
@@ -367,6 +395,8 @@ void dxl_write_word(u8 id, u8 address, u16 value) {
 	gbInstructionPacket[DXL_PKT_LEN] = 5;
 
 	dxl_txrx_packet();
+
+	return gbCommStatus;
 }
 
 //##############################################################################
@@ -393,3 +423,46 @@ void dxl_capture(u8 id) {
 
 	dxl_write_byte(id, 0, 0);
 }
+//################################################################################
+void dxl_set_goal_speed( int NUM_ACTUATOR, const uint8 ids[], uint16 goal[], uint16 speed[] )
+{
+	int i = 0;
+
+	// wait for the bus to be free
+	while(giBusUsing);
+
+	// check how many actuators are to be broadcast to
+	if (NUM_ACTUATOR == 0) {
+		// nothing to do, return
+
+	}
+	else{
+	// Multiple values, create sync write packet
+	// ID is broadcast id
+	dxl_set_txpacket_id(BROADCAST_ID);
+	// Instruction is sync write
+	dxl_set_txpacket_instruction(INST_SYNC_WRITE);
+	// Starting address where to write to
+	dxl_set_txpacket_parameter(0, DXL_GOAL_POSITION_L);
+	// Length of data to be written (2 words = 4 bytes)
+	dxl_set_txpacket_parameter(1, 4);
+	// Loop over the active Dynamixel id's
+	for( i=0; i<NUM_ACTUATOR; i++ )
+	{
+		// retrieve the id and value for each actuator and add to packet
+		dxl_set_txpacket_parameter(2+5*i, ids[i]);
+		dxl_set_txpacket_parameter(2+5*i+1, dxl_get_lowbyte(goal[i]));
+		dxl_set_txpacket_parameter(2+5*i+2, dxl_get_highbyte(goal[i]));
+		dxl_set_txpacket_parameter(2+5*i+3, dxl_get_lowbyte(speed[i]));
+		dxl_set_txpacket_parameter(2+5*i+4, dxl_get_highbyte(speed[i]));
+	}
+
+	// total length is as per formula above with L=4
+	dxl_set_txpacket_length((4+1)*NUM_ACTUATOR + 4);
+
+	// all done, send the packet
+	dxl_txrx_packet();
+	}
+
+}
+

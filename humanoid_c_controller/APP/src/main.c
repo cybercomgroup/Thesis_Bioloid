@@ -17,6 +17,7 @@
 #include "adc.h"
 #include "button.h"
 #include "mic.h"
+#include "motion_f.h"
 //#include <stdlib.h>
 
 int main(void) {
@@ -31,13 +32,25 @@ int main(void) {
 	PrintString("Starting Program by turning on POWER LED!\r\n");
 	SetLED(POWER, 1);
 
+
+	int startMotionIfIdle(int motionPageId) {
+	//	printf("startMotionIfIdle %d ?" , motionPageId);
+		if (checkMotionFinished()) {
+	//		printf("idle!\n");
+			setNewMotionCommand(motionPageId);
+			return 1;
+		}
+	//	printf("not idle!\n");
+		return 0;
+	}
+
 	while(1){
 
-
+/*
 		PrintString("Battery Voltage: ");
 		Printu32d((u32)ReadAnalog(VBUS)>>4);
 		PrintString("e-1 [Volts]\n");
-
+*/
 		Battery_Monitor_Alarm();
 
 		    PrintString("PCU:");
@@ -155,6 +168,17 @@ int main(void) {
 			PrintString("\nPlaying Some music\n");
 			Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
 		}
+		else if(ReceivedData == 's'){
+			executeMotion(26);
+			Buzzed(200,150);
+			Buzzed(150,150);
+		}
+		else if(ReceivedData == 'w'){
+			executeMotion(25);
+		}
+		else if(ReceivedData == 'a'){
+			executeMotion(5);
+		}
 		else if(ReceivedData == 'i'){
 			PrintString("\n(IR_L, IR_R, DMS):\t(");
 			Prints32d(ReadIR(EPORT1A));
@@ -202,12 +226,18 @@ int main(void) {
 //			}
 		}
 		//mDelay(1000);
-		mDelay(100);
+		mDelay(1000);
 	}
 
     PrintString("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     PrintString("CM-530 Experimental Example         ");
     //Buzzed(150, 2300);    // 217 Hz ~ A_4
 
+}
+
+void _exit(void) {
+    while(1) {
+        // Loop until reset
+    }
 }
 

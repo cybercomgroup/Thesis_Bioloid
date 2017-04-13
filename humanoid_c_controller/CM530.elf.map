@@ -69,6 +69,11 @@ Discarded input sections
  .bss           0x00000000        0x0 APP/src/BioloidEx.o
  .data          0x00000000        0x0 APP/src/serial.o
  .data          0x00000000        0x0 APP/src/zigbee.o
+ .data          0x00000000        0x0 APP/src/motion.o
+ .text          0x00000000        0x0 APP/src/globalData.o
+ .data          0x00000000        0x0 APP/src/globalData.o
+ .data          0x00000000        0x0 APP/src/pose.o
+ .data          0x00000000        0x0 APP/src/walk.o
  .bss           0x00000000        0x0 CM530_HW/src/adc.o
  .bss           0x00000000        0x0 CM530_HW/src/button.o
  .bss           0x00000000        0x0 CM530_HW/src/led.o
@@ -99,15 +104,10 @@ Discarded input sections
  .text          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
  .data          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
  .bss           0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .text          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
  .data          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
  .bss           0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
  .text          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .data          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
  .bss           0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .rodata        0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .rodata.str1.4
-                0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
  .text          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
  .data          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
  .bss           0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
@@ -120,7 +120,6 @@ Discarded input sections
  .text          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
  .data          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
  .bss           0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .text          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
  .data          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
  .bss           0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
  .text          0x00000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
@@ -158,6 +157,10 @@ LOAD APP/src/BioloidEx.o
 LOAD APP/src/serial.o
 LOAD APP/src/dynamixel.o
 LOAD APP/src/zigbee.o
+LOAD APP/src/motion.o
+LOAD APP/src/globalData.o
+LOAD APP/src/pose.o
+LOAD APP/src/walk.o
 LOAD CM530_HW/src/adc.o
 LOAD CM530_HW/src/button.o
 LOAD CM530_HW/src/led.o
@@ -297,504 +300,578 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
  *(.flashtext)
                 0x08003134                . = ALIGN (0x4)
 
-.text           0x08003134     0x3f10
+.text           0x08003134     0x52ac
                 0x08003134                . = ALIGN (0x4)
  *(.text)
- .text          0x08003134      0x308 APP/src/main.o
-                0x08003134                main
- .text          0x0800343c      0x134 APP/src/stm32f10x_it.o
-                0x0800347c                EXTI2_IRQHandler
-                0x08003444                MemManageException
-                0x08003508                TIM8_TRG_COM_IRQHandler
-                0x0800350c                TIM8_CC_IRQHandler
-                0x08003448                BusFaultException
-                0x080034c8                TIM1_CC_IRQHandler
-                0x08003528                TIM6_IRQHandler
-                0x08003460                PVD_IRQHandler
-                0x08003518                SDIO_IRQHandler
-                0x08003480                EXTI3_IRQHandler
-                0x08003450                DebugMonitor
-                0x08003454                SVCHandler
-                0x08003440                HardFaultException
-                0x080034a8                USB_HP_CAN_TX_IRQHandler
-                0x08003474                EXTI0_IRQHandler
-                0x080034e0                I2C2_EV_IRQHandler
-                0x080034a4                ADC1_2_IRQHandler
-                0x080034e8                SPI1_IRQHandler
-                0x080034b4                CAN_SCE_IRQHandler
-                0x08003464                TAMPER_IRQHandler
-                0x08003504                TIM8_UP_IRQHandler
-                0x08003534                DMA2_Channel2_IRQHandler
-                0x08003494                DMA1_Channel4_IRQHandler
-                0x0800343c                NMIException
-                0x0800354c                USART3_IRQHandler
-                0x08003468                RTC_IRQHandler
-                0x08003564                SysTickHandler
-                0x080034a0                DMA1_Channel7_IRQHandler
-                0x08003458                PendSVC
-                0x08003540                UART5_IRQHandler
-                0x08003510                ADC3_IRQHandler
-                0x080034d4                TIM4_IRQHandler
-                0x080034b0                CAN_RX1_IRQHandler
-                0x08003530                DMA2_Channel1_IRQHandler
-                0x080034d8                I2C1_EV_IRQHandler
-                0x0800349c                DMA1_Channel6_IRQHandler
-                0x08003524                UART4_IRQHandler
-                0x080034d0                TIM3_IRQHandler
-                0x08003470                RCC_IRQHandler
-                0x080034c4                TIM1_TRG_COM_IRQHandler
-                0x08003488                DMA1_Channel1_IRQHandler
-                0x080034f4                EXTI15_10_IRQHandler
-                0x0800352c                TIM7_IRQHandler
-                0x0800351c                TIM5_IRQHandler
-                0x080034b8                EXTI9_5_IRQHandler
-                0x080034ec                SPI2_IRQHandler
-                0x080034ac                USB_LP_CAN_RX0_IRQHandler
-                0x08003498                DMA1_Channel5_IRQHandler
-                0x08003484                EXTI4_IRQHandler
-                0x08003490                DMA1_Channel3_IRQHandler
-                0x08003514                FSMC_IRQHandler
-                0x080034c0                TIM1_UP_IRQHandler
-                0x0800345c                WWDG_IRQHandler
-                0x080034cc                TIM2_IRQHandler
-                0x080034bc                TIM1_BRK_IRQHandler
-                0x08003478                EXTI1_IRQHandler
-                0x080034f8                RTCAlarm_IRQHandler
-                0x0800353c                DMA2_Channel4_5_IRQHandler
-                0x080034f0                USART2_IRQHandler
-                0x080034e4                I2C2_ER_IRQHandler
-                0x0800348c                DMA1_Channel2_IRQHandler
-                0x08003500                TIM8_BRK_IRQHandler
-                0x0800344c                UsageFaultException
-                0x0800346c                FLASH_IRQHandler
-                0x08003558                USART1_IRQHandler
-                0x08003520                SPI3_IRQHandler
-                0x080034dc                I2C1_ER_IRQHandler
-                0x080034fc                USBWakeUp_IRQHandler
-                0x08003538                DMA2_Channel3_IRQHandler
- .text          0x08003570      0x6b8 APP/src/serial.o
-                0x08003bfc                GetChar
-                0x08003bcc                std_getchar
-                0x08003588                RxDByte_PC
-                0x08003570                CheckPCNewArrive
-                0x08003958                Prints32d
-                0x08003878                std_puts
-                0x08003bc0                GetString
-                0x080037ec                TxD_Dec_U8
-                0x0800373c                TxD_Dec_U32
-                0x08003c14                pcu_initialize
-                0x08003a3c                PrintString
-                0x08003b64                std_gets
-                0x08003a48                PrintCommStatus
-                0x080039cc                Printu32d
-                0x08003894                Printu8h
-                0x08003ad0                PrintErrorCode
-                0x0800386c                PrintChar
-                0x08003794                TxD_Dec_U16
-                0x08003850                std_putchar
-                0x08003624                TxD_Dec_S16
-                0x080035b8                TxD_Dec_S32
-                0x080038e0                Printu16h
-                0x080036b4                TxD_Dec_S8
-                0x08003c08                pcu_terminate
- .text          0x08003c28      0x530 APP/src/dynamixel.o
-                0x080040fc                dxl_ping
-                0x08003c64                dxl_get_rxpacket_error
-                0x08003cd4                dxl_clear_statpkt
-                0x08004074                dxl_write_byte
-                0x08003d0c                dxl_rx_packet
-                0x08003c58                dxl_set_txpacket_length
-                0x08003c28                dxl_get_result
-                0x080040b4                dxl_read_byte
-                0x08003e90                dxl_tx_packet
-                0x08004124                dxl_terminate
-                0x08003c40                dxl_set_txpacket_instruction
-                0x08003c88                dxl_get_rxpacket_length
-                0x08003fec                dxl_write_word
-                0x08003cd0                dxl_get_highbyte
-                0x08004130                dxl_initialize
-                0x080040a4                dxl_capture
-                0x08003cc4                dxl_makeword
-                0x08003ccc                dxl_get_lowbyte
-                0x08003ca4                dxl_get_rxpacket_parameter
-                0x08003c34                dxl_set_txpacket_id
-                0x08004024                dxl_read_word
-                0x08003f8c                dxl_txrx_packet
-                0x08003c4c                dxl_set_txpacket_parameter
- .text          0x08004158      0x340 APP/src/zigbee.o
-                0x08004418                zgb_tx_data
-                0x08004190                zgb_rx_data_left_H
-                0x08004184                zgb_rx_data_left_V
-                0x0800419c                zgb_rx_data_buttons
-                0x080041e8                CheckZBNewArrive
-                0x08004468                zgb_initialize
-                0x080041a8                zgb_rx_data_extra
-                0x080041c4                zgb_rx_data_right_H_
-                0x0800445c                zgb_terminate
-                0x080041b8                zgb_rx_data_right_V_
-                0x08004320                zgb_rx_check
-                0x0800416c                zgb_rx_data_right_V
-                0x08004200                zgb_rx_check_arduino
-                0x08004178                zgb_rx_data_right_H
-                0x08004158                zgb_rx_data
-                0x080041d0                zgb_rx_data_left_V_
-                0x080041dc                zgb_rx_data_left_H_
- .text          0x08004498      0x1a0 CM530_HW/src/adc.o
-                0x080044c4                ReadAnalog
-                0x080045b4                Battery_Monitor_Alarm
-                0x08004498                SetEPort
-                0x080045f8                ReadIR
- .text          0x08004638       0x24 CM530_HW/src/button.o
-                0x08004638                ReadButton
- .text          0x0800465c       0x2c CM530_HW/src/led.o
-                0x0800465c                SetLED
- .text          0x08004688       0x4c CM530_HW/src/mic.o
-                0x08004688                Buzzed
-                0x080046c4                PlayNote
- .text          0x080046d4      0x23c CM530_HW/src/system_func.o
-                0x0800478c                start_timeout_pcu
-                0x080047c4                getMillis
-                0x08004714                mDelay
-                0x080048d8                StartCountdown
-                0x0800472c                start_countdown_buzzer
-                0x080046d4                uDelay
-                0x08004754                start_timeout_dxl
-                0x080047dc                ISR_Delay_Base
- .text          0x08004910      0x454 CM530_HW/src/system_init.o
-                0x08004910                USART_Configuration
-                0x08004c34                NVIC_Configuration
-                0x08004974                ADC_Configuration
-                0x08004ca4                RCC_Configuration
-                0x08004d38                SysInit
-                0x08004950                SysTick_Configuration
-                0x08004a5c                GPIO_Configuration
- .text          0x08004d64      0x5e4 CM530_HW/src/usart.o
-                0x08004e3c                zgb_hal_rx
-                0x08004d64                pcu_hal_timeout
-                0x08004d78                pcu_get_queue
-                0x0800500c                dxl_hal_close
-                0x08005218                zgb_hal_tx
-                0x08005020                zgb_hal_close
-                0x080050b8                zgb_hal_open
-                0x08004ddc                pcu_clear_queue
-                0x08005304                pcu_put_byte
-                0x08005188                RxD_ZIG_Interrupt
-                0x08004ebc                dxl_hal_rx
-                0x08004fb8                dxl_hal_tx
-                0x08005258                pcu_put_queue
-                0x08005044                pcu_hal_close
-                0x080052f8                RxD_PCU_Interrupt
-                0x08004e90                dxl_hal_clear
-                0x08005334                pcu_hal_set_timeout
-                0x08005058                dxl_hal_open
-                0x08004f2c                RxD_DXL_Interrupt
-                0x08005128                pcu_hal_open
-                0x08004db4                pcu_peek_queue
-                0x08004df4                pcu_get_qstate
-                0x08004fa4                dxl_hal_set_timeout
-                0x08004f18                dxl_hal_timeout
- .text          0x08005348      0x394 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
-                0x080053b8                ADC_DMACmd
-                0x080053fc                ADC_StartCalibration
-                0x08005660                ADC_GetITStatus
-                0x0800564c                ADC_GetFlagStatus
-                0x080054f0                ADC_ExternalTrigConvCmd
-                0x0800552c                ADC_InjectedDiscModeCmd
-                0x080053a4                ADC_Cmd
-                0x08005624                ADC_AnalogWatchdogSingleChannelConfig
-                0x08005434                ADC_DiscModeChannelCountConfig
-                0x0800567c                ADC_ClearITPendingBit
-                0x080053e4                ADC_ResetCalibration
-                0x0800560c                ADC_AnalogWatchdogCmd
-                0x08005580                ADC_InjectedChannelConfig
-                0x08005458                ADC_RegularChannelConfig
-                0x08005504                ADC_GetConversionValue
-                0x0800561c                ADC_AnalogWatchdogThresholdsConfig
-                0x08005408                ADC_GetCalibrationStatus
-                0x08005414                ADC_SoftwareStartConvCmd
-                0x080053f0                ADC_GetResetCalibrationStatus
-                0x08005540                ADC_ExternalTrigInjectedConvConfig
-                0x08005518                ADC_AutoInjectedConvCmd
-                0x08005560                ADC_SoftwareStartInjectedConvCmd
-                0x08005428                ADC_GetSoftwareStartConvStatus
-                0x0800550c                ADC_GetDualModeConversionValue
-                0x080055e4                ADC_InjectedSequencerLengthConfig
-                0x08005390                ADC_StructInit
-                0x080053cc                ADC_ITConfig
-                0x08005658                ADC_ClearFlag
-                0x08005684                ADC_DeInit
-                0x0800554c                ADC_ExternalTrigInjectedConvCmd
-                0x08005348                ADC_Init
-                0x080055f4                ADC_SetInjectedOffset
-                0x08005630                ADC_TempSensorVrefintCmd
-                0x080055fc                ADC_GetInjectedConversionValue
-                0x08005444                ADC_DiscModeCmd
-                0x08005574                ADC_GetSoftwareStartInjectedConvCmdStatus
- .text          0x080056dc      0x528 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
-                0x08005724                FLASH_Unlock
-                0x08005758                FLASH_GetWriteProtectionOptionByte
-                0x080058e8                FLASH_ReadOutProtection
-                0x08005ac0                FLASH_ProgramWord
-                0x08005a88                FLASH_ProgramHalfWord
-                0x08005bbc                FLASH_ErasePage
-                0x080056f4                FLASH_HalfCycleAccessCmd
-                0x080057a0                FLASH_GetFlagStatus
-                0x08005774                FLASH_GetPrefetchBufferStatus
-                0x08005b80                FLASH_EraseAllPages
-                0x0800574c                FLASH_GetUserOptionByte
-                0x0800588c                FLASH_UserOptionByteConfig
-                0x08005784                FLASH_ITConfig
-                0x0800573c                FLASH_Lock
-                0x08005b08                FLASH_EraseOptionBytes
-                0x0800570c                FLASH_PrefetchBufferCmd
-                0x080057cc                FLASH_GetStatus
-                0x080057c0                FLASH_ClearFlag
-                0x080057f8                FLASH_WaitForLastOperation
-                0x08005a44                FLASH_ProgramOptionByteData
-                0x080056dc                FLASH_SetLatency
-                0x08005764                FLASH_GetReadOutProtectionStatus
-                0x08005984                FLASH_EnableWriteProtection
- .text          0x08005c04      0x288 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
-                0x08005d0c                GPIO_EventOutputConfig
-                0x08005cd0                GPIO_ReadOutputDataBit
-                0x08005d2c                GPIO_EventOutputCmd
-                0x08005d38                GPIO_PinRemapConfig
-                0x08005c04                GPIO_Init
-                0x08005dcc                GPIO_AFIODeInit
-                0x08005cf8                GPIO_Write
-                0x08005cdc                GPIO_ReadOutputData
-                0x08005cc8                GPIO_ReadInputData
-                0x08005ce4                GPIO_SetBits
-                0x08005cec                GPIO_WriteBit
-                0x08005ce8                GPIO_ResetBits
-                0x08005d98                GPIO_EXTILineConfig
-                0x08005de4                GPIO_DeInit
-                0x08005cac                GPIO_StructInit
-                0x08005cfc                GPIO_PinLockConfig
-                0x08005cbc                GPIO_ReadInputDataBit
- .text          0x08005e8c      0x384 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
-                0x080061ec                NVIC_SETFAULTMASK
-                0x080061c4                NVIC_GetBASEPRI
-                0x08005f04                NVIC_Init
-                0x0800602c                NVIC_SetVectorTable
-                0x08005fc8                NVIC_SetIRQChannelPendingBit
-                0x08006204                NVIC_SETPRIMASK
-                0x0800611c                NVIC_SetSystemHandlerPendingBit
-                0x08005fd4                NVIC_ClearIRQChannelPendingBit
-                0x08005f8c                NVIC_GetCurrentPendingIRQChannel
-                0x080061b0                NVIC_GetFaultAddress
-                0x08006040                NVIC_GenerateSystemReset
-                0x08005ffc                NVIC_GetIRQChannelActiveBitStatus
-                0x08005ec0                NVIC_SCBDeInit
-                0x0800607c                NVIC_SystemHandlerConfig
-                0x08005fec                NVIC_GetCurrentActiveHandler
-                0x080061e0                NVIC_RESETFAULTMASK
-                0x0800614c                NVIC_GetSystemHandlerActiveBitStatus
-                0x080061f8                NVIC_RESETPRIMASK
-                0x08006134                NVIC_ClearSystemHandlerPendingBit
-                0x08006060                NVIC_SystemLPConfig
-                0x080060a4                NVIC_SystemHandlerPriorityConfig
-                0x08005fa4                NVIC_GetIRQChannelPendingBitStatus
-                0x08006050                NVIC_GenerateCoreReset
-                0x08006020                NVIC_GetCPUID
-                0x080061d0                NVIC_BASEPRICONFIG
-                0x08005ef0                NVIC_PriorityGroupConfig
-                0x08005f80                NVIC_StructInit
-                0x080060fc                NVIC_GetSystemHandlerPendingBitStatus
-                0x08005e8c                NVIC_DeInit
-                0x0800616c                NVIC_GetFaultHandlerSources
- .text          0x08006210       0xe0 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
-                0x0800626c                PWR_EnterSTANDBYMode
-                0x0800623c                PWR_WakeUpPinCmd
-                0x08006210                PWR_BackupAccessCmd
-                0x080062a0                PWR_EnterSTOPMode
-                0x080062d8                PWR_DeInit
-                0x08006248                PWR_GetFlagStatus
-                0x08006228                PWR_PVDLevelConfig
-                0x0800625c                PWR_ClearFlag
-                0x0800621c                PWR_PVDCmd
- .text          0x080062f0      0x3a4 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
-                0x080063a8                RCC_HSICmd
-                0x080063c8                RCC_PLLCmd
-                0x08006688                RCC_ClearITPendingBit
-                0x08006614                RCC_MCOConfig
-                0x08006434                RCC_ITConfig
-                0x080063d4                RCC_SYSCLKConfig
-                0x08006364                RCC_WaitForHSEStartUp
-                0x080065fc                RCC_BackupResetCmd
-                0x08006608                RCC_ClockSecuritySystemCmd
-                0x08006664                RCC_ClearFlag
-                0x08006330                RCC_HSEConfig
-                0x0800658c                RCC_APB2PeriphClockCmd
-                0x080063b4                RCC_PLLConfig
-                0x0800645c                RCC_ADCCLKConfig
-                0x08006470                RCC_LSEConfig
-                0x080064ac                RCC_RTCCLKCmd
-                0x080065a8                RCC_APB1PeriphClockCmd
-                0x08006674                RCC_GetITStatus
-                0x08006570                RCC_AHBPeriphClockCmd
-                0x08006620                RCC_GetFlagStatus
-                0x080063e8                RCC_GetSYSCLKSource
-                0x080064b8                RCC_GetClocksFreq
-                0x0800649c                RCC_RTCCLKConfig
-                0x08006394                RCC_AdjustHSICalibrationValue
-                0x0800640c                RCC_PCLK1Config
-                0x08006450                RCC_USBCLKConfig
-                0x08006420                RCC_PCLK2Config
-                0x080062f0                RCC_DeInit
-                0x080065e0                RCC_APB1PeriphResetCmd
-                0x08006490                RCC_LSICmd
-                0x080065c4                RCC_APB2PeriphResetCmd
-                0x080063f8                RCC_HCLKConfig
- .text          0x08006694       0xa4 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
-                0x080066bc                SysTick_CounterCmd
-                0x08006710                SysTick_GetFlagStatus
-                0x08006694                SysTick_CLKSourceConfig
-                0x08006704                SysTick_GetCounter
-                0x080066e8                SysTick_ITConfig
-                0x080066b0                SysTick_SetReload
- .text          0x08006738      0x3bc stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
-                0x080068a0                USART_SetGuardTime
-                0x080068c8                USART_SmartCardCmd
-                0x08006950                USART_GetFlagStatus
-                0x08006804                USART_SetAddress
-                0x080068b4                USART_SetPrescaler
-                0x0800688c                USART_ReceiveData
-                0x08006790                USART_Cmd
-                0x08006934                USART_IrDACmd
-                0x080069b4                USART_ClearITPendingBit
-                0x08006968                USART_GetITStatus
-                0x08006850                USART_LINBreakDetectLengthConfig
-                0x080069c4                USART_Init
-                0x08006900                USART_HalfDuplexCmd
-                0x080067ac                USART_ITConfig
-                0x0800691c                USART_IrDAConfig
-                0x08006a60                USART_DeInit
-                0x08006758                USART_ClockInit
-                0x08006894                USART_SendBreak
-                0x0800695c                USART_ClearFlag
-                0x0800681c                USART_WakeUpConfig
-                0x08006884                USART_SendData
-                0x08006834                USART_ReceiverWakeUpCmd
-                0x08006738                USART_StructInit
-                0x080068e4                USART_SmartCardNACKCmd
-                0x08006868                USART_LINCmd
-                0x08006780                USART_ClockStructInit
-                0x080067ec                USART_DMACmd
- .text          0x08006af4       0x6e stm32f10x_lib/libstm32.a(cortexm3_macro.o)
-                0x08006b16                __MRS_CONTROL
-                0x08006b54                __GetBASEPRI
-                0x08006b2c                __MSR_PSP
-                0x08006b42                __RESETPRIMASK
-                0x08006b46                __SETFAULTMASK
-                0x08006afc                __SEV
-                0x08006af8                __WFE
-                0x08006b4a                __RESETFAULTMASK
-                0x08006b32                __MRS_MSP
-                0x08006b38                __MSR_MSP
-                0x08006b26                __MRS_PSP
-                0x08006b5a                __REV_HalfWord
-                0x08006af4                __WFI
-                0x08006b1c                __MSR_CONTROL
-                0x08006b4e                __BASEPRICONFIG
-                0x08006b3e                __SETPRIMASK
-                0x08006b5e                __REV_Word
-                0x08006b12                __SVC
-                0x08006b00                __ISB
-                0x08006b06                __DSB
-                0x08006b0c                __DMB
- *fill*         0x08006b62        0x2 00
- .text          0x08006b64       0x54 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
-                0x08006b64                Reset_Handler
+ .text          0x08003134      0x318 APP/src/main.o
+                0x08003138                main
+                0x08003134                _exit
+ .text          0x0800344c      0x134 APP/src/stm32f10x_it.o
+                0x0800348c                EXTI2_IRQHandler
+                0x08003454                MemManageException
+                0x08003518                TIM8_TRG_COM_IRQHandler
+                0x0800351c                TIM8_CC_IRQHandler
+                0x08003458                BusFaultException
+                0x080034d8                TIM1_CC_IRQHandler
+                0x08003538                TIM6_IRQHandler
+                0x08003470                PVD_IRQHandler
+                0x08003528                SDIO_IRQHandler
+                0x08003490                EXTI3_IRQHandler
+                0x08003460                DebugMonitor
+                0x08003464                SVCHandler
+                0x08003450                HardFaultException
+                0x080034b8                USB_HP_CAN_TX_IRQHandler
+                0x08003484                EXTI0_IRQHandler
+                0x080034f0                I2C2_EV_IRQHandler
+                0x080034b4                ADC1_2_IRQHandler
+                0x080034f8                SPI1_IRQHandler
+                0x080034c4                CAN_SCE_IRQHandler
+                0x08003474                TAMPER_IRQHandler
+                0x08003514                TIM8_UP_IRQHandler
+                0x08003544                DMA2_Channel2_IRQHandler
+                0x080034a4                DMA1_Channel4_IRQHandler
+                0x0800344c                NMIException
+                0x0800355c                USART3_IRQHandler
+                0x08003478                RTC_IRQHandler
+                0x08003574                SysTickHandler
+                0x080034b0                DMA1_Channel7_IRQHandler
+                0x08003468                PendSVC
+                0x08003550                UART5_IRQHandler
+                0x08003520                ADC3_IRQHandler
+                0x080034e4                TIM4_IRQHandler
+                0x080034c0                CAN_RX1_IRQHandler
+                0x08003540                DMA2_Channel1_IRQHandler
+                0x080034e8                I2C1_EV_IRQHandler
+                0x080034ac                DMA1_Channel6_IRQHandler
+                0x08003534                UART4_IRQHandler
+                0x080034e0                TIM3_IRQHandler
+                0x08003480                RCC_IRQHandler
+                0x080034d4                TIM1_TRG_COM_IRQHandler
+                0x08003498                DMA1_Channel1_IRQHandler
+                0x08003504                EXTI15_10_IRQHandler
+                0x0800353c                TIM7_IRQHandler
+                0x0800352c                TIM5_IRQHandler
+                0x080034c8                EXTI9_5_IRQHandler
+                0x080034fc                SPI2_IRQHandler
+                0x080034bc                USB_LP_CAN_RX0_IRQHandler
+                0x080034a8                DMA1_Channel5_IRQHandler
+                0x08003494                EXTI4_IRQHandler
+                0x080034a0                DMA1_Channel3_IRQHandler
+                0x08003524                FSMC_IRQHandler
+                0x080034d0                TIM1_UP_IRQHandler
+                0x0800346c                WWDG_IRQHandler
+                0x080034dc                TIM2_IRQHandler
+                0x080034cc                TIM1_BRK_IRQHandler
+                0x08003488                EXTI1_IRQHandler
+                0x08003508                RTCAlarm_IRQHandler
+                0x0800354c                DMA2_Channel4_5_IRQHandler
+                0x08003500                USART2_IRQHandler
+                0x080034f4                I2C2_ER_IRQHandler
+                0x0800349c                DMA1_Channel2_IRQHandler
+                0x08003510                TIM8_BRK_IRQHandler
+                0x0800345c                UsageFaultException
+                0x0800347c                FLASH_IRQHandler
+                0x08003568                USART1_IRQHandler
+                0x08003530                SPI3_IRQHandler
+                0x080034ec                I2C1_ER_IRQHandler
+                0x0800350c                USBWakeUp_IRQHandler
+                0x08003548                DMA2_Channel3_IRQHandler
+ .text          0x08003580      0x6b8 APP/src/serial.o
+                0x08003c0c                GetChar
+                0x08003bdc                std_getchar
+                0x08003598                RxDByte_PC
+                0x08003580                CheckPCNewArrive
+                0x08003968                Prints32d
+                0x08003888                std_puts
+                0x08003bd0                GetString
+                0x080037fc                TxD_Dec_U8
+                0x0800374c                TxD_Dec_U32
+                0x08003c24                pcu_initialize
+                0x08003a4c                PrintString
+                0x08003b74                std_gets
+                0x08003a58                PrintCommStatus
+                0x080039dc                Printu32d
+                0x080038a4                Printu8h
+                0x08003ae0                PrintErrorCode
+                0x0800387c                PrintChar
+                0x080037a4                TxD_Dec_U16
+                0x08003860                std_putchar
+                0x08003634                TxD_Dec_S16
+                0x080035c8                TxD_Dec_S32
+                0x080038f0                Printu16h
+                0x080036c4                TxD_Dec_S8
+                0x08003c18                pcu_terminate
+ .text          0x08003c38      0x610 APP/src/dynamixel.o
+                0x080041c8                dxl_ping
+                0x08003c74                dxl_get_rxpacket_error
+                0x08003ce4                dxl_clear_statpkt
+                0x08004134                dxl_write_byte
+                0x08003d1c                dxl_rx_packet
+                0x08003c68                dxl_set_txpacket_length
+                0x08003c38                dxl_get_result
+                0x08004180                dxl_read_byte
+                0x08003ea0                dxl_tx_packet
+                0x08004214                dxl_terminate
+                0x08003c50                dxl_set_txpacket_instruction
+                0x08003c98                dxl_get_rxpacket_length
+                0x080040a4                dxl_write_word
+                0x08003ce0                dxl_get_highbyte
+                0x08004220                dxl_initialize
+                0x08004170                dxl_capture
+                0x08003ffc                dxl_set_goal_speed
+                0x08003cd4                dxl_makeword
+                0x08003cdc                dxl_get_lowbyte
+                0x08003cb4                dxl_get_rxpacket_parameter
+                0x08003c44                dxl_set_txpacket_id
+                0x080040e4                dxl_read_word
+                0x08003f9c                dxl_txrx_packet
+                0x08003c5c                dxl_set_txpacket_parameter
+ .text          0x08004248      0x340 APP/src/zigbee.o
+                0x08004508                zgb_tx_data
+                0x08004280                zgb_rx_data_left_H
+                0x08004274                zgb_rx_data_left_V
+                0x0800428c                zgb_rx_data_buttons
+                0x080042d8                CheckZBNewArrive
+                0x08004558                zgb_initialize
+                0x08004298                zgb_rx_data_extra
+                0x080042b4                zgb_rx_data_right_H_
+                0x0800454c                zgb_terminate
+                0x080042a8                zgb_rx_data_right_V_
+                0x08004410                zgb_rx_check
+                0x0800425c                zgb_rx_data_right_V
+                0x080042f0                zgb_rx_check_arduino
+                0x08004268                zgb_rx_data_right_H
+                0x08004248                zgb_rx_data
+                0x080042c0                zgb_rx_data_left_V_
+                0x080042cc                zgb_rx_data_left_H_
+ .text          0x08004588      0x78c APP/src/motion.o
+                0x0800493c                motionPageInit
+                0x08004754                unpackMotion2
+                0x08004588                checkMotionFinished
+                0x080046b0                executeMotionStep
+                0x080046ec                setMotionPageJointFlexibility
+                0x08004978                executeMotionSequence
+                0x0800467c                checkMotionStepFinished
+                0x08004924                executeMotionExitPage
+                0x08004874                executeMotion
+                0x080045c8                printCurrentMotionPage
+                0x0800459c                setNewMotionCommand
+                0x080045bc                getCurrentMotionStartTime
+ .text          0x08004d14      0x404 APP/src/pose.o
+                0x08004f50                setJointOffsetById
+                0x08004d40                applyOffsetsBounds
+                0x08004dc4                apply_new_pose_and_offsets
+                0x08004dbc                getCurrentGoalPose
+                0x08004d78                resetJointOffsets
+                0x08004d14                calculate_speed
+                0x08004da0                get_offset
+                0x08004f9c                readCurrentPose
+                0x08004f10                setJointOffsetSpeedById
+                0x08005100                moveToDefaultPose
+                0x08004db0                set_pose_mode
+                0x08004d90                get_offset_adjustment_time
+                0x08004f60                waitForPoseFinish
+                0x08005044                moveToGoalPose
+                0x08004fc0                calculatePoseServoSpeeds
+ .text          0x08005118      0x1f4 APP/src/walk.o
+                0x08005278                walk_avoidObstacle
+                0x08005130                walk_shift
+                0x080052cc                walk_init
+                0x08005124                walk_getWalkState
+                0x08005118                walk_setWalkState
+ .text          0x0800530c      0x1a0 CM530_HW/src/adc.o
+                0x08005338                ReadAnalog
+                0x08005428                Battery_Monitor_Alarm
+                0x0800530c                SetEPort
+                0x0800546c                ReadIR
+ .text          0x080054ac       0x24 CM530_HW/src/button.o
+                0x080054ac                ReadButton
+ .text          0x080054d0       0x2c CM530_HW/src/led.o
+                0x080054d0                SetLED
+ .text          0x080054fc       0x4c CM530_HW/src/mic.o
+                0x080054fc                Buzzed
+                0x08005538                PlayNote
+ .text          0x08005548      0x290 CM530_HW/src/system_func.o
+                0x08005600                start_timeout_pcu
+                0x08005638                getMillis
+                0x08005588                mDelay
+                0x0800575c                StartCountdown
+                0x080055a0                start_countdown_buzzer
+                0x08005548                uDelay
+                0x08005650                __ISR_SYSTICK
+                0x08005794                micros
+                0x080055c8                start_timeout_dxl
+                0x08005660                ISR_Delay_Base
+ .text          0x080057d8      0x454 CM530_HW/src/system_init.o
+                0x080057d8                USART_Configuration
+                0x08005afc                NVIC_Configuration
+                0x0800583c                ADC_Configuration
+                0x08005b6c                RCC_Configuration
+                0x08005c00                SysInit
+                0x08005818                SysTick_Configuration
+                0x08005924                GPIO_Configuration
+ .text          0x08005c2c      0x5e4 CM530_HW/src/usart.o
+                0x08005d04                zgb_hal_rx
+                0x08005c2c                pcu_hal_timeout
+                0x08005c40                pcu_get_queue
+                0x08005ed4                dxl_hal_close
+                0x080060e0                zgb_hal_tx
+                0x08005ee8                zgb_hal_close
+                0x08005f80                zgb_hal_open
+                0x08005ca4                pcu_clear_queue
+                0x080061cc                pcu_put_byte
+                0x08006050                RxD_ZIG_Interrupt
+                0x08005d84                dxl_hal_rx
+                0x08005e80                dxl_hal_tx
+                0x08006120                pcu_put_queue
+                0x08005f0c                pcu_hal_close
+                0x080061c0                RxD_PCU_Interrupt
+                0x08005d58                dxl_hal_clear
+                0x080061fc                pcu_hal_set_timeout
+                0x08005f20                dxl_hal_open
+                0x08005df4                RxD_DXL_Interrupt
+                0x08005ff0                pcu_hal_open
+                0x08005c7c                pcu_peek_queue
+                0x08005cbc                pcu_get_qstate
+                0x08005e6c                dxl_hal_set_timeout
+                0x08005de0                dxl_hal_timeout
+ .text          0x08006210      0x394 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+                0x08006280                ADC_DMACmd
+                0x080062c4                ADC_StartCalibration
+                0x08006528                ADC_GetITStatus
+                0x08006514                ADC_GetFlagStatus
+                0x080063b8                ADC_ExternalTrigConvCmd
+                0x080063f4                ADC_InjectedDiscModeCmd
+                0x0800626c                ADC_Cmd
+                0x080064ec                ADC_AnalogWatchdogSingleChannelConfig
+                0x080062fc                ADC_DiscModeChannelCountConfig
+                0x08006544                ADC_ClearITPendingBit
+                0x080062ac                ADC_ResetCalibration
+                0x080064d4                ADC_AnalogWatchdogCmd
+                0x08006448                ADC_InjectedChannelConfig
+                0x08006320                ADC_RegularChannelConfig
+                0x080063cc                ADC_GetConversionValue
+                0x080064e4                ADC_AnalogWatchdogThresholdsConfig
+                0x080062d0                ADC_GetCalibrationStatus
+                0x080062dc                ADC_SoftwareStartConvCmd
+                0x080062b8                ADC_GetResetCalibrationStatus
+                0x08006408                ADC_ExternalTrigInjectedConvConfig
+                0x080063e0                ADC_AutoInjectedConvCmd
+                0x08006428                ADC_SoftwareStartInjectedConvCmd
+                0x080062f0                ADC_GetSoftwareStartConvStatus
+                0x080063d4                ADC_GetDualModeConversionValue
+                0x080064ac                ADC_InjectedSequencerLengthConfig
+                0x08006258                ADC_StructInit
+                0x08006294                ADC_ITConfig
+                0x08006520                ADC_ClearFlag
+                0x0800654c                ADC_DeInit
+                0x08006414                ADC_ExternalTrigInjectedConvCmd
+                0x08006210                ADC_Init
+                0x080064bc                ADC_SetInjectedOffset
+                0x080064f8                ADC_TempSensorVrefintCmd
+                0x080064c4                ADC_GetInjectedConversionValue
+                0x0800630c                ADC_DiscModeCmd
+                0x0800643c                ADC_GetSoftwareStartInjectedConvCmdStatus
+ .text          0x080065a4      0x528 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+                0x080065ec                FLASH_Unlock
+                0x08006620                FLASH_GetWriteProtectionOptionByte
+                0x080067b0                FLASH_ReadOutProtection
+                0x08006988                FLASH_ProgramWord
+                0x08006950                FLASH_ProgramHalfWord
+                0x08006a84                FLASH_ErasePage
+                0x080065bc                FLASH_HalfCycleAccessCmd
+                0x08006668                FLASH_GetFlagStatus
+                0x0800663c                FLASH_GetPrefetchBufferStatus
+                0x08006a48                FLASH_EraseAllPages
+                0x08006614                FLASH_GetUserOptionByte
+                0x08006754                FLASH_UserOptionByteConfig
+                0x0800664c                FLASH_ITConfig
+                0x08006604                FLASH_Lock
+                0x080069d0                FLASH_EraseOptionBytes
+                0x080065d4                FLASH_PrefetchBufferCmd
+                0x08006694                FLASH_GetStatus
+                0x08006688                FLASH_ClearFlag
+                0x080066c0                FLASH_WaitForLastOperation
+                0x0800690c                FLASH_ProgramOptionByteData
+                0x080065a4                FLASH_SetLatency
+                0x0800662c                FLASH_GetReadOutProtectionStatus
+                0x0800684c                FLASH_EnableWriteProtection
+ .text          0x08006acc      0x288 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+                0x08006bd4                GPIO_EventOutputConfig
+                0x08006b98                GPIO_ReadOutputDataBit
+                0x08006bf4                GPIO_EventOutputCmd
+                0x08006c00                GPIO_PinRemapConfig
+                0x08006acc                GPIO_Init
+                0x08006c94                GPIO_AFIODeInit
+                0x08006bc0                GPIO_Write
+                0x08006ba4                GPIO_ReadOutputData
+                0x08006b90                GPIO_ReadInputData
+                0x08006bac                GPIO_SetBits
+                0x08006bb4                GPIO_WriteBit
+                0x08006bb0                GPIO_ResetBits
+                0x08006c60                GPIO_EXTILineConfig
+                0x08006cac                GPIO_DeInit
+                0x08006b74                GPIO_StructInit
+                0x08006bc4                GPIO_PinLockConfig
+                0x08006b84                GPIO_ReadInputDataBit
+ .text          0x08006d54      0x384 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+                0x080070b4                NVIC_SETFAULTMASK
+                0x0800708c                NVIC_GetBASEPRI
+                0x08006dcc                NVIC_Init
+                0x08006ef4                NVIC_SetVectorTable
+                0x08006e90                NVIC_SetIRQChannelPendingBit
+                0x080070cc                NVIC_SETPRIMASK
+                0x08006fe4                NVIC_SetSystemHandlerPendingBit
+                0x08006e9c                NVIC_ClearIRQChannelPendingBit
+                0x08006e54                NVIC_GetCurrentPendingIRQChannel
+                0x08007078                NVIC_GetFaultAddress
+                0x08006f08                NVIC_GenerateSystemReset
+                0x08006ec4                NVIC_GetIRQChannelActiveBitStatus
+                0x08006d88                NVIC_SCBDeInit
+                0x08006f44                NVIC_SystemHandlerConfig
+                0x08006eb4                NVIC_GetCurrentActiveHandler
+                0x080070a8                NVIC_RESETFAULTMASK
+                0x08007014                NVIC_GetSystemHandlerActiveBitStatus
+                0x080070c0                NVIC_RESETPRIMASK
+                0x08006ffc                NVIC_ClearSystemHandlerPendingBit
+                0x08006f28                NVIC_SystemLPConfig
+                0x08006f6c                NVIC_SystemHandlerPriorityConfig
+                0x08006e6c                NVIC_GetIRQChannelPendingBitStatus
+                0x08006f18                NVIC_GenerateCoreReset
+                0x08006ee8                NVIC_GetCPUID
+                0x08007098                NVIC_BASEPRICONFIG
+                0x08006db8                NVIC_PriorityGroupConfig
+                0x08006e48                NVIC_StructInit
+                0x08006fc4                NVIC_GetSystemHandlerPendingBitStatus
+                0x08006d54                NVIC_DeInit
+                0x08007034                NVIC_GetFaultHandlerSources
+ .text          0x080070d8       0xe0 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+                0x08007134                PWR_EnterSTANDBYMode
+                0x08007104                PWR_WakeUpPinCmd
+                0x080070d8                PWR_BackupAccessCmd
+                0x08007168                PWR_EnterSTOPMode
+                0x080071a0                PWR_DeInit
+                0x08007110                PWR_GetFlagStatus
+                0x080070f0                PWR_PVDLevelConfig
+                0x08007124                PWR_ClearFlag
+                0x080070e4                PWR_PVDCmd
+ .text          0x080071b8      0x3a4 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+                0x08007270                RCC_HSICmd
+                0x08007290                RCC_PLLCmd
+                0x08007550                RCC_ClearITPendingBit
+                0x080074dc                RCC_MCOConfig
+                0x080072fc                RCC_ITConfig
+                0x0800729c                RCC_SYSCLKConfig
+                0x0800722c                RCC_WaitForHSEStartUp
+                0x080074c4                RCC_BackupResetCmd
+                0x080074d0                RCC_ClockSecuritySystemCmd
+                0x0800752c                RCC_ClearFlag
+                0x080071f8                RCC_HSEConfig
+                0x08007454                RCC_APB2PeriphClockCmd
+                0x0800727c                RCC_PLLConfig
+                0x08007324                RCC_ADCCLKConfig
+                0x08007338                RCC_LSEConfig
+                0x08007374                RCC_RTCCLKCmd
+                0x08007470                RCC_APB1PeriphClockCmd
+                0x0800753c                RCC_GetITStatus
+                0x08007438                RCC_AHBPeriphClockCmd
+                0x080074e8                RCC_GetFlagStatus
+                0x080072b0                RCC_GetSYSCLKSource
+                0x08007380                RCC_GetClocksFreq
+                0x08007364                RCC_RTCCLKConfig
+                0x0800725c                RCC_AdjustHSICalibrationValue
+                0x080072d4                RCC_PCLK1Config
+                0x08007318                RCC_USBCLKConfig
+                0x080072e8                RCC_PCLK2Config
+                0x080071b8                RCC_DeInit
+                0x080074a8                RCC_APB1PeriphResetCmd
+                0x08007358                RCC_LSICmd
+                0x0800748c                RCC_APB2PeriphResetCmd
+                0x080072c0                RCC_HCLKConfig
+ .text          0x0800755c       0xa4 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+                0x08007584                SysTick_CounterCmd
+                0x080075d8                SysTick_GetFlagStatus
+                0x0800755c                SysTick_CLKSourceConfig
+                0x080075cc                SysTick_GetCounter
+                0x080075b0                SysTick_ITConfig
+                0x08007578                SysTick_SetReload
+ .text          0x08007600      0x3bc stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+                0x08007768                USART_SetGuardTime
+                0x08007790                USART_SmartCardCmd
+                0x08007818                USART_GetFlagStatus
+                0x080076cc                USART_SetAddress
+                0x0800777c                USART_SetPrescaler
+                0x08007754                USART_ReceiveData
+                0x08007658                USART_Cmd
+                0x080077fc                USART_IrDACmd
+                0x0800787c                USART_ClearITPendingBit
+                0x08007830                USART_GetITStatus
+                0x08007718                USART_LINBreakDetectLengthConfig
+                0x0800788c                USART_Init
+                0x080077c8                USART_HalfDuplexCmd
+                0x08007674                USART_ITConfig
+                0x080077e4                USART_IrDAConfig
+                0x08007928                USART_DeInit
+                0x08007620                USART_ClockInit
+                0x0800775c                USART_SendBreak
+                0x08007824                USART_ClearFlag
+                0x080076e4                USART_WakeUpConfig
+                0x0800774c                USART_SendData
+                0x080076fc                USART_ReceiverWakeUpCmd
+                0x08007600                USART_StructInit
+                0x080077ac                USART_SmartCardNACKCmd
+                0x08007730                USART_LINCmd
+                0x08007648                USART_ClockStructInit
+                0x080076b4                USART_DMACmd
+ .text          0x080079bc       0x6e stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+                0x080079de                __MRS_CONTROL
+                0x08007a1c                __GetBASEPRI
+                0x080079f4                __MSR_PSP
+                0x08007a0a                __RESETPRIMASK
+                0x08007a0e                __SETFAULTMASK
+                0x080079c4                __SEV
+                0x080079c0                __WFE
+                0x08007a12                __RESETFAULTMASK
+                0x080079fa                __MRS_MSP
+                0x08007a00                __MSR_MSP
+                0x080079ee                __MRS_PSP
+                0x08007a22                __REV_HalfWord
+                0x080079bc                __WFI
+                0x080079e4                __MSR_CONTROL
+                0x08007a16                __BASEPRICONFIG
+                0x08007a06                __SETPRIMASK
+                0x08007a26                __REV_Word
+                0x080079da                __SVC
+                0x080079c8                __ISB
+                0x080079ce                __DSB
+                0x080079d4                __DMB
+ *fill*         0x08007a2a        0x2 00
+ .text          0x08007a2c       0x54 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+                0x08007a2c                Reset_Handler
+ .text          0x08007a80       0x30 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+                0x08007a80                exit
+ .text          0x08007ab0      0x10c c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+                0x08007ab0                __call_exitprocs
  *(.text.*)
  *(.rodata)
- .rodata        0x08006bb8       0x14 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .rodata        0x08007bbc       0x68 APP/src/motion.o
+                0x08007bbc                AX12_ENABLED
+                0x08007bd6                SERVO_MAX_VALUES
+                0x08007c20                motion_pointer_pages
+                0x08007bfa                SERVO_MIN_VALUES
+ .rodata        0x08007c24       0x2c APP/src/globalData.o
+                0x08007c24                AX12Servos
+                0x08007c3e                AX12_IDS
+ .rodata        0x08007c50       0x26 APP/src/pose.o
+                0x08007c50                InitialValues
+                0x08007c74                InitialPlayTime
+ .rodata        0x08007c76       0x14 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ *fill*         0x08007c8a        0x2 00
+ .rodata        0x08007c8c        0x4 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+                0x08007c8c                _global_impure_ptr
  *(.rodata*)
  .rodata.str1.1
-                0x08006bcc      0x25a APP/src/main.o
-                                0x260 (size before relaxing)
+                0x08007c90      0x23b APP/src/main.o
+                                0x241 (size before relaxing)
  .rodata.str1.1
-                0x08006e26      0x21b APP/src/serial.o
+                0x08007ecb      0x21b APP/src/serial.o
+ .rodata.str1.1
+                0x080080e6      0x277 APP/src/motion.o
+                                0x279 (size before relaxing)
+ .rodata.str1.1
+                0x0800835d       0x73 APP/src/pose.o
+ .rodata.str1.1
+                0x080083d0        0xb APP/src/walk.o
+ *fill*         0x080083db        0x1 00
+ .rodata.str1.4
+                0x080083dc        0x4 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
  *(.glue_7)
- *fill*         0x08007041        0x3 00
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtbegin.o
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
- .glue_7        0x08007044        0x0 APP/src/main.o
- .glue_7        0x08007044        0x0 APP/src/stm32f10x_it.o
- .glue_7        0x08007044        0x0 APP/src/Big_main.o
- .glue_7        0x08007044        0x0 APP/src/BioloidEx.o
- .glue_7        0x08007044        0x0 APP/src/serial.o
- .glue_7        0x08007044        0x0 APP/src/dynamixel.o
- .glue_7        0x08007044        0x0 APP/src/zigbee.o
- .glue_7        0x08007044        0x0 CM530_HW/src/adc.o
- .glue_7        0x08007044        0x0 CM530_HW/src/button.o
- .glue_7        0x08007044        0x0 CM530_HW/src/led.o
- .glue_7        0x08007044        0x0 CM530_HW/src/mic.o
- .glue_7        0x08007044        0x0 CM530_HW/src/system_func.o
- .glue_7        0x08007044        0x0 CM530_HW/src/system_init.o
- .glue_7        0x08007044        0x0 CM530_HW/src/usart.o
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
- .glue_7        0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
- .glue_7        0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtbegin.o
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
+ .glue_7        0x080083e0        0x0 APP/src/main.o
+ .glue_7        0x080083e0        0x0 APP/src/stm32f10x_it.o
+ .glue_7        0x080083e0        0x0 APP/src/Big_main.o
+ .glue_7        0x080083e0        0x0 APP/src/BioloidEx.o
+ .glue_7        0x080083e0        0x0 APP/src/serial.o
+ .glue_7        0x080083e0        0x0 APP/src/dynamixel.o
+ .glue_7        0x080083e0        0x0 APP/src/zigbee.o
+ .glue_7        0x080083e0        0x0 APP/src/motion.o
+ .glue_7        0x080083e0        0x0 APP/src/globalData.o
+ .glue_7        0x080083e0        0x0 APP/src/pose.o
+ .glue_7        0x080083e0        0x0 APP/src/walk.o
+ .glue_7        0x080083e0        0x0 CM530_HW/src/adc.o
+ .glue_7        0x080083e0        0x0 CM530_HW/src/button.o
+ .glue_7        0x080083e0        0x0 CM530_HW/src/led.o
+ .glue_7        0x080083e0        0x0 CM530_HW/src/mic.o
+ .glue_7        0x080083e0        0x0 CM530_HW/src/system_func.o
+ .glue_7        0x080083e0        0x0 CM530_HW/src/system_init.o
+ .glue_7        0x080083e0        0x0 CM530_HW/src/usart.o
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+ .glue_7        0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
+ .glue_7        0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
  *(.glue_7t)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtbegin.o
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
- .glue_7t       0x08007044        0x0 APP/src/main.o
- .glue_7t       0x08007044        0x0 APP/src/stm32f10x_it.o
- .glue_7t       0x08007044        0x0 APP/src/Big_main.o
- .glue_7t       0x08007044        0x0 APP/src/BioloidEx.o
- .glue_7t       0x08007044        0x0 APP/src/serial.o
- .glue_7t       0x08007044        0x0 APP/src/dynamixel.o
- .glue_7t       0x08007044        0x0 APP/src/zigbee.o
- .glue_7t       0x08007044        0x0 CM530_HW/src/adc.o
- .glue_7t       0x08007044        0x0 CM530_HW/src/button.o
- .glue_7t       0x08007044        0x0 CM530_HW/src/led.o
- .glue_7t       0x08007044        0x0 CM530_HW/src/mic.o
- .glue_7t       0x08007044        0x0 CM530_HW/src/system_func.o
- .glue_7t       0x08007044        0x0 CM530_HW/src/system_init.o
- .glue_7t       0x08007044        0x0 CM530_HW/src/usart.o
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
- .glue_7t       0x08007044        0x0 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
- .glue_7t       0x08007044        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
-                0x08007044                . = ALIGN (0x4)
-                0x08007044                _etext = .
-                0x08007044                _sidata = _etext
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtbegin.o
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
+ .glue_7t       0x080083e0        0x0 APP/src/main.o
+ .glue_7t       0x080083e0        0x0 APP/src/stm32f10x_it.o
+ .glue_7t       0x080083e0        0x0 APP/src/Big_main.o
+ .glue_7t       0x080083e0        0x0 APP/src/BioloidEx.o
+ .glue_7t       0x080083e0        0x0 APP/src/serial.o
+ .glue_7t       0x080083e0        0x0 APP/src/dynamixel.o
+ .glue_7t       0x080083e0        0x0 APP/src/zigbee.o
+ .glue_7t       0x080083e0        0x0 APP/src/motion.o
+ .glue_7t       0x080083e0        0x0 APP/src/globalData.o
+ .glue_7t       0x080083e0        0x0 APP/src/pose.o
+ .glue_7t       0x080083e0        0x0 APP/src/walk.o
+ .glue_7t       0x080083e0        0x0 CM530_HW/src/adc.o
+ .glue_7t       0x080083e0        0x0 CM530_HW/src/button.o
+ .glue_7t       0x080083e0        0x0 CM530_HW/src/led.o
+ .glue_7t       0x080083e0        0x0 CM530_HW/src/mic.o
+ .glue_7t       0x080083e0        0x0 CM530_HW/src/system_func.o
+ .glue_7t       0x080083e0        0x0 CM530_HW/src/system_init.o
+ .glue_7t       0x080083e0        0x0 CM530_HW/src/usart.o
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+ .glue_7t       0x080083e0        0x0 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
+ .glue_7t       0x080083e0        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
+                0x080083e0                . = ALIGN (0x4)
+                0x080083e0                _etext = .
+                0x080083e0                _sidata = _etext
 
 .vfp11_veneer   0x20000000        0x0
  .vfp11_veneer  0x20000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
@@ -807,6 +884,10 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
  .vfp11_veneer  0x20000000        0x0 APP/src/serial.o
  .vfp11_veneer  0x20000000        0x0 APP/src/dynamixel.o
  .vfp11_veneer  0x20000000        0x0 APP/src/zigbee.o
+ .vfp11_veneer  0x20000000        0x0 APP/src/motion.o
+ .vfp11_veneer  0x20000000        0x0 APP/src/globalData.o
+ .vfp11_veneer  0x20000000        0x0 APP/src/pose.o
+ .vfp11_veneer  0x20000000        0x0 APP/src/walk.o
  .vfp11_veneer  0x20000000        0x0 CM530_HW/src/adc.o
  .vfp11_veneer  0x20000000        0x0 CM530_HW/src/button.o
  .vfp11_veneer  0x20000000        0x0 CM530_HW/src/led.o
@@ -846,6 +927,10 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
  .v4_bx         0x20000000        0x0 APP/src/serial.o
  .v4_bx         0x20000000        0x0 APP/src/dynamixel.o
  .v4_bx         0x20000000        0x0 APP/src/zigbee.o
+ .v4_bx         0x20000000        0x0 APP/src/motion.o
+ .v4_bx         0x20000000        0x0 APP/src/globalData.o
+ .v4_bx         0x20000000        0x0 APP/src/pose.o
+ .v4_bx         0x20000000        0x0 APP/src/walk.o
  .v4_bx         0x20000000        0x0 CM530_HW/src/adc.o
  .v4_bx         0x20000000        0x0 CM530_HW/src/button.o
  .v4_bx         0x20000000        0x0 CM530_HW/src/led.o
@@ -874,7 +959,7 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
  .v4_bx         0x20000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
  .v4_bx         0x20000000        0x0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 
-.data           0x20000000       0xd8 load address 0x08007044
+.data           0x20000000      0x4e0 load address 0x080083e0
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -891,59 +976,115 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
                 0x200000d4                Baudrate_PCU
                 0x200000d0                Baudrate_ZIG
                 0x200000cc                Baudrate_DXL
+ .data          0x200000d8      0x408 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+                0x200000d8                _impure_ptr
  *(.data.*)
-                0x200000d8                . = ALIGN (0x4)
-                0x200000d8                _edata = .
+                0x200004e0                . = ALIGN (0x4)
+                0x200004e0                _edata = .
 
-.bss            0x200000d8      0xd84 load address 0x0800711c
-                0x200000d8                . = ALIGN (0x4)
-                0x200000d8                _sbss = .
+.bss            0x200004e0     0x1538 load address 0x080088c0
+                0x200004e0                . = ALIGN (0x4)
+                0x200004e0                _sbss = .
  *(.bss)
- .bss           0x200000d8      0x404 APP/src/serial.o
- .bss           0x200004dc       0xf3 APP/src/dynamixel.o
-                0x200004dc                gbInstructionPacket
-                0x200005cc                gbRxPacketLength
-                0x200005cd                gbRxGetLength
-                0x200005ce                giBusUsing
-                0x2000057c                gbStatusPacket
- *fill*         0x200005cf        0x1 00
- .bss           0x200005d0       0x1c APP/src/zigbee.o
-                0x200005e1                gbRcvPacketNum
-                0x200005e6                right_H
-                0x200005e5                right_V
-                0x200005e4                gbRcvFlag
-                0x200005e2                gwRcvData
-                0x200005e7                left_V
-                0x200005d2                gbRcvPacket
-                0x200005d8                gbRcvPacketArduino
-                0x200005e9                buttons_
-                0x200005e8                left_H
-                0x200005ea                extra
- .bss           0x200005ec       0x20 CM530_HW/src/system_func.o
-                0x20000608                msMillis
-                0x200005ec                glDelayCounter
-                0x200005f0                glCountdownCounter
-                0x200005fc                glBuzzerCounter
-                0x200005f8                glPcuTimeoutCounter
-                0x20000600                gbCounterCount
-                0x20000604                Millis
-                0x200005f4                glDxlTimeoutCounter
- .bss           0x2000060c        0x1 CM530_HW/src/system_init.o
- *fill*         0x2000060d        0x1 00
- .bss           0x2000060e      0x84e CM530_HW/src/usart.o
+ .bss           0x200004e0      0x404 APP/src/serial.o
+ .bss           0x200008e4       0xf3 APP/src/dynamixel.o
+                0x200008e4                gbInstructionPacket
+                0x200009d4                gbRxPacketLength
+                0x200009d5                gbRxGetLength
+                0x200009d6                giBusUsing
+                0x20000984                gbStatusPacket
+ *fill*         0x200009d7        0x1 00
+ .bss           0x200009d8       0x1c APP/src/zigbee.o
+                0x200009e9                gbRcvPacketNum
+                0x200009ee                right_H
+                0x200009ed                right_V
+                0x200009ec                gbRcvFlag
+                0x200009ea                gwRcvData
+                0x200009ef                left_V
+                0x200009da                gbRcvPacket
+                0x200009e0                gbRcvPacketArduino
+                0x200009f1                buttons_
+                0x200009f0                left_H
+                0x200009f2                extra
+ .bss           0x200009f4      0x560 APP/src/motion.o
+                0x20000a04                step_finish_time
+                0x200009f4                motion_state
+                0x200009fd                exit_flag
+                0x200009fc                repeat_counter
+                0x20000e24                CurrentMotion
+                0x20000a00                step_start_time
+                0x20000a0c                current_motion_start_time
+                0x20000a24                motion_pointer
+                0x20000a10                last_joint_flex
+                0x20000a08                block_time
+                0x200009f8                pause_start_time
+ .bss           0x20000f54      0x100 APP/src/globalData.o
+                0x20001042                motion_servos_moving
+                0x20000f75                last_bioloid_command
+                0x20000fc4                motion_step_servos_moving
+                0x20000f72                adc_dms_distance
+                0x20000f77                flag_receive_ready
+                0x20000f9c                buzzerSequence
+                0x20000f74                bioloid_command
+                0x20000f7c                pid_input
+                0x20000fa0                current_pose
+                0x20000f54                buzzerFinished
+                0x20000f79                current_motion_page
+                0x20000f94                pid_unscaled_output
+                0x20000f66                adc_gyroy_center
+                0x20000f6e                adc_accely_center
+                0x20000f70                adc_ultrasonic_distance
+                0x20000f8c                pid_setpoint
+                0x20000f6c                adc_accelx_center
+                0x20000f56                adc_sensor_val
+                0x20000f64                adc_gyrox_center
+                0x20000f68                adc_accelx
+                0x20000f78                major_alarm
+                0x20000f7b                current_step
+                0x20000f7a                next_motion_page
+                0x20000f84                pid_output
+                0x20000f76                new_command
+                0x20000f6a                adc_accely
+                0x20000f62                adc_battery_val
+ .bss           0x20001054      0x14c APP/src/pose.o
+                0x200010c2                goal_pose_adjusted
+                0x20001054                pose_mode
+                0x20001056                goal_pose
+                0x20001130                offsets
+                0x200010e8                offset_timings
+                0x2000119c                goal_time
+                0x20001178                offsets_speeds
+                0x2000109e                goal_speed
+                0x2000107a                goal_pose_shadow
+                0x20001154                offsets_shadow
+ .bss           0x200011a0        0x2 APP/src/walk.o
+ *fill*         0x200011a2        0x2 00
+ .bss           0x200011a4       0x24 CM530_HW/src/system_func.o
+                0x200011c4                msMillis
+                0x200011a8                glDelayCounter
+                0x200011ac                glCountdownCounter
+                0x200011a4                msSystickCounter
+                0x200011b8                glBuzzerCounter
+                0x200011b4                glPcuTimeoutCounter
+                0x200011bc                gbCounterCount
+                0x200011c0                Millis
+                0x200011b0                glDxlTimeoutCounter
+ .bss           0x200011c8        0x1 CM530_HW/src/system_init.o
+ *fill*         0x200011c9        0x1 00
+ .bss           0x200011ca      0x84e CM530_HW/src/usart.o
  *(COMMON)
-                0x20000e5c                . = ALIGN (0x4)
-                0x20000e5c                _ebss = .
-                0x20000e5c                PROVIDE (end, _ebss)
-                0x20000e5c                PROVIDE (_end, _ebss)
+                0x20001a18                . = ALIGN (0x4)
+                0x20001a18                _ebss = .
+                0x20001a18                PROVIDE (end, _ebss)
+                0x20001a18                PROVIDE (_end, _ebss)
 
-._usrstack      0x20000e5c      0x100 load address 0x08007ea0
-                0x20000e5c                . = ALIGN (0x4)
-                0x20000e5c                _susrstack = .
-                0x20000f5c                . = (. + _Minimum_Stack_Size)
- *fill*         0x20000e5c      0x100 00
-                0x20000f5c                . = ALIGN (0x4)
-                0x20000f5c                _eusrstack = .
+._usrstack      0x20001a18      0x100 load address 0x08009df8
+                0x20001a18                . = ALIGN (0x4)
+                0x20001a18                _susrstack = .
+                0x20001b18                . = (. + _Minimum_Stack_Size)
+ *fill*         0x20001a18      0x100 00
+                0x20001b18                . = ALIGN (0x4)
+                0x20001b18                _eusrstack = .
 
 .b1text
  *(.b1text)
@@ -969,8 +1110,8 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
  *(.eb3text)
  *(.eb3rodata)
  *(.eb3rodata*)
-                0x20000f5c                __exidx_start = .
-                0x20000f5c                __exidx_end = .
+                0x20001b18                __exidx_start = .
+                0x20001b18                __exidx_end = .
 
 /DISCARD/
  libc.a(*)
@@ -995,7 +1136,7 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 .stab.indexstr
  *(.stab.indexstr)
 
-.comment        0x00000000      0x420
+.comment        0x00000000      0x4a0
  *(.comment)
  .comment       0x00000000       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtbegin.o
  .comment       0x00000020       0x20 APP/src/main.o
@@ -1005,31 +1146,35 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
  .comment       0x000000a0       0x20 APP/src/serial.o
  .comment       0x000000c0       0x20 APP/src/dynamixel.o
  .comment       0x000000e0       0x20 APP/src/zigbee.o
- .comment       0x00000100       0x20 CM530_HW/src/adc.o
- .comment       0x00000120       0x20 CM530_HW/src/button.o
- .comment       0x00000140       0x20 CM530_HW/src/led.o
- .comment       0x00000160       0x20 CM530_HW/src/mic.o
- .comment       0x00000180       0x20 CM530_HW/src/system_func.o
- .comment       0x000001a0       0x20 CM530_HW/src/system_init.o
- .comment       0x000001c0       0x20 CM530_HW/src/usart.o
- .comment       0x000001e0       0x20 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
- .comment       0x00000200       0x20 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .comment       0x00000220       0x20 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
- .comment       0x00000240       0x20 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
- .comment       0x00000260       0x20 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
- .comment       0x00000280       0x20 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .comment       0x000002a0       0x20 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
- .comment       0x000002c0       0x20 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
- .comment       0x000002e0       0x20 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
- .comment       0x00000300       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .comment       0x00000320       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
- .comment       0x00000340       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .comment       0x00000360       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
- .comment       0x00000380       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
- .comment       0x000003a0       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
- .comment       0x000003c0       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .comment       0x000003e0       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
- .comment       0x00000400       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
+ .comment       0x00000100       0x20 APP/src/motion.o
+ .comment       0x00000120       0x20 APP/src/globalData.o
+ .comment       0x00000140       0x20 APP/src/pose.o
+ .comment       0x00000160       0x20 APP/src/walk.o
+ .comment       0x00000180       0x20 CM530_HW/src/adc.o
+ .comment       0x000001a0       0x20 CM530_HW/src/button.o
+ .comment       0x000001c0       0x20 CM530_HW/src/led.o
+ .comment       0x000001e0       0x20 CM530_HW/src/mic.o
+ .comment       0x00000200       0x20 CM530_HW/src/system_func.o
+ .comment       0x00000220       0x20 CM530_HW/src/system_init.o
+ .comment       0x00000240       0x20 CM530_HW/src/usart.o
+ .comment       0x00000260       0x20 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .comment       0x00000280       0x20 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .comment       0x000002a0       0x20 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .comment       0x000002c0       0x20 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .comment       0x000002e0       0x20 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .comment       0x00000300       0x20 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .comment       0x00000320       0x20 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .comment       0x00000340       0x20 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .comment       0x00000360       0x20 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .comment       0x00000380       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .comment       0x000003a0       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .comment       0x000003c0       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+ .comment       0x000003e0       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .comment       0x00000400       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .comment       0x00000420       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .comment       0x00000440       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .comment       0x00000460       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .comment       0x00000480       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
 
 .debug
  *(.debug)
@@ -1043,7 +1188,7 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x450
+.debug_aranges  0x00000000      0x4b0
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x28 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
@@ -1064,366 +1209,406 @@ LOAD c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
  .debug_aranges
                 0x00000108       0x20 APP/src/zigbee.o
  .debug_aranges
-                0x00000128       0x20 CM530_HW/src/adc.o
+                0x00000128       0x20 APP/src/motion.o
  .debug_aranges
-                0x00000148       0x20 CM530_HW/src/button.o
+                0x00000148       0x20 APP/src/pose.o
  .debug_aranges
-                0x00000168       0x20 CM530_HW/src/led.o
+                0x00000168       0x20 APP/src/walk.o
  .debug_aranges
-                0x00000188       0x20 CM530_HW/src/mic.o
+                0x00000188       0x20 CM530_HW/src/adc.o
  .debug_aranges
-                0x000001a8       0x20 CM530_HW/src/system_func.o
+                0x000001a8       0x20 CM530_HW/src/button.o
  .debug_aranges
-                0x000001c8       0x20 CM530_HW/src/system_init.o
+                0x000001c8       0x20 CM530_HW/src/led.o
  .debug_aranges
-                0x000001e8       0x20 CM530_HW/src/usart.o
+                0x000001e8       0x20 CM530_HW/src/mic.o
  .debug_aranges
-                0x00000208       0x20 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+                0x00000208       0x20 CM530_HW/src/system_func.o
  .debug_aranges
-                0x00000228       0x20 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+                0x00000228       0x20 CM530_HW/src/system_init.o
  .debug_aranges
-                0x00000248       0x20 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+                0x00000248       0x20 CM530_HW/src/usart.o
  .debug_aranges
-                0x00000268       0x20 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+                0x00000268       0x20 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
  .debug_aranges
-                0x00000288       0x20 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+                0x00000288       0x20 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
  .debug_aranges
-                0x000002a8       0x20 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+                0x000002a8       0x20 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
  .debug_aranges
-                0x000002c8       0x20 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+                0x000002c8       0x20 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
  .debug_aranges
-                0x000002e8       0x20 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+                0x000002e8       0x20 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
  .debug_aranges
-                0x00000308       0x20 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+                0x00000308       0x20 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
  .debug_aranges
-                0x00000328       0x20 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+                0x00000328       0x20 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
  .debug_aranges
-                0x00000348       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+                0x00000348       0x20 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
  .debug_aranges
-                0x00000368       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+                0x00000368       0x20 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
  .debug_aranges
-                0x00000388       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+                0x00000388       0x20 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
  .debug_aranges
-                0x000003a8       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+                0x000003a8       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
  .debug_aranges
-                0x000003c8       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+                0x000003c8       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
  .debug_aranges
-                0x000003e8       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+                0x000003e8       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
  .debug_aranges
-                0x00000408       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+                0x00000408       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
  .debug_aranges
-                0x00000428       0x28 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
+                0x00000428       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .debug_aranges
+                0x00000448       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .debug_aranges
+                0x00000468       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .debug_aranges
+                0x00000488       0x28 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 
 .debug_pubnames
-                0x00000000     0x3056
+                0x00000000     0x3821
  *(.debug_pubnames)
  .debug_pubnames
-                0x00000000       0x1b APP/src/main.o
+                0x00000000       0x25 APP/src/main.o
  .debug_pubnames
-                0x0000001b      0x63c APP/src/stm32f10x_it.o
+                0x00000025      0x63c APP/src/stm32f10x_it.o
  .debug_pubnames
-                0x00000657      0x973 APP/src/Big_main.o
+                0x00000661      0x973 APP/src/Big_main.o
  .debug_pubnames
-                0x00000fca      0x258 APP/src/BioloidEx.o
+                0x00000fd4      0x258 APP/src/BioloidEx.o
  .debug_pubnames
-                0x00001222      0x189 APP/src/serial.o
+                0x0000122c      0x189 APP/src/serial.o
  .debug_pubnames
-                0x000013ab      0x275 APP/src/dynamixel.o
+                0x000013b5      0x28c APP/src/dynamixel.o
  .debug_pubnames
-                0x00001620      0x21f APP/src/zigbee.o
+                0x00001641      0x21f APP/src/zigbee.o
  .debug_pubnames
-                0x0000183f       0x61 CM530_HW/src/adc.o
+                0x00001860      0x264 APP/src/motion.o
  .debug_pubnames
-                0x000018a0       0x30 CM530_HW/src/button.o
+                0x00001ac4      0x266 APP/src/globalData.o
  .debug_pubnames
-                0x000018d0       0x29 CM530_HW/src/led.o
+                0x00001d2a      0x23c APP/src/pose.o
  .debug_pubnames
-                0x000018f9       0x2a CM530_HW/src/mic.o
+                0x00001f66       0x72 APP/src/walk.o
  .debug_pubnames
-                0x00001923      0x13c CM530_HW/src/system_func.o
+                0x00001fd8       0x61 CM530_HW/src/adc.o
  .debug_pubnames
-                0x00001a5f       0xaa CM530_HW/src/system_init.o
+                0x00002039       0x30 CM530_HW/src/button.o
  .debug_pubnames
-                0x00001b09      0x205 CM530_HW/src/usart.o
+                0x00002069       0x29 CM530_HW/src/led.o
  .debug_pubnames
-                0x00001d0e      0x401 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+                0x00002092       0x2a CM530_HW/src/mic.o
  .debug_pubnames
-                0x0000210f      0x26e stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+                0x000020bc      0x16e CM530_HW/src/system_func.o
  .debug_pubnames
-                0x0000237d      0x17b stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+                0x0000222a       0xaa CM530_HW/src/system_init.o
  .debug_pubnames
-                0x000024f8      0x360 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+                0x000022d4      0x205 CM530_HW/src/usart.o
  .debug_pubnames
-                0x00002858       0xcb stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+                0x000024d9      0x401 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
  .debug_pubnames
-                0x00002923      0x2c4 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+                0x000028da      0x26e stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
  .debug_pubnames
-                0x00002be7       0xa1 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+                0x00002b48      0x17b stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
  .debug_pubnames
-                0x00002c88      0x25f stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+                0x00002cc3      0x360 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
  .debug_pubnames
-                0x00002ee7       0x35 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+                0x00003023       0xcb stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
  .debug_pubnames
-                0x00002f1c       0x1d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+                0x000030ee      0x2c4 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
  .debug_pubnames
-                0x00002f39       0x1b c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+                0x000033b2       0xa1 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
  .debug_pubnames
-                0x00002f54       0x39 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+                0x00003453      0x25f stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
  .debug_pubnames
-                0x00002f8d       0x3e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+                0x000036b2       0x35 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
  .debug_pubnames
-                0x00002fcb       0x1d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+                0x000036e7       0x1d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
  .debug_pubnames
-                0x00002fe8       0x1d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+                0x00003704       0x1b c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
  .debug_pubnames
-                0x00003005       0x2a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+                0x0000371f       0x39 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
  .debug_pubnames
-                0x0000302f       0x27 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+                0x00003758       0x3e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .debug_pubnames
+                0x00003796       0x1d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .debug_pubnames
+                0x000037b3       0x1d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .debug_pubnames
+                0x000037d0       0x2a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .debug_pubnames
+                0x000037fa       0x27 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
 
-.debug_info     0x00000000     0xbfc0
+.debug_info     0x00000000     0xda6d
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000       0x4d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
  .debug_info    0x0000004d       0x84 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
- .debug_info    0x000000d1      0x4d9 APP/src/main.o
- .debug_info    0x000005aa      0x66d APP/src/stm32f10x_it.o
- .debug_info    0x00000c17     0x1ab7 APP/src/Big_main.o
- .debug_info    0x000026ce      0x772 APP/src/BioloidEx.o
- .debug_info    0x00002e40      0x826 APP/src/serial.o
- .debug_info    0x00003666      0x7ec APP/src/dynamixel.o
- .debug_info    0x00003e52      0x477 APP/src/zigbee.o
- .debug_info    0x000042c9      0x3f9 CM530_HW/src/adc.o
- .debug_info    0x000046c2      0x1c5 CM530_HW/src/button.o
- .debug_info    0x00004887      0x1c2 CM530_HW/src/led.o
- .debug_info    0x00004a49      0x211 CM530_HW/src/mic.o
- .debug_info    0x00004c5a      0x24b CM530_HW/src/system_func.o
- .debug_info    0x00004ea5      0x58f CM530_HW/src/system_init.o
- .debug_info    0x00005434      0x7ed CM530_HW/src/usart.o
- .debug_info    0x00005c21      0xb1f stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
- .debug_info    0x00006740      0x73a stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .debug_info    0x00006e7a      0x648 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
- .debug_info    0x000074c2      0x8e7 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
- .debug_info    0x00007da9      0x247 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
- .debug_info    0x00007ff0      0x8bd stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .debug_info    0x000088ad      0x1ef stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
- .debug_info    0x00008a9c      0x950 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
- .debug_info    0x000093ec       0x8a stm32f10x_lib/libstm32.a(cortexm3_macro.o)
- .debug_info    0x00009476      0x106 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
- .debug_info    0x0000957c       0xc5 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .debug_info    0x00009641      0x93a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
- .debug_info    0x00009f7b      0x93a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .debug_info    0x0000a8b5      0x146 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
- .debug_info    0x0000a9fb      0x10e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
- .debug_info    0x0000ab09      0x113 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
- .debug_info    0x0000ac1c      0x9a5 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .debug_info    0x0000b5c1      0x9b2 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
- .debug_info    0x0000bf73       0x4d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
+ .debug_info    0x000000d1      0x511 APP/src/main.o
+ .debug_info    0x000005e2      0x66d APP/src/stm32f10x_it.o
+ .debug_info    0x00000c4f     0x1ac5 APP/src/Big_main.o
+ .debug_info    0x00002714      0x780 APP/src/BioloidEx.o
+ .debug_info    0x00002e94      0x83b APP/src/serial.o
+ .debug_info    0x000036cf      0xa1f APP/src/dynamixel.o
+ .debug_info    0x000040ee      0x477 APP/src/zigbee.o
+ .debug_info    0x00004565      0x9a6 APP/src/motion.o
+ .debug_info    0x00004f0b      0x3c5 APP/src/globalData.o
+ .debug_info    0x000052d0      0x7c5 APP/src/pose.o
+ .debug_info    0x00005a95      0x25c APP/src/walk.o
+ .debug_info    0x00005cf1      0x3f9 CM530_HW/src/adc.o
+ .debug_info    0x000060ea      0x1c5 CM530_HW/src/button.o
+ .debug_info    0x000062af      0x1c2 CM530_HW/src/led.o
+ .debug_info    0x00006471      0x211 CM530_HW/src/mic.o
+ .debug_info    0x00006682      0x2b4 CM530_HW/src/system_func.o
+ .debug_info    0x00006936      0x5ab CM530_HW/src/system_init.o
+ .debug_info    0x00006ee1      0x7ed CM530_HW/src/usart.o
+ .debug_info    0x000076ce      0xb1f stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .debug_info    0x000081ed      0x73a stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .debug_info    0x00008927      0x648 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .debug_info    0x00008f6f      0x8e7 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .debug_info    0x00009856      0x247 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .debug_info    0x00009a9d      0x8bd stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .debug_info    0x0000a35a      0x1ef stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .debug_info    0x0000a549      0x950 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .debug_info    0x0000ae99       0x8a stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+ .debug_info    0x0000af23      0x106 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .debug_info    0x0000b029       0xc5 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .debug_info    0x0000b0ee      0x93a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .debug_info    0x0000ba28      0x93a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+ .debug_info    0x0000c362      0x146 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .debug_info    0x0000c4a8      0x10e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .debug_info    0x0000c5b6      0x113 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .debug_info    0x0000c6c9      0x9a5 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .debug_info    0x0000d06e      0x9b2 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .debug_info    0x0000da20       0x4d c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 
-.debug_abbrev   0x00000000     0x3120
+.debug_abbrev   0x00000000     0x38d5
  *(.debug_abbrev)
  .debug_abbrev  0x00000000       0x12 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
  .debug_abbrev  0x00000012       0x14 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
- .debug_abbrev  0x00000026      0x120 APP/src/main.o
- .debug_abbrev  0x00000146       0xc7 APP/src/stm32f10x_it.o
- .debug_abbrev  0x0000020d      0x482 APP/src/Big_main.o
- .debug_abbrev  0x0000068f      0x25a APP/src/BioloidEx.o
- .debug_abbrev  0x000008e9      0x204 APP/src/serial.o
- .debug_abbrev  0x00000aed      0x295 APP/src/dynamixel.o
- .debug_abbrev  0x00000d82      0x134 APP/src/zigbee.o
- .debug_abbrev  0x00000eb6      0x17f CM530_HW/src/adc.o
- .debug_abbrev  0x00001035      0x130 CM530_HW/src/button.o
- .debug_abbrev  0x00001165      0x130 CM530_HW/src/led.o
- .debug_abbrev  0x00001295       0xc3 CM530_HW/src/mic.o
- .debug_abbrev  0x00001358       0xe6 CM530_HW/src/system_func.o
- .debug_abbrev  0x0000143e      0x176 CM530_HW/src/system_init.o
- .debug_abbrev  0x000015b4      0x280 CM530_HW/src/usart.o
- .debug_abbrev  0x00001834      0x1c2 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
- .debug_abbrev  0x000019f6      0x21c stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .debug_abbrev  0x00001c12      0x225 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
- .debug_abbrev  0x00001e37      0x259 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
- .debug_abbrev  0x00002090      0x140 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
- .debug_abbrev  0x000021d0      0x29b stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .debug_abbrev  0x0000246b      0x126 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
- .debug_abbrev  0x00002591      0x1e1 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
- .debug_abbrev  0x00002772       0x14 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
- .debug_abbrev  0x00002786       0xb5 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
- .debug_abbrev  0x0000283b       0x81 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .debug_abbrev  0x000028bc      0x177 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
- .debug_abbrev  0x00002a33      0x160 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .debug_abbrev  0x00002b93       0xa4 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
- .debug_abbrev  0x00002c37       0x99 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
- .debug_abbrev  0x00002cd0       0xb2 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
- .debug_abbrev  0x00002d82      0x1bc c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .debug_abbrev  0x00002f3e      0x1d0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
- .debug_abbrev  0x0000310e       0x12 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
+ .debug_abbrev  0x00000026      0x14f APP/src/main.o
+ .debug_abbrev  0x00000175       0xc7 APP/src/stm32f10x_it.o
+ .debug_abbrev  0x0000023c      0x482 APP/src/Big_main.o
+ .debug_abbrev  0x000006be      0x25a APP/src/BioloidEx.o
+ .debug_abbrev  0x00000918      0x204 APP/src/serial.o
+ .debug_abbrev  0x00000b1c      0x2fb APP/src/dynamixel.o
+ .debug_abbrev  0x00000e17      0x134 APP/src/zigbee.o
+ .debug_abbrev  0x00000f4b      0x26b APP/src/motion.o
+ .debug_abbrev  0x000011b6       0x90 APP/src/globalData.o
+ .debug_abbrev  0x00001246      0x2ad APP/src/pose.o
+ .debug_abbrev  0x000014f3      0x123 APP/src/walk.o
+ .debug_abbrev  0x00001616      0x17f CM530_HW/src/adc.o
+ .debug_abbrev  0x00001795      0x130 CM530_HW/src/button.o
+ .debug_abbrev  0x000018c5      0x130 CM530_HW/src/led.o
+ .debug_abbrev  0x000019f5       0xc3 CM530_HW/src/mic.o
+ .debug_abbrev  0x00001ab8      0x130 CM530_HW/src/system_func.o
+ .debug_abbrev  0x00001be8      0x181 CM530_HW/src/system_init.o
+ .debug_abbrev  0x00001d69      0x280 CM530_HW/src/usart.o
+ .debug_abbrev  0x00001fe9      0x1c2 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .debug_abbrev  0x000021ab      0x21c stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .debug_abbrev  0x000023c7      0x225 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .debug_abbrev  0x000025ec      0x259 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .debug_abbrev  0x00002845      0x140 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .debug_abbrev  0x00002985      0x29b stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .debug_abbrev  0x00002c20      0x126 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .debug_abbrev  0x00002d46      0x1e1 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .debug_abbrev  0x00002f27       0x14 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+ .debug_abbrev  0x00002f3b       0xb5 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .debug_abbrev  0x00002ff0       0x81 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .debug_abbrev  0x00003071      0x177 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .debug_abbrev  0x000031e8      0x160 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+ .debug_abbrev  0x00003348       0xa4 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .debug_abbrev  0x000033ec       0x99 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .debug_abbrev  0x00003485       0xb2 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .debug_abbrev  0x00003537      0x1bc c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .debug_abbrev  0x000036f3      0x1d0 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .debug_abbrev  0x000038c3       0x12 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 
-.debug_line     0x00000000     0x2d6a
+.debug_line     0x00000000     0x33f0
  *(.debug_line)
  .debug_line    0x00000000       0x49 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
  .debug_line    0x00000049       0x9a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
- .debug_line    0x000000e3      0x13b APP/src/main.o
- .debug_line    0x0000021e      0x198 APP/src/stm32f10x_it.o
- .debug_line    0x000003b6      0x680 APP/src/Big_main.o
- .debug_line    0x00000a36      0x183 APP/src/BioloidEx.o
- .debug_line    0x00000bb9      0x223 APP/src/serial.o
- .debug_line    0x00000ddc      0x1c2 APP/src/dynamixel.o
- .debug_line    0x00000f9e      0x131 APP/src/zigbee.o
- .debug_line    0x000010cf       0xe3 CM530_HW/src/adc.o
- .debug_line    0x000011b2       0xac CM530_HW/src/button.o
- .debug_line    0x0000125e       0xa6 CM530_HW/src/led.o
- .debug_line    0x00001304       0xb2 CM530_HW/src/mic.o
- .debug_line    0x000013b6       0xf2 CM530_HW/src/system_func.o
- .debug_line    0x000014a8      0x1f1 CM530_HW/src/system_init.o
- .debug_line    0x00001699      0x20c CM530_HW/src/usart.o
- .debug_line    0x000018a5      0x211 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
- .debug_line    0x00001ab6      0x223 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .debug_line    0x00001cd9      0x178 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
- .debug_line    0x00001e51      0x1aa stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
- .debug_line    0x00001ffb       0xd6 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
- .debug_line    0x000020d1      0x1b8 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .debug_line    0x00002289       0xbd stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
- .debug_line    0x00002346      0x1fe stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
- .debug_line    0x00002544       0xa4 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
- .debug_line    0x000025e8       0x5e stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
- .debug_line    0x00002646       0x74 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .debug_line    0x000026ba       0xef c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
- .debug_line    0x000027a9       0xdb c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
- .debug_line    0x00002884       0xa6 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
- .debug_line    0x0000292a       0xd5 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
- .debug_line    0x000029ff       0xdc c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
- .debug_line    0x00002adb      0x127 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .debug_line    0x00002c02      0x11f c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
- .debug_line    0x00002d21       0x49 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
+ .debug_line    0x000000e3      0x148 APP/src/main.o
+ .debug_line    0x0000022b      0x198 APP/src/stm32f10x_it.o
+ .debug_line    0x000003c3      0x680 APP/src/Big_main.o
+ .debug_line    0x00000a43      0x183 APP/src/BioloidEx.o
+ .debug_line    0x00000bc6      0x223 APP/src/serial.o
+ .debug_line    0x00000de9      0x246 APP/src/dynamixel.o
+ .debug_line    0x0000102f      0x131 APP/src/zigbee.o
+ .debug_line    0x00001160      0x252 APP/src/motion.o
+ .debug_line    0x000013b2       0xa6 APP/src/globalData.o
+ .debug_line    0x00001458      0x1db APP/src/pose.o
+ .debug_line    0x00001633      0x110 APP/src/walk.o
+ .debug_line    0x00001743       0xe3 CM530_HW/src/adc.o
+ .debug_line    0x00001826       0xac CM530_HW/src/button.o
+ .debug_line    0x000018d2       0xa6 CM530_HW/src/led.o
+ .debug_line    0x00001978       0xb2 CM530_HW/src/mic.o
+ .debug_line    0x00001a2a      0x104 CM530_HW/src/system_func.o
+ .debug_line    0x00001b2e      0x1f1 CM530_HW/src/system_init.o
+ .debug_line    0x00001d1f      0x20c CM530_HW/src/usart.o
+ .debug_line    0x00001f2b      0x211 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .debug_line    0x0000213c      0x223 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .debug_line    0x0000235f      0x178 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .debug_line    0x000024d7      0x1aa stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .debug_line    0x00002681       0xd6 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .debug_line    0x00002757      0x1b8 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .debug_line    0x0000290f       0xbd stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .debug_line    0x000029cc      0x1fe stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .debug_line    0x00002bca       0xa4 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+ .debug_line    0x00002c6e       0x5e stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .debug_line    0x00002ccc       0x74 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .debug_line    0x00002d40       0xef c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .debug_line    0x00002e2f       0xdb c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+ .debug_line    0x00002f0a       0xa6 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .debug_line    0x00002fb0       0xd5 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .debug_line    0x00003085       0xdc c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .debug_line    0x00003161      0x127 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .debug_line    0x00003288      0x11f c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .debug_line    0x000033a7       0x49 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 
-.debug_frame    0x00000000     0x2304
+.debug_frame    0x00000000     0x2684
  *(.debug_frame)
- .debug_frame   0x00000000       0x30 APP/src/main.o
- .debug_frame   0x00000030      0x480 APP/src/stm32f10x_it.o
- .debug_frame   0x000004b0      0x43c APP/src/Big_main.o
- .debug_frame   0x000008ec      0x138 APP/src/BioloidEx.o
- .debug_frame   0x00000a24      0x274 APP/src/serial.o
- .debug_frame   0x00000c98      0x1e0 APP/src/dynamixel.o
- .debug_frame   0x00000e78      0x150 APP/src/zigbee.o
- .debug_frame   0x00000fc8       0x74 CM530_HW/src/adc.o
- .debug_frame   0x0000103c       0x28 CM530_HW/src/button.o
- .debug_frame   0x00001064       0x28 CM530_HW/src/led.o
- .debug_frame   0x0000108c       0x44 CM530_HW/src/mic.o
- .debug_frame   0x000010d0       0xa8 CM530_HW/src/system_func.o
- .debug_frame   0x00001178       0xd0 CM530_HW/src/system_init.o
- .debug_frame   0x00001248      0x23c CM530_HW/src/usart.o
- .debug_frame   0x00001484      0x278 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
- .debug_frame   0x000016fc      0x1f0 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .debug_frame   0x000018ec      0x154 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
- .debug_frame   0x00001a40      0x234 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
- .debug_frame   0x00001c74       0xb8 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
- .debug_frame   0x00001d2c      0x214 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .debug_frame   0x00001f40       0x70 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
- .debug_frame   0x00001fb0      0x1dc stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
- .debug_frame   0x0000218c       0x2c stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
- .debug_frame   0x000021b8       0x28 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .debug_frame   0x000021e0       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
- .debug_frame   0x00002200       0x48 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
- .debug_frame   0x00002248       0x2c c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
- .debug_frame   0x00002274       0x28 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
- .debug_frame   0x0000229c       0x30 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .debug_frame   0x000022cc       0x38 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x00000000       0x40 APP/src/main.o
+ .debug_frame   0x00000040      0x480 APP/src/stm32f10x_it.o
+ .debug_frame   0x000004c0      0x43c APP/src/Big_main.o
+ .debug_frame   0x000008fc      0x138 APP/src/BioloidEx.o
+ .debug_frame   0x00000a34      0x274 APP/src/serial.o
+ .debug_frame   0x00000ca8      0x200 APP/src/dynamixel.o
+ .debug_frame   0x00000ea8      0x150 APP/src/zigbee.o
+ .debug_frame   0x00000ff8      0x144 APP/src/motion.o
+ .debug_frame   0x0000113c      0x178 APP/src/pose.o
+ .debug_frame   0x000012b4       0x68 APP/src/walk.o
+ .debug_frame   0x0000131c       0x74 CM530_HW/src/adc.o
+ .debug_frame   0x00001390       0x28 CM530_HW/src/button.o
+ .debug_frame   0x000013b8       0x28 CM530_HW/src/led.o
+ .debug_frame   0x000013e0       0x44 CM530_HW/src/mic.o
+ .debug_frame   0x00001424       0xd4 CM530_HW/src/system_func.o
+ .debug_frame   0x000014f8       0xd0 CM530_HW/src/system_init.o
+ .debug_frame   0x000015c8      0x23c CM530_HW/src/usart.o
+ .debug_frame   0x00001804      0x278 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .debug_frame   0x00001a7c      0x1f0 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .debug_frame   0x00001c6c      0x154 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .debug_frame   0x00001dc0      0x234 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .debug_frame   0x00001ff4       0xb8 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .debug_frame   0x000020ac      0x214 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .debug_frame   0x000022c0       0x70 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .debug_frame   0x00002330      0x1dc stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .debug_frame   0x0000250c       0x2c stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .debug_frame   0x00002538       0x28 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .debug_frame   0x00002560       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .debug_frame   0x00002580       0x48 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .debug_frame   0x000025c8       0x2c c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .debug_frame   0x000025f4       0x28 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .debug_frame   0x0000261c       0x30 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .debug_frame   0x0000264c       0x38 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
 
-.debug_str      0x00000000     0x48be
+.debug_str      0x00000000     0x51b7
  *(.debug_str)
- .debug_str     0x00000000      0x6da APP/src/main.o
-                                0x72f (size before relaxing)
- .debug_str     0x000006da      0x52d APP/src/stm32f10x_it.o
+ .debug_str     0x00000000      0x717 APP/src/main.o
+                                0x76c (size before relaxing)
+ .debug_str     0x00000717      0x52d APP/src/stm32f10x_it.o
                                 0x642 (size before relaxing)
- .debug_str     0x00000c07      0xcc3 APP/src/Big_main.o
-                               0x1357 (size before relaxing)
- .debug_str     0x000018ca      0x220 APP/src/BioloidEx.o
-                                0x95e (size before relaxing)
- .debug_str     0x00001aea      0x1fe APP/src/serial.o
-                                0x3d3 (size before relaxing)
- .debug_str     0x00001ce8      0x25b APP/src/dynamixel.o
-                                0x5d9 (size before relaxing)
- .debug_str     0x00001f43      0x19b APP/src/zigbee.o
+ .debug_str     0x00000c44      0xcc3 APP/src/Big_main.o
+                               0x137c (size before relaxing)
+ .debug_str     0x00001907      0x216 APP/src/BioloidEx.o
+                                0x983 (size before relaxing)
+ .debug_str     0x00001b1d      0x1fe APP/src/serial.o
+                                0x405 (size before relaxing)
+ .debug_str     0x00001d1b      0x299 APP/src/dynamixel.o
+                                0x654 (size before relaxing)
+ .debug_str     0x00001fb4      0x19b APP/src/zigbee.o
                                 0x301 (size before relaxing)
- .debug_str     0x000020de      0x154 CM530_HW/src/adc.o
+ .debug_str     0x0000214f      0x3d6 APP/src/motion.o
+                                0x648 (size before relaxing)
+ .debug_str     0x00002525      0x17a APP/src/globalData.o
+                                0x300 (size before relaxing)
+ .debug_str     0x0000269f      0x2c8 APP/src/pose.o
+                                0x4c6 (size before relaxing)
+ .debug_str     0x00002967       0x81 APP/src/walk.o
+                                0x243 (size before relaxing)
+ .debug_str     0x000029e8      0x154 CM530_HW/src/adc.o
                                 0x240 (size before relaxing)
- .debug_str     0x00002232       0x3c CM530_HW/src/button.o
+ .debug_str     0x00002b3c       0x3c CM530_HW/src/button.o
                                 0x12f (size before relaxing)
- .debug_str     0x0000226e       0x28 CM530_HW/src/led.o
+ .debug_str     0x00002b78       0x28 CM530_HW/src/led.o
                                 0x11c (size before relaxing)
- .debug_str     0x00002296       0x5a CM530_HW/src/mic.o
+ .debug_str     0x00002ba0       0x5a CM530_HW/src/mic.o
                                 0x18f (size before relaxing)
- .debug_str     0x000022f0       0xfe CM530_HW/src/system_func.o
-                                0x1d1 (size before relaxing)
- .debug_str     0x000023ee      0x2e8 CM530_HW/src/system_init.o
-                                0x4b2 (size before relaxing)
- .debug_str     0x000026d6      0x26d CM530_HW/src/usart.o
+ .debug_str     0x00002bfa      0x11a CM530_HW/src/system_func.o
+                                0x1f7 (size before relaxing)
+ .debug_str     0x00002d14      0x2e8 CM530_HW/src/system_init.o
+                                0x4e4 (size before relaxing)
+ .debug_str     0x00002ffc      0x26d CM530_HW/src/usart.o
                                 0x423 (size before relaxing)
- .debug_str     0x00002943      0x47a stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .debug_str     0x00003269      0x47a stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
                                 0x61e (size before relaxing)
- .debug_str     0x00002dbd      0x382 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .debug_str     0x000036e3      0x382 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
                                 0x47a (size before relaxing)
- .debug_str     0x0000313f      0x1f7 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .debug_str     0x00003a65      0x1f7 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
                                 0x3e9 (size before relaxing)
- .debug_str     0x00003336      0x452 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .debug_str     0x00003c5c      0x452 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
                                 0x5ef (size before relaxing)
- .debug_str     0x00003788       0xe9 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .debug_str     0x000040ae       0xe9 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
                                 0x1cf (size before relaxing)
- .debug_str     0x00003871      0x40d stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .debug_str     0x00004197      0x40d stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
                                 0x531 (size before relaxing)
- .debug_str     0x00003c7e       0xd7 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .debug_str     0x000045a4       0xd7 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
                                 0x1cc (size before relaxing)
- .debug_str     0x00003d55      0x364 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .debug_str     0x0000467b      0x364 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
                                 0x586 (size before relaxing)
- .debug_str     0x000040b9       0x79 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .debug_str     0x000049df       0x79 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
                                 0x115 (size before relaxing)
- .debug_str     0x00004132       0xc1 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .debug_str     0x00004a58       0x9c c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
                                 0x138 (size before relaxing)
- .debug_str     0x000041f3      0x3bd c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .debug_str     0x00004af4      0x3b5 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
                                 0x4b1 (size before relaxing)
- .debug_str     0x000045b0       0x76 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+ .debug_str     0x00004ea9       0x76 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
                                 0x4bf (size before relaxing)
- .debug_str     0x00004626      0x103 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .debug_str     0x00004f1f      0x103 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
                                 0x19e (size before relaxing)
- .debug_str     0x00004729       0x9a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .debug_str     0x00005022       0x9a c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
                                  0xc8 (size before relaxing)
- .debug_str     0x000047c3       0x50 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .debug_str     0x000050bc       0x50 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
                                 0x123 (size before relaxing)
- .debug_str     0x00004813       0x50 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .debug_str     0x0000510c       0x50 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
                                 0x4f9 (size before relaxing)
- .debug_str     0x00004863       0x5b c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .debug_str     0x0000515c       0x5b c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
                                 0x4d9 (size before relaxing)
 
-.debug_loc      0x00000000     0x4300
+.debug_loc      0x00000000     0x4cf5
  *(.debug_loc)
- .debug_loc     0x00000000       0x88 APP/src/main.o
- .debug_loc     0x00000088       0xac APP/src/stm32f10x_it.o
- .debug_loc     0x00000134      0xd9a APP/src/Big_main.o
- .debug_loc     0x00000ece      0x248 APP/src/BioloidEx.o
- .debug_loc     0x00001116      0x7a9 APP/src/serial.o
- .debug_loc     0x000018bf      0x4d3 APP/src/dynamixel.o
- .debug_loc     0x00001d92      0x18f APP/src/zigbee.o
- .debug_loc     0x00001f21      0x14b CM530_HW/src/adc.o
- .debug_loc     0x0000206c       0x3e CM530_HW/src/button.o
- .debug_loc     0x000020aa       0x67 CM530_HW/src/led.o
- .debug_loc     0x00002111       0xc0 CM530_HW/src/mic.o
- .debug_loc     0x000021d1       0x9b CM530_HW/src/system_func.o
- .debug_loc     0x0000226c      0x12d CM530_HW/src/system_init.o
- .debug_loc     0x00002399      0x49a CM530_HW/src/usart.o
- .debug_loc     0x00002833      0x405 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
- .debug_loc     0x00002c38      0x5ec stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .debug_loc     0x00003224      0x25c stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
- .debug_loc     0x00003480      0x3db stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
- .debug_loc     0x0000385b      0x113 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
- .debug_loc     0x0000396e      0x24d stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .debug_loc     0x00003bbb       0x3c stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
- .debug_loc     0x00003bf7      0x27f stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
- .debug_loc     0x00003e76       0x32 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
- .debug_loc     0x00003ea8       0x49 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
- .debug_loc     0x00003ef1       0x1e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
- .debug_loc     0x00003f0f       0x3e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
- .debug_loc     0x00003f4d      0x130 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
- .debug_loc     0x0000407d      0x12b c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
- .debug_loc     0x000041a8       0x97 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
- .debug_loc     0x0000423f       0xc1 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .debug_loc     0x00000000       0xa9 APP/src/main.o
+ .debug_loc     0x000000a9       0xac APP/src/stm32f10x_it.o
+ .debug_loc     0x00000155      0xd9a APP/src/Big_main.o
+ .debug_loc     0x00000eef      0x248 APP/src/BioloidEx.o
+ .debug_loc     0x00001137      0x7a9 APP/src/serial.o
+ .debug_loc     0x000018e0      0x589 APP/src/dynamixel.o
+ .debug_loc     0x00001e69      0x18f APP/src/zigbee.o
+ .debug_loc     0x00001ff8      0x3c0 APP/src/motion.o
+ .debug_loc     0x000023b8      0x4c1 APP/src/pose.o
+ .debug_loc     0x00002879       0x5f APP/src/walk.o
+ .debug_loc     0x000028d8      0x14b CM530_HW/src/adc.o
+ .debug_loc     0x00002a23       0x3e CM530_HW/src/button.o
+ .debug_loc     0x00002a61       0x67 CM530_HW/src/led.o
+ .debug_loc     0x00002ac8       0xc0 CM530_HW/src/mic.o
+ .debug_loc     0x00002b88       0xd9 CM530_HW/src/system_func.o
+ .debug_loc     0x00002c61      0x12d CM530_HW/src/system_init.o
+ .debug_loc     0x00002d8e      0x49a CM530_HW/src/usart.o
+ .debug_loc     0x00003228      0x405 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+ .debug_loc     0x0000362d      0x5ec stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .debug_loc     0x00003c19      0x25c stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+ .debug_loc     0x00003e75      0x3db stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+ .debug_loc     0x00004250      0x113 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+ .debug_loc     0x00004363      0x24d stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .debug_loc     0x000045b0       0x3c stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+ .debug_loc     0x000045ec      0x27f stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+ .debug_loc     0x0000486b       0x32 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+ .debug_loc     0x0000489d       0x49 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+ .debug_loc     0x000048e6       0x1e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+ .debug_loc     0x00004904       0x3e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+ .debug_loc     0x00004942      0x130 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+ .debug_loc     0x00004a72      0x12b c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .debug_loc     0x00004b9d       0x97 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .debug_loc     0x00004c34       0xc1 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -1464,67 +1649,78 @@ OUTPUT(CM530.elf elf32-littlearm)
  .ARM.attributes
                 0x0000017c       0x31 APP/src/zigbee.o
  .ARM.attributes
-                0x000001ad       0x31 CM530_HW/src/adc.o
+                0x000001ad       0x31 APP/src/motion.o
  .ARM.attributes
-                0x000001de       0x31 CM530_HW/src/button.o
+                0x000001de       0x2f APP/src/globalData.o
  .ARM.attributes
-                0x0000020f       0x31 CM530_HW/src/led.o
+                0x0000020d       0x31 APP/src/pose.o
  .ARM.attributes
-                0x00000240       0x31 CM530_HW/src/mic.o
+                0x0000023e       0x31 APP/src/walk.o
  .ARM.attributes
-                0x00000271       0x31 CM530_HW/src/system_func.o
+                0x0000026f       0x31 CM530_HW/src/adc.o
  .ARM.attributes
-                0x000002a2       0x31 CM530_HW/src/system_init.o
+                0x000002a0       0x31 CM530_HW/src/button.o
  .ARM.attributes
-                0x000002d3       0x31 CM530_HW/src/usart.o
+                0x000002d1       0x31 CM530_HW/src/led.o
  .ARM.attributes
-                0x00000304       0x31 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
+                0x00000302       0x31 CM530_HW/src/mic.o
  .ARM.attributes
-                0x00000335       0x31 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+                0x00000333       0x31 CM530_HW/src/system_func.o
  .ARM.attributes
-                0x00000366       0x31 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
+                0x00000364       0x31 CM530_HW/src/system_init.o
  .ARM.attributes
-                0x00000397       0x31 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
+                0x00000395       0x31 CM530_HW/src/usart.o
  .ARM.attributes
-                0x000003c8       0x31 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
+                0x000003c6       0x31 stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
  .ARM.attributes
-                0x000003f9       0x31 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+                0x000003f7       0x31 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
  .ARM.attributes
-                0x0000042a       0x31 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+                0x00000428       0x31 stm32f10x_lib/libstm32.a(stm32f10x_gpio.o)
  .ARM.attributes
-                0x0000045b       0x31 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
+                0x00000459       0x31 stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
  .ARM.attributes
-                0x0000048c       0x21 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+                0x0000048a       0x31 stm32f10x_lib/libstm32.a(stm32f10x_pwr.o)
  .ARM.attributes
-                0x000004ad       0x31 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+                0x000004bb       0x31 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
  .ARM.attributes
-                0x000004de       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
+                0x000004ec       0x31 stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
  .ARM.attributes
-                0x0000050c       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+                0x0000051d       0x31 stm32f10x_lib/libstm32.a(stm32f10x_usart.o)
  .ARM.attributes
-                0x0000053a       0x2c c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
+                0x0000054e       0x21 stm32f10x_lib/libstm32.a(cortexm3_macro.o)
  .ARM.attributes
-                0x00000566       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
+                0x0000056f       0x31 stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
  .ARM.attributes
-                0x00000594       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
+                0x000005a0       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
  .ARM.attributes
-                0x000005c2       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+                0x000005ce       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
  .ARM.attributes
-                0x000005f0       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+                0x000005fc       0x2c c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
  .ARM.attributes
-                0x0000061e       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+                0x00000628       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
  .ARM.attributes
-                0x0000064c       0x2c c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
+                0x00000656       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
  .ARM.attributes
-                0x00000678       0x14 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
+                0x00000684       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
+ .ARM.attributes
+                0x000006b2       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__atexit.o)
+ .ARM.attributes
+                0x000006e0       0x2e c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .ARM.attributes
+                0x0000070e       0x2c c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtend.o
+ .ARM.attributes
+                0x0000073a       0x14 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 
-.debug_ranges   0x00000000      0x230
+.debug_ranges   0x00000000      0x388
  .debug_ranges  0x00000000       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
  .debug_ranges  0x00000020       0xf8 APP/src/Big_main.o
- .debug_ranges  0x00000118       0xa8 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
- .debug_ranges  0x000001c0       0x30 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
- .debug_ranges  0x000001f0       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
- .debug_ranges  0x00000210       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
+ .debug_ranges  0x00000118       0x20 APP/src/dynamixel.o
+ .debug_ranges  0x00000138       0x78 APP/src/motion.o
+ .debug_ranges  0x000001b0       0xc0 APP/src/pose.o
+ .debug_ranges  0x00000270       0xa8 stm32f10x_lib/libstm32.a(stm32f10x_flash.o)
+ .debug_ranges  0x00000318       0x30 stm32f10x_lib/libstm32.a(stm32f10x_rcc.o)
+ .debug_ranges  0x00000348       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-__call_atexit.o)
+ .debug_ranges  0x00000368       0x20 c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crtn.o
 
 Cross Reference Table
 
@@ -1583,6 +1779,12 @@ ADC_StructInit                                    stm32f10x_lib/libstm32.a(stm32
                                                   CM530_HW/src/system_init.o
 ADC_TempSensorVrefintCmd                          stm32f10x_lib/libstm32.a(stm32f10x_adc.o)
 APG                                               APP/src/Big_main.o
+AX12Servos                                        APP/src/globalData.o
+                                                  APP/src/motion.o
+AX12_ENABLED                                      APP/src/motion.o
+AX12_IDS                                          APP/src/globalData.o
+                                                  APP/src/pose.o
+                                                  APP/src/motion.o
 AdjustLegPositions                                APP/src/Big_main.o
 AdjustLegPositionsToBodyHeight                    APP/src/Big_main.o
 AllDown                                           APP/src/Big_main.o
@@ -1655,6 +1857,7 @@ Commander_ReadMsgs                                APP/src/Big_main.o
 Commander_begin                                   APP/src/Big_main.o
 CommitServoDriver                                 APP/src/Big_main.o
 CoxaAngle1                                        APP/src/Big_main.o
+CurrentMotion                                     APP/src/motion.o
 CycleTime                                         APP/src/Big_main.o
 DMA1_Channel1_IRQHandler                          APP/src/stm32f10x_it.o
 DMA1_Channel2_IRQHandler                          APP/src/stm32f10x_it.o
@@ -1786,6 +1989,8 @@ ISR_Delay_Base                                    CM530_HW/src/system_func.o
                                                   APP/src/stm32f10x_it.o
 IdleTime                                          APP/src/Big_main.o
 Index                                             APP/src/Big_main.o
+InitialPlayTime                                   APP/src/pose.o
+InitialValues                                     APP/src/pose.o
 LegIK                                             APP/src/Big_main.o
 LegIndex                                          APP/src/Big_main.o
 LegPosX                                           APP/src/Big_main.o
@@ -1862,6 +2067,9 @@ PrintErrorCode                                    APP/src/serial.o
                                                   APP/src/BioloidEx.o
                                                   APP/src/Big_main.o
 PrintString                                       APP/src/serial.o
+                                                  APP/src/walk.o
+                                                  APP/src/pose.o
+                                                  APP/src/motion.o
                                                   APP/src/main.o
 Prints32d                                         APP/src/serial.o
                                                   APP/src/main.o
@@ -1929,7 +2137,6 @@ RTC_IRQHandler                                    APP/src/stm32f10x_it.o
                                                   stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
 ReadAnalog                                        CM530_HW/src/adc.o
                                                   APP/src/Big_main.o
-                                                  APP/src/main.o
 ReadButton                                        CM530_HW/src/button.o
                                                   APP/src/main.o
 ReadIR                                            CM530_HW/src/adc.o
@@ -1946,6 +2153,8 @@ RxD_ZIG_Interrupt                                 CM530_HW/src/usart.o
                                                   APP/src/stm32f10x_it.o
 SDIO_IRQHandler                                   APP/src/stm32f10x_it.o
                                                   stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
+SERVO_MAX_VALUES                                  APP/src/motion.o
+SERVO_MIN_VALUES                                  APP/src/motion.o
 SPI1_IRQHandler                                   APP/src/stm32f10x_it.o
                                                   stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
 SPI2_IRQHandler                                   APP/src/stm32f10x_it.o
@@ -1976,6 +2185,7 @@ SysTick_Configuration                             CM530_HW/src/system_init.o
 SysTick_CounterCmd                                stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
                                                   CM530_HW/src/system_init.o
 SysTick_GetCounter                                stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
+                                                  CM530_HW/src/system_func.o
 SysTick_GetFlagStatus                             stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
 SysTick_ITConfig                                  stm32f10x_lib/libstm32.a(stm32f10x_systick.o)
                                                   CM530_HW/src/system_init.o
@@ -2093,6 +2303,7 @@ __DSB                                             stm32f10x_lib/libstm32.a(corte
 __GetBASEPRI                                      stm32f10x_lib/libstm32.a(cortexm3_macro.o)
                                                   stm32f10x_lib/libstm32.a(stm32f10x_nvic.o)
 __ISB                                             stm32f10x_lib/libstm32.a(cortexm3_macro.o)
+__ISR_SYSTICK                                     CM530_HW/src/system_func.o
 __MRS_CONTROL                                     stm32f10x_lib/libstm32.a(cortexm3_macro.o)
 __MRS_MSP                                         stm32f10x_lib/libstm32.a(cortexm3_macro.o)
 __MRS_PSP                                         stm32f10x_lib/libstm32.a(cortexm3_macro.o)
@@ -2138,7 +2349,8 @@ __stack                                           c:/winarm/bin/../lib/gcc/arm-e
 _ebss                                             stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
 _edata                                            stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
 _estack                                           stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
-_exit                                             c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+_exit                                             APP/src/main.o
+                                                  c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
 _fini                                             c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/crti.o
                                                   c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-init.o)
 _global_impure_ptr                                c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-impure.o)
@@ -2153,10 +2365,30 @@ _sbss                                             stm32f10x_lib/libstm32.a(stm32
 _sdata                                            stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
 _sidata                                           stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
 _start                                            c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
+adc_accelx                                        APP/src/globalData.o
+adc_accelx_center                                 APP/src/globalData.o
+adc_accely                                        APP/src/globalData.o
+adc_accely_center                                 APP/src/globalData.o
+adc_battery_val                                   APP/src/globalData.o
+adc_dms_distance                                  APP/src/globalData.o
+                                                  APP/src/walk.o
+adc_gyrox_center                                  APP/src/globalData.o
+adc_gyroy_center                                  APP/src/globalData.o
+adc_sensor_enable                                 APP/src/globalData.o
+adc_sensor_val                                    APP/src/globalData.o
+adc_ultrasonic_distance                           APP/src/globalData.o
+applyOffsetsBounds                                APP/src/pose.o
+apply_new_pose_and_offsets                        APP/src/pose.o
 atexit                                            c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-atexit.o)
                                                   c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
 bExtraCycle                                       APP/src/Big_main.o
+bioloid_command                                   APP/src/globalData.o
+                                                  APP/src/walk.o
+                                                  APP/src/motion.o
+block_time                                        APP/src/motion.o
 buttons_                                          APP/src/zigbee.o
+buzzerFinished                                    APP/src/globalData.o
+buzzerSequence                                    APP/src/globalData.o
 cCoxaAngle1                                       APP/src/Big_main.o
 cCoxaInv                                          APP/src/Big_main.o
 cCoxaLength                                       APP/src/Big_main.o
@@ -2175,8 +2407,20 @@ cTibiaInv                                         APP/src/Big_main.o
 cTibiaLength                                      APP/src/Big_main.o
 cTibiaMax1                                        APP/src/Big_main.o
 cTibiaMin1                                        APP/src/Big_main.o
+calculatePoseServoSpeeds                          APP/src/pose.o
+calculate_speed                                   APP/src/pose.o
+checkMotionFinished                               APP/src/motion.o
+checkMotionStepFinished                           APP/src/motion.o
 checksum                                          APP/src/Big_main.o
 cos4                                              APP/src/Big_main.o
+current_motion_page                               APP/src/globalData.o
+                                                  APP/src/walk.o
+                                                  APP/src/motion.o
+current_motion_start_time                         APP/src/motion.o
+current_pose                                      APP/src/globalData.o
+                                                  APP/src/pose.o
+current_step                                      APP/src/globalData.o
+                                                  APP/src/motion.o
 dxl_capture                                       APP/src/dynamixel.o
 dxl_clear_statpkt                                 APP/src/dynamixel.o
 dxl_get_highbyte                                  APP/src/dynamixel.o
@@ -2212,14 +2456,20 @@ dxl_initialize                                    APP/src/dynamixel.o
                                                   APP/src/main.o
 dxl_makeword                                      APP/src/dynamixel.o
 dxl_ping                                          APP/src/dynamixel.o
+                                                  APP/src/pose.o
+                                                  APP/src/motion.o
 dxl_read_byte                                     APP/src/dynamixel.o
+                                                  APP/src/pose.o
                                                   APP/src/Big_main.o
                                                   APP/src/main.o
 dxl_read_word                                     APP/src/dynamixel.o
+                                                  APP/src/pose.o
                                                   APP/src/BioloidEx.o
                                                   APP/src/Big_main.o
                                                   APP/src/main.o
 dxl_rx_packet                                     APP/src/dynamixel.o
+dxl_set_goal_speed                                APP/src/dynamixel.o
+                                                  APP/src/pose.o
 dxl_set_txpacket_id                               APP/src/dynamixel.o
                                                   APP/src/BioloidEx.o
                                                   APP/src/Big_main.o
@@ -2238,14 +2488,27 @@ dxl_txrx_packet                                   APP/src/dynamixel.o
                                                   APP/src/BioloidEx.o
                                                   APP/src/Big_main.o
 dxl_write_byte                                    APP/src/dynamixel.o
+                                                  APP/src/pose.o
+                                                  APP/src/motion.o
                                                   APP/src/Big_main.o
 dxl_write_word                                    APP/src/dynamixel.o
+                                                  APP/src/walk.o
+                                                  APP/src/motion.o
+executeMotion                                     APP/src/motion.o
+                                                  APP/src/walk.o
+                                                  APP/src/main.o
+executeMotionExitPage                             APP/src/motion.o
+executeMotionSequence                             APP/src/motion.o
+executeMotionStep                                 APP/src/motion.o
 exit                                              c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-exit.o)
+                                                  APP/src/motion.o
                                                   c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
+exit_flag                                         APP/src/motion.o
 ext                                               APP/src/Big_main.o
 extra                                             APP/src/zigbee.o
 fRobotUpsideDownPrev                              APP/src/Big_main.o
 fWalking                                          APP/src/Big_main.o
+flag_receive_ready                                APP/src/globalData.o
 frameLength                                       APP/src/BioloidEx.o
 g_InControlState                                  APP/src/Big_main.o
 g_abHexIntXZ                                      APP/src/Big_main.o
@@ -2279,9 +2542,14 @@ gbRcvPacketNum                                    APP/src/zigbee.o
 gbRxGetLength                                     APP/src/dynamixel.o
 gbRxPacketLength                                  APP/src/dynamixel.o
 gbStatusPacket                                    APP/src/dynamixel.o
+getCurrentGoalPose                                APP/src/pose.o
+getCurrentMotionStartTime                         APP/src/motion.o
 getMillis                                         CM530_HW/src/system_func.o
+                                                  APP/src/motion.o
                                                   APP/src/BioloidEx.o
                                                   APP/src/Big_main.o
+get_offset                                        APP/src/pose.o
+get_offset_adjustment_time                        APP/src/pose.o
 giBusUsing                                        APP/src/dynamixel.o
 glBuzzerCounter                                   CM530_HW/src/system_func.o
                                                   CM530_HW/src/mic.o
@@ -2291,6 +2559,11 @@ glDxlTimeoutCounter                               CM530_HW/src/system_func.o
                                                   CM530_HW/src/usart.o
 glPcuTimeoutCounter                               CM530_HW/src/system_func.o
                                                   CM530_HW/src/usart.o
+goal_pose                                         APP/src/pose.o
+goal_pose_adjusted                                APP/src/pose.o
+goal_pose_shadow                                  APP/src/pose.o
+goal_speed                                        APP/src/pose.o
+goal_time                                         APP/src/pose.o
 gwRcvData                                         APP/src/zigbee.o
 hardware_init_hook                                c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
 id_                                               APP/src/BioloidEx.o
@@ -2299,6 +2572,10 @@ interpolating                                     APP/src/BioloidEx.o
 isqrt32                                           APP/src/Big_main.o
 lTimerEnd                                         APP/src/Big_main.o
 lTimerStart                                       APP/src/Big_main.o
+last_bioloid_command                              APP/src/globalData.o
+                                                  APP/src/walk.o
+                                                  APP/src/motion.o
+last_joint_flex                                   APP/src/motion.o
 leftH                                             APP/src/Big_main.o
 leftV                                             APP/src/Big_main.o
 left_H                                            APP/src/zigbee.o
@@ -2306,19 +2583,42 @@ left_V                                            APP/src/zigbee.o
 mDelay                                            CM530_HW/src/system_func.o
                                                   CM530_HW/src/usart.o
                                                   CM530_HW/src/system_init.o
+                                                  APP/src/motion.o
                                                   APP/src/BioloidEx.o
                                                   APP/src/Big_main.o
                                                   APP/src/main.o
 main                                              APP/src/main.o
                                                   stm32f10x_lib/libstm32.a(stm32f10x_vector.o)
                                                   c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
+major_alarm                                       APP/src/globalData.o
 memcpy                                            c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memcpy.o)
                                                   APP/src/Big_main.o
 memset                                            c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib\libc.a(lib_a-memset.o)
                                                   c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
+micros                                            CM530_HW/src/system_func.o
+                                                  APP/src/pose.o
+motionPageInit                                    APP/src/motion.o
+motion_pointer                                    APP/src/motion.o
+motion_pointer_pages                              APP/src/motion.o
+motion_servos_moving                              APP/src/globalData.o
+motion_state                                      APP/src/motion.o
+motion_step_servos_moving                         APP/src/globalData.o
+moveToDefaultPose                                 APP/src/pose.o
+moveToGoalPose                                    APP/src/pose.o
+                                                  APP/src/motion.o
 msMillis                                          CM530_HW/src/system_func.o
+msSystickCounter                                  CM530_HW/src/system_func.o
+new_command                                       APP/src/globalData.o
+                                                  APP/src/motion.o
+next_motion_page                                  APP/src/globalData.o
+                                                  APP/src/motion.o
 nextframe_                                        APP/src/BioloidEx.o
 nextpose_                                         APP/src/BioloidEx.o
+offset_timings                                    APP/src/pose.o
+offsets                                           APP/src/pose.o
+offsets_shadow                                    APP/src/pose.o
+offsets_speeds                                    APP/src/pose.o
+pause_start_time                                  APP/src/motion.o
 pcu_clear_queue                                   CM530_HW/src/usart.o
 pcu_get_qstate                                    CM530_HW/src/usart.o
                                                   APP/src/serial.o
@@ -2339,10 +2639,20 @@ pcu_put_byte                                      CM530_HW/src/usart.o
                                                   APP/src/serial.o
 pcu_put_queue                                     CM530_HW/src/usart.o
 pcu_terminate                                     APP/src/serial.o
+pid_input                                         APP/src/globalData.o
+pid_output                                        APP/src/globalData.o
+pid_setpoint                                      APP/src/globalData.o
+pid_unscaled_output                               APP/src/globalData.o
 poseSize                                          APP/src/BioloidEx.o
                                                   APP/src/Big_main.o
 pose_                                             APP/src/BioloidEx.o
+pose_mode                                         APP/src/pose.o
+printCurrentMotionPage                            APP/src/motion.o
+readCurrentPose                                   APP/src/pose.o
+                                                  APP/src/motion.o
 readSensors                                       APP/src/Big_main.o
+repeat_counter                                    APP/src/motion.o
+resetJointOffsets                                 APP/src/pose.o
 rightH                                            APP/src/Big_main.o
 rightV                                            APP/src/Big_main.o
 right_H                                           APP/src/zigbee.o
@@ -2350,6 +2660,11 @@ right_V                                           APP/src/zigbee.o
 runningSeq                                        APP/src/BioloidEx.o
 s_bLVBeepCnt                                      APP/src/Big_main.o
 sequence                                          APP/src/BioloidEx.o
+setJointOffsetById                                APP/src/pose.o
+setJointOffsetSpeedById                           APP/src/pose.o
+setMotionPageJointFlexibility                     APP/src/motion.o
+setNewMotionCommand                               APP/src/motion.o
+set_pose_mode                                     APP/src/pose.o
 setupPhoenix                                      APP/src/Big_main.o
 sin4                                              APP/src/Big_main.o
 software_init_hook                                c:/winarm/bin/../lib/gcc/arm-eabi/4.3.0/../../../../arm-eabi/lib/crt0.o
@@ -2367,12 +2682,26 @@ std_gets                                          APP/src/serial.o
 std_putchar                                       APP/src/serial.o
                                                   APP/src/main.o
 std_puts                                          APP/src/serial.o
+step_finish_time                                  APP/src/motion.o
+step_start_time                                   APP/src/motion.o
 transitions                                       APP/src/BioloidEx.o
 uDelay                                            CM530_HW/src/system_func.o
                                                   CM530_HW/src/mic.o
                                                   CM530_HW/src/adc.o
                                                   APP/src/dynamixel.o
+unpackMotion2                                     APP/src/motion.o
 vals                                              APP/src/Big_main.o
+waitForPoseFinish                                 APP/src/pose.o
+walk_avoidObstacle                                APP/src/walk.o
+walk_getWalkState                                 APP/src/walk.o
+                                                  APP/src/pose.o
+                                                  APP/src/motion.o
+walk_init                                         APP/src/walk.o
+                                                  APP/src/motion.o
+walk_setWalkState                                 APP/src/walk.o
+                                                  APP/src/motion.o
+walk_shift                                        APP/src/walk.o
+                                                  APP/src/motion.o
 zgb_hal_close                                     CM530_HW/src/usart.o
                                                   APP/src/zigbee.o
 zgb_hal_open                                      CM530_HW/src/usart.o

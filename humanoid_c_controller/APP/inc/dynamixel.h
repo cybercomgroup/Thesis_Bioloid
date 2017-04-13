@@ -14,6 +14,7 @@
 #include "stm32f10x_type.h"
 #include "usart.h"
 #include "dynamixel_address_tables.h"
+#include "global.h"
 
 //#define DEBUG_DYNAMIXEL
 
@@ -189,7 +190,7 @@ u16 dxl_get_result(void);
  * High-level function to send a ping packet to a device.
  * @param id The ID of the device to ping.
  */
-void dxl_ping(u8 id);
+int dxl_ping(u8 id);
 /**
  * High-level function to read a single byte from a device.
  * @param id The ID of the target device.
@@ -205,7 +206,7 @@ u8 dxl_read_byte(u8 id, u8 address);
  * @param value The value to be written to that address.
  * @see dxl_write_word()
  */
-void dxl_write_byte(u8 id, u8 address, u8 value);
+int dxl_write_byte(u8 id, u8 address, u8 value);
 /**
  * High-level function to read a 16-bit word from a device.
  * @param id The ID of the target device.
@@ -221,7 +222,7 @@ u16 dxl_read_word(u8 id, u8 address);
  * @param value The value to be written to that address.
  * @see dxl_write_byte()
  */
-void dxl_write_word(u8 id, u8 address, u16 value);
+int dxl_write_word(u8 id, u8 address, u16 value);
 
 /**
  * High-level function to begin an image capture with the HaViMo2 camera module.

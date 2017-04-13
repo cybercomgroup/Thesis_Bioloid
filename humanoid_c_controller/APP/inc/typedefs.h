@@ -8,7 +8,7 @@
 #ifndef APP_INC_TYPEDEFS_H_
 #define APP_INC_TYPEDEFS_H_
 
-#include "stdint.h"
+#include <stdint.h>
 #include "stm32f10x_type.h"
 
 // Standard types
@@ -19,8 +19,6 @@ typedef int16_t		int16;
 typedef uint32_t	uint32;
 typedef int32_t		int32;
 
-typedef uint16		word;
-typedef uint8		byte;
 
 // Boolean types
 #define FALSE ((bool)0)

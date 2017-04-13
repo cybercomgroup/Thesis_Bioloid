@@ -28,6 +28,7 @@
   volatile u8 gbCounterCount;
   volatile u32 Millis;
   volatile u32 msMillis;
+  volatile u32 msSystickCounter = 0;
 
 
 
@@ -189,7 +190,28 @@ u32 getMillis(){
 	return (Millis/100) ;
 }
 //}
+
+u32 micros() {
+	u32 ms = msSystickCounter;
+	u32 us = SysTick_GetCounter(); // is counting DOWN from 9000 = 1 ms !
+	// if systick interrupt between readings, return value will be up to 1000 us wrong.
+	// so read ms again to check that. (interrupt again is impossible as next interrupt will be in about 1000 us)
+	u32 ms2 = msSystickCounter;
+	if (ms != ms2) {
+		return ms2 * 1000;
+	} else {
+		return ms * 1000 + (9000 - us)/9; // TODO will overflow at 2^32 us ~= 71 minutes! [could separate us and ms in a struct]
+	}
+}
 //##############################################################################
+
+void __ISR_SYSTICK(void)
+{
+	// tick at 1 ms.
+	msSystickCounter++;
+}
+
+
 void ISR_Delay_Base(void) {
 
 	Millis++;

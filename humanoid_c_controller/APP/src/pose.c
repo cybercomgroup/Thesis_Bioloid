@@ -26,7 +26,8 @@
 #include "pose.h"
 #include "dynamixel.h"
 #include "time.h"
-#include "walk.h"
+
+//#include "walk.h"
 
 
 // initial robot position (MotionPage 224 - Balance)
@@ -217,14 +218,8 @@ int moveToGoalPose(uint16 time, const uint16 goal[], uint8 wait_flag)
 		//printf("setting goal pose done\n");
 
 		// write out the goal positions via sync write
-		commStatus = dxl_set_goal_speed(NUM_AX12_SERVOS, AX12_IDS, goal_pose_adjusted, goal_speed);
+		dxl_set_goal_speed(NUM_AX12_SERVOS, AX12_IDS, goal_pose_adjusted, goal_speed);
 		// check for communication error or timeout
-		if(commStatus != DXL_RXSUCCESS) {
-			// there has been an error, print and break
-			//printf("\nmoveToGoalPose - ");
-			//dxl_printCommStatus(commStatus);
-			return -1;
-		}
 
 		//printf("set speeds sent\n");
 
@@ -243,8 +238,8 @@ int moveToGoalPose(uint16 time, const uint16 goal[], uint8 wait_flag)
 				errorStatus = dxl_ping(AX12_IDS[i]);
 				if(errorStatus != 0) {
 					// there has been an error, disable torque
-					commStatus = dxl_write_byte(BROADCAST_ID, DXL_TORQUE_ENABLE, 0);
-					printf("\nmoveToGoalPose Alarm ID%i - Error Code %i\n", AX12_IDS[i], errorStatus);
+					dxl_write_byte(BROADCAST_ID, DXL_TORQUE_ENABLE, 0);
+					PrintString("\nmoveToGoalPose Alarm ID%i - Error Code %i\n", AX12_IDS[i], errorStatus);
 					return 1;
 				}
 			}
@@ -287,7 +282,7 @@ void setJointOffsetById(u8 id, s16 offset)
 void setJointOffsetSpeedById(u8 id, s16 offset, u16 speed)
 {
 	if (id == 0 || id > NUM_AX12_SERVOS) {
-		printf("setJointOffsetById: invalid servo id, did you perhaps send the index?\n");
+		PrintString("setJointOffsetById: invalid servo id, did you perhaps send the index?\n");
 	}
 	if (offset_timings[id-1] != 0)
 		return;
@@ -332,6 +327,7 @@ void apply_new_pose_and_offsets()
 		bool offset_adjustment_has_just_completed = 0;
 
 		// check if offset adjustment is completed.
+
 		if (offset_timings[i] != 0) {
 			if (now < offset_timings[i]) {
 				continue; // dont do anything with this servo as it is currently adjusting offset.
@@ -390,13 +386,8 @@ void apply_new_pose_and_offsets()
 	if (num_changed > 0) {
 		//printf("apply_new_pose_and_offsets: applying new positions to %d servos\n", num_changed);
 		/* Apply only the changed servo settings. */
-		int commStatus = dxl_set_goal_speed(num_changed, ids_changed, goal_pose_changed, goal_speeds_changed);
-		// check for communication error or timeout
-		if(commStatus != DXL_RXSUCCESS) {
-			// there has been an error, print and break
-			//printf("ERROR in apply_new_pose_and_offsets - ");
-			//dxl_printCommStatus(commStatus);
-		}
+		dxl_set_goal_speed(num_changed, ids_changed, goal_pose_changed, goal_speeds_changed);
+
 	}
 }
 
