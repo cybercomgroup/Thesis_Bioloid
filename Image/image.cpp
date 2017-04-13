@@ -51,7 +51,7 @@ int capture(int width, int height, bool rot)
         break;
     }
     imshow("Live",frame);
-    imshow("Hsv",hsv_s);
+//    imshow("Hsv",hsv_s);
     //imshow("Contours",contours);
 
 
