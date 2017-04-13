@@ -941,11 +941,23 @@ int executeMotion(int StartPage)
 	
 	// now we can process the joint flexibility values
 	for (uint8 i=0; i<NUM_AX12_SERVOS; i++) {
-		// translation is bit shift operation (see AX-12 manual)
+		//// translation is bit shift operation (see AX-12 manual)
 		complianceSlope = 1<<CurrentMotion.JointFlex[i]; 
-		dxl_write_byte(AX12_IDS[i], DXL_CCW_COMPLIANCE_SLOPE, complianceSlope);
-		dxl_write_byte(AX12_IDS[i], DXL_CW_COMPLIANCE_SLOPE, complianceSlope);
-
+		commStatus = dxl_write_byte(AX12_IDS[i], DXL_CCW_COMPLIANCE_SLOPE, complianceSlope);
+		/* This allways enter the error
+		if(commStatus != DXL_RXSUCCESS) {
+			// there has been an error, print and break
+			PrintString("executeMotion Joint Flex first  %i - ", AX12_IDS[i]);
+			//dxl_printCommStatus(commStatus);
+			return 0;
+		}
+		commStatus = dxl_write_byte(AX12_IDS[i], DXL_CW_COMPLIANCE_SLOPE, complianceSlope);
+		if(commStatus != DXL_RXSUCCESS) {
+			// there has been an error, print and break
+			PrintString("executeMotion Joint Flex  second %i - ", AX12_IDS[i]);
+			//dxl_printCommStatus(commStatus);
+			return 0;
+		}*/
 	}
 	
 	total_time = getMillis();

@@ -62,7 +62,7 @@ int std_getchar(void);
  * @return If successful, the input pointer.  If error, a null pointer.
  */
 //char* std_gets(char*);
-char* std_gets();
+void std_gets(char*,int);
 
 /**
  * Print message for any and all errors encountered during dxl_txrx_packet().

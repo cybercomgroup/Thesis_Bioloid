@@ -218,9 +218,17 @@ int moveToGoalPose(uint16 time, const uint16 goal[], uint8 wait_flag)
 		//printf("setting goal pose done\n");
 
 		// write out the goal positions via sync write
-		dxl_set_goal_speed(NUM_AX12_SERVOS, AX12_IDS, goal_pose_adjusted, goal_speed);
+		commStatus = dxl_set_goal_speed(NUM_AX12_SERVOS, AX12_IDS, goal_pose_adjusted, goal_speed);
 		// check for communication error or timeout
-
+		//enter this aswell
+		/*
+		if(commStatus != DXL_RXSUCCESS) {
+				// there has been an error, print and break
+				PrintString("\nmoveToGoalPose - ");
+				//dxl_printCommStatus(commStatus);
+				return -1;
+			}
+*/
 		//printf("set speeds sent\n");
 
 		// only wait for pose to finish if requested to do so

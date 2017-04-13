@@ -52,7 +52,7 @@ int main(void) {
 		PrintString("e-1 [Volts]\n");
 */
 		Battery_Monitor_Alarm();
-
+/*
 		    PrintString("PCU:");
 		#ifdef USING_PC_UART
 		    Printu32d(Baudrate_PCU);
@@ -76,13 +76,15 @@ int main(void) {
 		#else
 		    PrintString("Not in use\n");
 		#endif
-
+*/
 //		Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
 
-
+		//std_gets(ReceivedCommand, 128);
+		//PrintString(ReceivedCommand);
+		//std_putchar(ReceivedCommand[1]);
 		ReceivedData = std_getchar();;
 
-		//if(strcmp(ReceivedCommand, "led on") == 0){
+
 		if(ReceivedData == 'l'){
 			std_putchar(ReceivedData);
 			PrintString(" * \t* Turn on LEDs!\r\n");
@@ -172,6 +174,13 @@ int main(void) {
 			executeMotion(26);
 			Buzzed(200,150);
 			Buzzed(150,150);
+		}
+		else if(ReceivedData == 't'){
+			executeMotion(26); // stand up
+			mDelay(2000);
+			executeMotion(7);
+			mDelay(2000);
+			executeMotion(25); // sit down again
 		}
 		else if(ReceivedData == 'w'){
 			executeMotion(25);
