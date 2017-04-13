@@ -7,13 +7,14 @@ using namespace std;
 double countRBG(Mat img, Vec3b rgb, double diff);
 
 
-int capture(int width, int height)
+int capture(int width, int height, bool rot)
 {
   VideoCapture cap(0);
   if (!cap.isOpened()) {
     cerr << "ERROR: Unable to open the camera" << endl;
     return 0;
   }
+
 
   cap.set(CV_CAP_PROP_FRAME_WIDTH, width);
   cap.set(CV_CAP_PROP_FRAME_HEIGHT, height);
@@ -22,6 +23,11 @@ int capture(int width, int height)
   cout << "Start grabbing, press a key on Live window to terminate" << endl;
   while(1) {
     cap >> frame;
+
+    if(rot){
+      flip(frame, frame, -1);
+    }
+
 
     cvtColor(frame, hsv, COLOR_BGR2HSV);
 
