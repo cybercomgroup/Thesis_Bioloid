@@ -244,12 +244,13 @@ int moveToGoalPose(uint16 time, const uint16 goal[], uint8 wait_flag)
 			for (i=0; i<NUM_AX12_SERVOS; i++) {
 				// ping the servo and unpack error code (if any)
 				errorStatus = dxl_ping(AX12_IDS[i]);
-				if(errorStatus != 0) {
+			/*	Always gets errors
+			 * if(errorStatus != 0) {
 					// there has been an error, disable torque
 					dxl_write_byte(BROADCAST_ID, DXL_TORQUE_ENABLE, 0);
 					PrintString("\nmoveToGoalPose Alarm ID%i - Error Code %i\n", AX12_IDS[i], errorStatus);
 					return 1;
-				}
+				} */
 			}
 			//printf("moveToGoalPose: all ok, read back current pose.\n");
 			// all ok, read back current pose

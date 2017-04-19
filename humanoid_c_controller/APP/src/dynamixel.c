@@ -465,4 +465,34 @@ void dxl_set_goal_speed( int NUM_ACTUATOR, const uint8 ids[], uint16 goal[], uin
 	}
 
 }
+//ERROR print
+void dxl_printCommStatus(int CommStatus)
+{
+	switch(CommStatus)
+	{
+	case DXL_TXFAIL:
+		PrintString("XFAIL: Failed transmitting instruction packet!\n");
+		break;
+
+	case DXL_TXERROR:
+		PrintString("TXERROR: Incorrect instruction packet!\n");
+		break;
+
+	case DXL_RXFAIL:
+		PrintString("RXFAIL: Failed to get status packet from device!\n");
+		break;
+
+	case DXL_RXWAITING:
+		PrintString("RXWAITING: Waiting to receive status packet!\n");
+		break;
+
+	case DXL_RXTIMEOUT:
+		PrintString("RXTIMEOUT: Status packet not received!\n");
+		break;
+
+	default:
+		PrintString("Unknown error code! +  %i\n", CommStatus);
+		break;
+	}
+}
 
