@@ -56,6 +56,7 @@ void walk_init()
 	current_motion_page = COMMAND_WALK_READY_MP;
 	executeMotion(current_motion_page);
 
+
 	// experimental - increase punch for walking
 	dxl_write_word(BROADCAST_ID, DXL_PUNCH_L, 100);
 }

@@ -36,6 +36,8 @@ void SysInit(){
 
 	// USART Configuration
 	USART_Configuration();
+
+	gyro_init();
 }
 
 //##############################################################################

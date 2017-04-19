@@ -18,13 +18,19 @@
 #include "button.h"
 #include "mic.h"
 #include "motion_f.h"
+#include "pose.h"
+#include "walk.h"
 //#include <stdlib.h>
+
+void inputMotion(byte ReceivedData);
 
 	extern volatile bool new_command;             // current command
 	extern volatile uint8 bioloid_command;                // current command
 	extern volatile uint8 last_bioloid_command;   // last command
 	extern volatile uint8 current_motion_page;   // last command
 	extern volatile uint8 current_step;
+
+	int16 last_pose[NUM_AX12_SERVOS];
 
 
 int main(void) {
@@ -40,10 +46,13 @@ int main(void) {
 	PrintString("Starting Program by turning on POWER LED!\r\n");
 	SetLED(POWER, 1);
 	executeMotion(MOTION_STAND);
+
 	while(1){
 
 		Battery_Monitor_Alarm();
 
+		update_servo_positions();
+		gyro_update();
 
 
 
@@ -52,9 +61,10 @@ int main(void) {
 			inputMotion(ReceivedData);
 
 		oldReceivedData = ReceivedData;
+
 		executeMotionSequence();
 
-		apply_new_pose_and_offsets();
+		//apply_new_pose_and_offsets();
 		//mDelay(100);
 	}
 
@@ -151,7 +161,8 @@ void inputMotion(byte ReceivedData){
 					Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
 				}
 				else if(ReceivedData == 's'){
-					startMotionIfIdle(MOTION_STAND);
+					bioloid_command = COMMAND_STOP;
+
 				}
 				else if(ReceivedData == 't'){
 					executeMotion(26); // stand up
@@ -161,14 +172,14 @@ void inputMotion(byte ReceivedData){
 					executeMotion(25); // sit down again
 				}
 				else if(ReceivedData == 'w'){
-					startMotionIfIdle(MOTION_SIT);
+					startMotionIfIdle(MOTION_START_WALK);
 				}
 				else if(ReceivedData == 'a'){
-					bioloid_command = COMMAND_WALK_FORWARD;
+					startMotionIfIdle(MOTION_STAND);
 
 				}
 				else if(ReceivedData == 'g'){
-					bioloid_command = COMMAND_STOP;
+					startMotionIfIdle(MOTION_SIT);
 				}
 				else if(ReceivedData == 'i'){
 					PrintString("\n(IR_L, IR_R, DMS):\t(");
@@ -207,6 +218,30 @@ void inputMotion(byte ReceivedData){
 					//SetLED(MANAGE, 0);
 					//mDelay(2000);
 				}
+}
+
+int _servo_update_iteration;
+// Update current servo positions.
+// To save time:
+// 		Check only servos that are expected to have moved.
+void update_servo_positions() {
+	if (!_servo_update_iteration)
+	{
+		// update half of servos
+		for(int i=0; i<NUM_AX12_SERVOS/2; i++) {
+			last_pose[i] = current_pose[i];
+			current_pose[i] = dxl_read_word( i+1, DXL_PRESENT_POSITION_L );
+		}
+	}
+	else
+	{
+		// update otehr half of servos
+		for(int i=NUM_AX12_SERVOS/2; i<NUM_AX12_SERVOS; i++) {
+			last_pose[i] = current_pose[i];
+			current_pose[i] = dxl_read_word( i+1, DXL_PRESENT_POSITION_L );
+		}
+	}
+	_servo_update_iteration = !_servo_update_iteration;
 }
 
 void _exit(void) {

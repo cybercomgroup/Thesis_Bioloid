@@ -404,13 +404,14 @@ uint8 executeMotionSequence()
 		for (uint8 i=0; i<NUM_AX12_SERVOS; i++) {
 			// ping the servo and unpack error code (if any)
 			error_status = dxl_ping(AX12_IDS[i]);
+			/*
 			if(error_status != 0) {
 				// there has been an error, disable torque
 				comm_status = dxl_write_byte(BROADCAST_ID, DXL_TORQUE_ENABLE, 0);
 				PrintString("\nexecuteMotionSequence Alarm ID%i - Error Code %i\n", AX12_IDS[i], error_status);
 				motion_state = MOTION_ALARM;
 				return motion_state;
-			}
+			}*/
 		}	
 		// no alarm has occurred, read back current pose (takes 6ms)
 		readCurrentPose();
@@ -867,7 +868,8 @@ int setMotionPageJointFlexibility()
 			// translation is bit shift operation (see AX-12 manual)
 			complianceSlope = 1<<CurrentMotion.JointFlex[i]; 
 			commStatus = dxl_write_byte(AX12_IDS[i], DXL_CCW_COMPLIANCE_SLOPE, complianceSlope);
-			if(commStatus != DXL_RXSUCCESS) {
+			dxl_write_byte(AX12_IDS[i], DXL_CW_COMPLIANCE_SLOPE, complianceSlope);
+			/*if(commStatus != DXL_RXSUCCESS) {
 				// there has been an error, print and break
 				PrintString("\nsetMotionPageJointFlexibility CCW ID%i - ", AX12_IDS[i]);
 				return -1;
@@ -878,8 +880,9 @@ int setMotionPageJointFlexibility()
 				PrintString("\nsetMotionPageJointFlexibility CW ID%i - ", AX12_IDS[i]);
 			//	dxl_printCommStatus(commStatus);
 				return -1;
-			}
+			} */
 		}
+
 		// update values for next iteration
 		last_joint_flex[i] = CurrentMotion.JointFlex[i];
 	}
@@ -944,6 +947,7 @@ int executeMotion(int StartPage)
 		//// translation is bit shift operation (see AX-12 manual)
 		complianceSlope = 1<<CurrentMotion.JointFlex[i]; 
 		commStatus = dxl_write_byte(AX12_IDS[i], DXL_CCW_COMPLIANCE_SLOPE, complianceSlope);
+		commStatus = dxl_write_byte(AX12_IDS[i], DXL_CW_COMPLIANCE_SLOPE, complianceSlope);
 		/* This allways enter the error
 		 * Dont know why will leave it out for now
 		if(commStatus != DXL_RXSUCCESS) {
@@ -1051,14 +1055,10 @@ void printCurrentMotionPage() {
 // Set the new current motion if the robot is not currently executing a motion
 // Return: 1 if a new motion was set, 0 if a motion already was active.
 int startMotionIfIdle(int motionPageId) {
-//	printf("startMotionIfIdle %d ?" , motionPageId);
-	PrintString("Motion idle start\n");
 	if (checkMotionFinished()) {
-		PrintString("Motion is idle\n");
 		setNewMotionCommand(motionPageId);
 		return 1;
 	}
-//	printf("not idle!\n");
 	return 0;
 }
 

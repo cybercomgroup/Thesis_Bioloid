@@ -39,6 +39,7 @@
 #define MOTION_DEFENCE		23
 #define MOTION_SIT			25
 #define MOTION_STAND		26
+#define MOTION_START_WALK	32
 #define MOTION_GRAB			240
 
 

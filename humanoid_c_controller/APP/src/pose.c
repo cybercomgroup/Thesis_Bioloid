@@ -323,6 +323,12 @@ uint16 * getCurrentGoalPose(){
 void apply_new_pose_and_offsets()
 {
 
+	if (pose_mode != POSE_MODE_SYNC) {
+		PrintString("Tried to apply new pose and offsets while Not in SYNC pose mode!\n");
+		// see set_pose_mode
+		return;
+	}
+
 	int num_changed = 0;
 	u8 ids_changed[NUM_AX12_SERVOS];
 	u16 goal_pose_changed[NUM_AX12_SERVOS];
