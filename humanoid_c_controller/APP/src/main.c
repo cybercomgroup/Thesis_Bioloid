@@ -93,6 +93,8 @@ void inputMotion(byte ReceivedData){
 					SetLED(PROGRAM, 0);
 				}
 				//else if(strcmp(ReceivedCommand, "motors report")){
+		/*
+		 * Do not know what this does
 				else if(ReceivedData == 'm'){
 					u8 id, num=0;
 					u16 wdata, error, pdata, perror;
@@ -155,7 +157,7 @@ void inputMotion(byte ReceivedData){
 					PrintString("\nDXL DEVICES:");
 					Printu32d(num);
 					PrintString("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-				}
+				}*/
 				else if(ReceivedData == 'b'){
 					PrintString("\nPlaying Some music\n");
 					Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
@@ -164,6 +166,7 @@ void inputMotion(byte ReceivedData){
 					bioloid_command = COMMAND_STOP;
 
 				}
+			// just testing
 				else if(ReceivedData == 't'){
 					executeMotion(26); // stand up
 					mDelay(2000);
@@ -172,6 +175,7 @@ void inputMotion(byte ReceivedData){
 					executeMotion(25); // sit down again
 				}
 				else if(ReceivedData == 'w'){
+					startMotionIfIdle(MOTION_STAND);
 					startMotionIfIdle(MOTION_START_WALK);
 				}
 				else if(ReceivedData == 'a'){
@@ -181,6 +185,8 @@ void inputMotion(byte ReceivedData){
 				else if(ReceivedData == 'g'){
 					startMotionIfIdle(MOTION_SIT);
 				}
+		/*
+		 * DONT NOw what this is
 				else if(ReceivedData == 'i'){
 					PrintString("\n(IR_L, IR_R, DMS):\t(");
 					Prints32d(ReadIR(EPORT1A));
@@ -192,32 +198,8 @@ void inputMotion(byte ReceivedData){
 					PrintString(")\n");
 					PlayNote(300, NOTE_E, 1);    // 2500 Hz ~ Ds_7/Eb_7
 					mDelay(2000);
-				}
-				else if(ReadButton(UP)){
-					PrintString("\nUP UP UP is pressed!\n");
-					//Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
-				}
-				else if(ReadButton(DOWN)){
-					PrintString("\nDOWN DOWN DOWN is pressed!\n");
-				}
-				else if(ReadButton(LEFT)){
-					PrintString("\nLEFT LEFT LEFT is pressed!\n");
-				}
-				else if(ReadButton(RIGHT)){
-					PrintString("\nRIGHT RIGHT RIGHT is pressed!\n");
-				}
-				else if(ReadButton(START)){
-					PrintString("\nSTART START START is pressed!\n");
-					PlayNote(200, NOTE_A, 1);    // 2500 Hz ~ Ds_7/Eb_7
-				}
-				else if(ReadButton(MIC)){
-					PrintString("\nMIC MIC MIC MIC MIC MIMIC MIC MIMIC MIC MIMIC MIC MIMIC MIC MIMIC MIC MIMIC MIC MIMIC MIC MIMIC MIC MIMIC MIC MIis pressed!\n");
-					SetLED(MANAGE, 1);
-					PlayNote(200, NOTE_A, 1);    // 2500 Hz ~ Ds_7/Eb_7
-					//mDelay(300);
-					//SetLED(MANAGE, 0);
-					//mDelay(2000);
-				}
+				}*/
+
 }
 
 int _servo_update_iteration;
