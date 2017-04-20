@@ -36,7 +36,7 @@
 
 int main(int argc, char **argv)
 {
-	voce::init("../../../lib", false, true, "./grammar", "digits");
+	voce::init("/lib", false, true, "./grammar", "digits");
 
 	std::cout << "This is a speech recognition test. " 
 		<< "Speak digits from 0-9 into the microphone. " 
