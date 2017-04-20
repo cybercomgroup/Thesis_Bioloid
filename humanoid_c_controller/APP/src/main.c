@@ -20,16 +20,23 @@
 #include "motion_f.h"
 #include "pose.h"
 #include "walk.h"
+#include "sensors.h"
 //#include <stdlib.h>
+
+void trickByRobot();
+void update_servo_positions();
 
 void inputMotion(byte ReceivedData);
 
-	extern volatile bool new_command;             // current command
-	extern volatile uint8 bioloid_command;                // current command
+	           // current command
+
+	extern volatile uint8 bioloid_command;  // current command
+	/* This is not in use right now
 	extern volatile uint8 last_bioloid_command;   // last command
 	extern volatile uint8 current_motion_page;   // last command
 	extern volatile uint8 current_step;
-
+	extern volatile bool new_command;
+*/
 	int16 last_pose[NUM_AX12_SERVOS];
 
 
@@ -48,8 +55,8 @@ int main(void) {
 	executeMotion(MOTION_STAND);
 
 	while(1){
-
-		Battery_Monitor_Alarm();
+		//We do not use a battery at this point
+	//	Battery_Monitor_Alarm();
 
 		update_servo_positions();
 		gyro_update();
@@ -63,7 +70,7 @@ int main(void) {
 		oldReceivedData = ReceivedData;
 
 		executeMotionSequence();
-
+		////only use if  SYNC pose mode is enable, we will never use this
 		//apply_new_pose_and_offsets();
 		//mDelay(100);
 	}
@@ -158,11 +165,11 @@ void inputMotion(byte ReceivedData){
 					Printu32d(num);
 					PrintString("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 				}*/
-				else if(ReceivedData == 'b'){
+				else if(ReceivedData == 'p'){
 					PrintString("\nPlaying Some music\n");
 					Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
 				}
-				else if(ReceivedData == 's'){
+				else if(ReceivedData == 'b'){
 					bioloid_command = COMMAND_STOP;
 
 				}
@@ -175,15 +182,27 @@ void inputMotion(byte ReceivedData){
 					executeMotion(25); // sit down again
 				}
 				else if(ReceivedData == 'w'){
-					startMotionIfIdle(MOTION_STAND);
-					startMotionIfIdle(MOTION_START_WALK);
+					startMotionIfIdle(MOTION_WALK_FORWARD);
 				}
-				else if(ReceivedData == 'a'){
+				else if(ReceivedData == 'u'){
 					startMotionIfIdle(MOTION_STAND);
 
 				}
+				else if(ReceivedData == 's'){
+					startMotionIfIdle(MOTION_WALK_BACkWARD);
+				}
 				else if(ReceivedData == 'g'){
 					startMotionIfIdle(MOTION_SIT);
+				}
+				else if(ReceivedData == 'c'){
+					startMotionIfIdle(5);
+
+				}
+				else if(ReceivedData == 'd'){
+					startMotionIfIdle(MOTION_TURN_RIGHT);
+				}
+				else if(ReceivedData == 'a'){
+					startMotionIfIdle(MOTION_TURN_LEFT);
 				}
 		/*
 		 * DONT NOw what this is
@@ -224,6 +243,19 @@ void update_servo_positions() {
 		}
 	}
 	_servo_update_iteration = !_servo_update_iteration;
+}
+
+void trickByRobot(){
+	executeMotion(5);
+	mDelay(100);
+	Buzzed(150,150);
+	mDelay(100);
+	executeMotion(1);
+	mDelay(100);
+	Buzzed(150,150);
+	mDelay(100);
+	executeMotion(30);
+
 }
 
 void _exit(void) {

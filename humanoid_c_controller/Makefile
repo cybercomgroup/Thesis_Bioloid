@@ -73,6 +73,7 @@ MAIN_OBJS = \
  CM530_HW/src/system_init.o \
  CM530_HW/src/usart.o \
  CM530_HW/src/gyro.o \
+ CM530_HW/src/ir.o \
  
  
  
