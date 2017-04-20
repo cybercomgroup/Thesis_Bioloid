@@ -8,5 +8,5 @@ int main( int argc, char** argv )
       }
     }
 
-    capture(640,360, rot);
+    capture(640,380,rot);
 }

@@ -1,10 +1,60 @@
 #include "image.h"
 
+
 using namespace cv;
 using namespace std;
 
 
 double countRBG(Mat img, Vec3b rgb, double diff);
+
+
+void captureAndSave(string filename)
+{
+  // Load input video
+  VideoCapture input_cap(0);
+  if (!input_cap.isOpened())
+  {
+          std::cout << "!!! Input video could not be opened" << std::endl;
+          return;
+  }
+
+  // Setup output video
+  VideoWriter output_cap(filename,
+                 input_cap.get(CV_CAP_PROP_FOURCC),
+                 10,//input_cap.get(CV_CAP_PROP_FPS),
+                 Size(input_cap.get(CV_CAP_PROP_FRAME_WIDTH),
+                 input_cap.get(CV_CAP_PROP_FRAME_HEIGHT)));
+
+  if (!output_cap.isOpened())
+  {
+          std::cout << "!!! Output video could not be opened" << std::endl;
+          return;
+  }
+
+
+  // Loop to read from input and write to output
+  cv::Mat frame;
+
+  while (true)
+  {
+      input_cap >> frame;
+      if (frame.empty()) {
+          cerr << "ERROR: Unable to grab from the camera" << endl;
+          break;
+      }
+
+      //imshow("Live",frame);
+      output_cap.write(frame);
+  }
+
+  input_cap.release();
+  output_cap.release();
+
+}
+
+
+
+
 
 
 int capture(int width, int height, bool rot)
