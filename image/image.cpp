@@ -114,7 +114,7 @@ vector<Rect> detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool
     return detected;
 }
 
-bool isInside(Rect moving, Rect still, int xOffset, int yOffset)
+bool isInside(Rect moving, Rect still, int xOffset = 0, int yOffset = 0)
 {
   Point p = Point(moving.x + xOffset, moving.y + yOffset);
   return still.contains(p);

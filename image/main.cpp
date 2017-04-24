@@ -54,7 +54,7 @@ int main( int argc, char** argv )
       for(int i = 0; i < detected.size(); i++)
       {
         rectangle(img, detected[i], Scalar(255,0,0));
-        cout<<isInside(detected[0],r,rWidth/2,rHeight/2)<<endl;
+        cout<<isInside(detected[0],r,detected[0].width/2,detected[0].height/2)<<endl;
       }
 
       imshow( "result", img );
