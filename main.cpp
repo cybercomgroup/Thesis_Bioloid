@@ -96,7 +96,6 @@ void manualMode()
         case 1:
           cout<<"Write buffer to send:"<<endl;
           cin.clear();
-          cin.ignore(INT_MAX);
           cin >> send_buffer;
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
         break;
