@@ -2,7 +2,7 @@ CC=g++
 EX=main
 #CFLAGS=
 
-all: main.o rs232.o image/image.o
+all: main.o rs232.o image/image.o audio/audio.o
 ##	+$(MAKE) -C audio
 	#Create exectuble
 	$(CC) -std=c++11 main.o rs232.o image/image.o `pkg-config --libs opencv` -o $(EX)
@@ -15,3 +15,6 @@ rs232.o: rs232.c rs232.h
 
 image/image.o:
 	+$(MAKE) -C image
+
+audio/audio.o:
+	+$(MAKE) -C audio
