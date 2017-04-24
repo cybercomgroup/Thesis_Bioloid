@@ -88,6 +88,7 @@ void manualMode()
     cout<<"2 - Write byte"<<endl;
     cout<<"0 - Exit"<<endl;
     c = 0;
+    cin.clear();
     cin>>c;
     if(!cin.fail())
     {
