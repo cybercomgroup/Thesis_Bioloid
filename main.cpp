@@ -94,6 +94,9 @@ void manualMode()
     {
       switch(c)
       {
+        case 0:
+          return;
+        break;
         case 1:
           cout<<"Write buffer to send:"<<endl;
           cin.clear();
@@ -106,12 +109,9 @@ void manualMode()
           RS232_SendByte(comport, send_byte);
         break;
         default:
+          cout<<"Please provide proper input"<<endl;
         break;
       }
-    }
-    else if(c==0)
-    {
-      return;
     }
     else
     {
