@@ -77,7 +77,7 @@ int main (int argc, char *argv[]) {
 
 void manualMode()
 {
-  int c = 0;
+  int c;
   unsigned char receive_buffer[RECEIVE_CHARS];
   unsigned char send_buffer[SEND_CHARS];
   unsigned char send_byte = 42;
@@ -87,8 +87,7 @@ void manualMode()
     cout<<"1 - Write buffer"<<endl;
     cout<<"2 - Write byte"<<endl;
     cout<<"0 - Exit"<<endl;
-    c.clear();
-    c.ignore(INT_MAX);
+    c = 0;
     cin>>c;
     if(!cin.fail())
     {
