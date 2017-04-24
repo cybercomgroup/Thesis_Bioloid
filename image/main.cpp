@@ -19,7 +19,7 @@ int main( int argc, char** argv )
     }
 
     //Image
-    cv::Mat img;
+    Mat img;
     //img = cv::imread("img.png");
 
     //Cascade

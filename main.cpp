@@ -1,10 +1,13 @@
 #include "rs232.h"
+#include "image/image.h"
+
 #include <iostream>
 #include <string>
 #include <cstring>
 #include <cstdlib>
 
 using namespace std;
+using namespace cv;
 
 #define RECEIVE_CHARS   8      // or whatever size of buffer you want to receive
 #define SEND_CHARS      10      // or whatever size of buffer you want to send
@@ -38,33 +41,33 @@ int main (int argc, char *argv[]) {
 
   unsigned char receive_buffer[RECEIVE_CHARS];
   unsigned char send_byte = 42;
-  unsigned char send_buffer[SEND_CHARS] = {'l'};
-  unsigned char send_buffer1[SEND_CHARS] = {'o'};
+  unsigned char send_buffer[SEND_CHARS];
+  unsigned char send_buffer1[SEND_CHARS];
 
 
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   {
-    while(1)
+    if(test)
     {
-      if(test)
+      manualMode();
+    }
+    else
+    {
+      while(1)
       {
-        manualMode();
-      }
-      else
-      {
+        //Main loop:
+        Mat img;
+        img = cv::imread("image/img.png");
+
+        //Cascade
+        cv::CascadeClassifier cascade;
+        cascade.load("image/face_cascade.xml");
+
+        vector<Rect> detected = detectAndGet(img,cascade,true,false);
+
+        imshow( "result", img );
 
       }
-
-      // change send_byte and/or send_buffer with what you want to send. Then:
-      //RS232_SendByte(COMPORT, send_byte); // or:
-
-
-      //RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-      // and/or:
-      //RS232_PollComport(COMPORT, receive_buffer, RECEIVE_CHARS);
-
-      // do something with received data in buffer
-      // maybe sleep for a while
     }
     RS232_CloseComport(comport);
   }

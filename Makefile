@@ -2,8 +2,8 @@ CC=g++
 EX=main
 #CFLAGS=
 
-all: main.o rs232.o
-	$(CC) -std=c++11 main.o rs232.o -o $(EX)
+all: main.o rs232.o image/image.o
+	$(CC) -std=c++11 main.o rs232.o image/image.o `pkg-config --libs opencv` -o $(EX)
 
 main.o: main.cpp
 	$(CC) -std=c++11 -c main.cpp
