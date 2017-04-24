@@ -1,0 +1,13 @@
+CC=g++
+EX=main
+JAVAPATH=jdk-8-oracle-arm32-vfp-hflt
+PROC=arm
+#CFLAGS=
+
+
+all: recog.o
+	$(CC) -std=c++11 -I/usr/lib/jvm/$(JAVAPATH)/include/ -I/usr/lib/jvm/$(JAVAPATH)/include/linux/ -L/usr/lib/jvm/$(JAVAPATH)/jre/bin/java -L/usr/lib/jvm/$(JAVAPATH)/jre/lib/$(PROC)/server/ recog.o -o $(EX) -ljvm
+
+recog.o: recog.cpp voce.h
+	$(CC) -std=c++11 -c -g -I/usr/lib/jvm/$(JAVAPATH)/include/ -I/usr/lib/jvm/$(JAVAPATH)/include/linux/ -L/usr/lib/$(JAVAPATH)/jre/bin/java -L/usr/lib/jvm/$(JAVAPATH)/jre/lib/$(PROC)/server/ recog.cpp -ljvm
+
