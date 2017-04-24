@@ -139,6 +139,7 @@ void manualMode()
           cin.clear();
           cin >> send_buffer;
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+          cout<<"buffer: "<<send_buffer<<endl;
         break;
         case 2:
           cout<<"Write byte to send:"<<endl;
