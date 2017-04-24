@@ -20,7 +20,7 @@ int main( int argc, char** argv )
 
     //Image
     cv::Mat img;
-    img = cv::imread("img.png");
+    //img = cv::imread("img.png");
 
     //Cascade
     cv::CascadeClassifier cascade;
@@ -41,7 +41,7 @@ int main( int argc, char** argv )
       }
 
       //Detection
-      vector<Rect> detected = detectAndGet(img,cascade,false,false);
+      vector<Rect> detected = detectAndGet(img,cascade,true,false);
 
       int rWidth = 100;
       int rHeight = 480;
@@ -54,7 +54,7 @@ int main( int argc, char** argv )
       for(int i = 0; i < detected.size(); i++)
       {
         rectangle(img, detected[i], Scalar(255,0,0));
-        cout<<isInside(detected[0],r,detected[0].width/2,detected[0].height/2)<<endl;
+        //cout<<isInside(detected[0],r,detected[0].width/2,detected[0].height/2)<<endl;
       }
 
       imshow( "result", img );
@@ -64,5 +64,7 @@ int main( int argc, char** argv )
       if (key>=0)
         break;
     }
+
+    cap.release();
     return 0;
 }

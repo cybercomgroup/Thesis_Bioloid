@@ -47,18 +47,18 @@ int capture(int width, int height, bool rot)
       drawContours( frame, contours, i, color, 2, 8, hierarchy, 0, Point() );
     }
     if (frame.empty()) {
-        cerr << "ERROR: Unable to grab from the camera" << endl;
-        break;
+      cerr << "ERROR: Unable to grab from the camera" << endl;
+      break;
     }
     imshow("Live",frame);
-//    imshow("Hsv",hsv_s);
+    //    imshow("Hsv",hsv_s);
     //imshow("Contours",contours);
 
 
     int key = cv::waitKey(5);
     key = (key==255) ? -1 : key; //#Solve bug in 3.2.0
     if (key>=0)
-      break;
+    break;
   }
 
   cout << "Closing the camera" << endl;
@@ -69,22 +69,22 @@ int capture(int width, int height, bool rot)
 }
 void detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
 {
-    vector<Rect> detected;
-    double t = 0;
-    Mat gray;
+  vector<Rect> detected;
+  double t = 0;
+  Mat gray;
 
-    cvtColor( img, gray, COLOR_BGR2GRAY );
+  cvtColor( img, gray, COLOR_BGR2GRAY );
 
-    if(print){t = (double)getTickCount();}
-    cascade.detectMultiScale(gray,detected, 1.3, 5);
-    if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
+  if(print){t = (double)getTickCount();}
+  cascade.detectMultiScale(gray,detected, 1.3, 5);
+  if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
 
-    for(int i = 0; i < detected.size(); i++)
-    {
-      rectangle(img, detected[i], Scalar(255,0,0));
-    }
-    imshow( "result", img );
+  for(int i = 0; i < detected.size(); i++)
+  {
+    rectangle(img, detected[i], Scalar(255,0,0));
+  }
+  imshow( "result", img );
 }
 
 /*
@@ -97,21 +97,21 @@ flip boolean, if true flips image before detections
 */
 vector<Rect> detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
 {
-    vector<Rect> detected;
-    double t = 0;
-    Mat gray;
+  vector<Rect> detected;
+  double t = 0;
+  Mat gray;
 
-    cvtColor( img, gray, COLOR_BGR2GRAY );
+  cvtColor( img, gray, COLOR_BGR2GRAY );
 
-    if(flip){
-      cv::flip(gray, gray, -1);
-    }
+  if(flip){
+    cv::flip(gray, gray, -1);
+  }
 
-    if(print){t = (double)getTickCount();}
-    cascade.detectMultiScale(gray,detected, 1.3, 5);
-    if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
+  if(print){t = (double)getTickCount();}
+  cascade.detectMultiScale(gray, detected, 1.1, 10);
+  if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
-    return detected;
+  return detected;
 }
 
 bool isInside(Rect moving, Rect still, int xOffset = 0, int yOffset = 0)
@@ -131,8 +131,8 @@ double countRBG(Mat img, Vec3b rgb, double diff)
     for(int x=0;x<img.cols;x++)
     {
       if((img.at<Vec3b>(Point(x,y))[0] <= rgb[0] * (1+diff) && img.at<Vec3b>(Point(x,y))[0] >= rgb[0] * (1-diff)) &&
-         (img.at<Vec3b>(Point(x,y))[1] <= rgb[1] * (1+diff) && img.at<Vec3b>(Point(x,y))[1] >= rgb[1] * (1-diff)) &&
-         (img.at<Vec3b>(Point(x,y))[2] <= rgb[2] * (1+diff) && img.at<Vec3b>(Point(x,y))[2] >= rgb[2] * (1-diff)))
+      (img.at<Vec3b>(Point(x,y))[1] <= rgb[1] * (1+diff) && img.at<Vec3b>(Point(x,y))[1] >= rgb[1] * (1-diff)) &&
+      (img.at<Vec3b>(Point(x,y))[2] <= rgb[2] * (1+diff) && img.at<Vec3b>(Point(x,y))[2] >= rgb[2] * (1-diff)))
       {
         matching++;
       }
