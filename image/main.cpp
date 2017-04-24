@@ -1,4 +1,5 @@
 #include "image.h"
+
 int main( int argc, char** argv )
 {
     bool rot = false;
@@ -8,5 +9,13 @@ int main( int argc, char** argv )
       }
     }
 
-    capture(640,360, rot);
+    cv::Mat img;
+    img = cv::imread("img.png");
+
+    cv::CascadeClassifier cascade;
+    cascade.load("face_cascade.xml");
+
+    detectAndDraw(img,cascade,false,false);
+
+    imshow( "kek", img );
 }

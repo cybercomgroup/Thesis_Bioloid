@@ -68,6 +68,27 @@ int capture(int width, int height, bool rot)
   return 0;
 }
 
+void detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
+{
+    vector<Rect> detected;
+    double t = 0;
+    Mat gray;
+
+    cvtColor( img, gray, COLOR_BGR2GRAY );
+
+    if(print){t = (double)getTickCount();}
+    cascade.detectMultiScale(gray,detected, 1.3, 5);
+    if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
+
+
+    for(int i = 0; i < detected.size(); i++)
+    {
+      rectangle(img, detected[i], Scalar(255,0,0));
+    }
+    imshow( "result", img );
+}
+
+
 
 double countRBG(Mat img, Vec3b rgb, double diff)
 {

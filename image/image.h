@@ -3,3 +3,4 @@
 #include <opencv2/highgui.hpp>
 
 int capture(int, int, bool);
+void detectAndDraw(cv::Mat&, cv::CascadeClassifier&, bool, bool);
