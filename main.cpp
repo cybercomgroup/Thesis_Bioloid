@@ -44,8 +44,6 @@ int main (int argc, char *argv[]) {
   unsigned char send_byte = 42;
   unsigned char send_buffer[SEND_CHARS];
 
-  send_buffer[0] = 'p';
-
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   {
     if(test)
@@ -91,6 +89,7 @@ int main (int argc, char *argv[]) {
           for(int i = 0; i < detected.size(); i++)
           {
             rectangle(img, detected[i], Scalar(255,0,0));
+            send_buffer[0] = 'p';
             if(isInside(detected[0],r,detected[0].width/2,detected[0].height/2)){RS232_SendBuf(comport, send_buffer, SEND_CHARS);}
           }
 
@@ -140,6 +139,7 @@ void manualMode()
           cin >> send_buffer;
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
           cout<<"buffer: "<<send_buffer<<endl;
+          cout<<"buffer: "<<send_buffer[0]<<endl;
         break;
         case 2:
           cout<<"Write byte to send:"<<endl;
