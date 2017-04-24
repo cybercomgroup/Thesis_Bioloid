@@ -67,7 +67,6 @@ int capture(int width, int height, bool rot)
   cout << "bye!" <<endl;
   return 0;
 }
-
 void detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
 {
     vector<Rect> detected;
@@ -88,6 +87,38 @@ void detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
     imshow( "result", img );
 }
 
+/*
+Detects given cascade and returns an vector containing the detected rectangles
+@ARGS:
+Image
+cascade to detect
+print boolean, if true prints time for detections
+flip boolean, if true flips image before detections
+*/
+vector<Rect> detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
+{
+    vector<Rect> detected;
+    double t = 0;
+    Mat gray;
+
+    cvtColor( img, gray, COLOR_BGR2GRAY );
+
+    if(flip){
+      cv::flip(gray, gray, -1);
+    }
+
+    if(print){t = (double)getTickCount();}
+    cascade.detectMultiScale(gray,detected, 1.3, 5);
+    if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
+
+    return detected;
+}
+
+bool isInside(Rect moving, Rect still, int xOffset, int yOffset)
+{
+  Point p = Point(moving.x + xOffset, moving.y + yOffset);
+  return still.contains(p);
+}
 
 
 double countRBG(Mat img, Vec3b rgb, double diff)
