@@ -3,6 +3,10 @@ EX=main
 #CFLAGS=
 
 all: main.o rs232.o image/image.o
+	#Run makefile in folders
+	+$(MAKE) -C image
+	+$(MAKE) -C audio
+	#Create exectuble
 	$(CC) -std=c++11 main.o rs232.o image/image.o `pkg-config --libs opencv` -o $(EX)
 
 main.o: main.cpp
