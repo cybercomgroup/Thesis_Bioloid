@@ -1,9 +1,9 @@
 CC=g++
 EX=main
 #CFLAGS=
-#JAVA=jdk-8-oracle-arm32-vfp-hflt
-JAVA=java-8-openjdk-amd64
-PROC=amd64
+JAVA=jdk-8-oracle-arm32-vfp-hflt
+#JAVA=java-8-openjdk-amd64
+PROC=arm
 
 all: audio.o
 	$(CC) -std=c++11 -I/usr/lib/jvm/$(JAVA)/include/ -I/usr/lib/jvm/$(JAVA)/include/linux/ -L/usr/lib/jvm/$(JAVA)/jre/bin/java -L/usr/lib/jvm/$(JAVA)/jre/lib/$(PROC)/server/ audio.o -o $(EX) -ljvm
