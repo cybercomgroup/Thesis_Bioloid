@@ -87,13 +87,17 @@ void manualMode()
     cout<<"1 - Write buffer"<<endl;
     cout<<"2 - Write byte"<<endl;
     cout<<"0 - Exit"<<endl;
+    c.clear();
+    c.ignore(INT_MAX);
     cin>>c;
-    if(!cin.fail() || c > 3)
+    if(!cin.fail())
     {
       switch(c)
       {
         case 1:
           cout<<"Write buffer to send:"<<endl;
+          cin.clear();
+          cin.ignore(INT_MAX);
           cin >> send_buffer;
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
         break;
@@ -114,9 +118,10 @@ void manualMode()
     {
       cout<<"Please provide proper input"<<endl;
     }
+    /*
     cout<<"Respone:"<<endl;
     RS232_PollComport(comport, receive_buffer, RECEIVE_CHARS);
-    cout<<receive_buffer<<endl;
+    cout<<receive_buffer<<endl; */
   }
 }
 
