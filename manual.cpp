@@ -1,4 +1,10 @@
-void testMode()
+#include "rs232.h"
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cstdlib>
+
+void main()
 {
   int c = 0;
   unsigned char send_buffer[SEND_CHARS];
