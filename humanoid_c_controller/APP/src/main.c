@@ -28,7 +28,12 @@ void update_servo_positions();
 void TxDWord16(u16 wSentData);
 void TxDByte16(u8 bSentData);
 void TxDByte_PC(u8 bTxdData);
+void checkSensor();
 
+
+
+u16  irMidOld = 0, irLeftFootOld = 0;
+byte oldUtPutStatus = OUTPUT_OK;
 
 
 void inputMotion(byte ReceivedData);
@@ -52,7 +57,7 @@ int main(void) {
 
 	/* External vars for the motion state machine state */
 	byte	ReceivedData = 0, oldReceivedData = 0;
-	u16 irMid, irLeftFoot;
+
 	char    tmpComm[128];
 	char * ReceivedCommand;
 	ReceivedCommand = tmpComm;
@@ -66,37 +71,29 @@ int main(void) {
 		update_servo_positions();
 		gyro_update();
 
-
-/* ALL IR SENSORS VALUE ARE IN HEX
- * Ir sensor Left foot:
- *  go between 0000-03FF
- * 	~013B is around 5cm from its foot
- *	Ir sensor mid:
- *	Between 0000- Superhigh - hard to define
- *	~0650 is 10cm from it
- *
- */
-		irMid = read_ir_mid();
-		irLeftFoot = read_ir_left();
-//		mDelay(1000);
-//		//TxDWord16(irMid);
-//		PrintString(" \n New Value: \n");
-//		TxDWord16(irMid);
-////		TxDWord16('New Value: \n');
-
-		if(irMid > 0x0650 || irLeftFoot > 0x13B)
-			TxDByte_PC(OUTPUT_COMMAND_STOP);
-
 		ReceivedData = std_getchar();
-		if(ReceivedData != oldReceivedData )
+		if(ReceivedData != oldReceivedData ){
 			inputMotion(ReceivedData);
+		}
+		/* ALL IR SENSORS VALUE ARE IN HEX
+		 * Ir sensor Left foot:
+		 *  go between 0000-03FF
+		 * 	~013B is around 5cm from its foot
+		 *	Ir sensor mid:
+		 *	Between 0000- Superhigh - hard to define
+		 *	~0650 is 10cm from it
+		 *
+		 */
+		checkSensor();
 		//mDelay(150);
 		oldReceivedData = ReceivedData;
 
 		executeMotionSequence();
 		////only use if  SYNC pose mode is enable, we will never use this
 		//apply_new_pose_and_offsets();
-		//mDelay(100);
+
+		//Mostly use delay for testingTxDByte16(irMidOld);
+//		mDelay(1000);
 	}
 
     //Buzzed(150, 2300);    // 217 Hz ~ A_4
@@ -123,7 +120,7 @@ void inputMotion(byte ReceivedData){
 			SetLED(PROGRAM, 0);
 			break;
 
-		case INPUT_COMMAND_SOUND:
+		case INPUT_SOUND:
 //			PrintString("\nPlaying Some music\n");
 			Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
 			break;
@@ -132,39 +129,39 @@ void inputMotion(byte ReceivedData){
 			bioloid_command = COMMAND_STOP;
 			break;
 
-		case INPUT_COMMAND_WALK_F:
+		case INPUT_WALK_F:
 			startMotionIfIdle(MOTION_WALK_FORWARD);
 			break;
 
-		case INPUT_COMMAND_WALK_B:
+		case INPUT_WALK_B:
 			startMotionIfIdle(MOTION_WALK_BACkWARD);
 			break;
 
-		case INPUT_COMMAND_TURN_L:
+		case INPUT_TURN_L:
 			startMotionIfIdle(MOTION_TURN_LEFT);
 			break;
 
-		case INPUT_COMMAND_TURN_R:
+		case INPUT_TURN_R:
 			startMotionIfIdle(MOTION_TURN_RIGHT);
 			break;
 
-		case INPUT_COMMAND_SIT:
+		case INPUT_SIT:
 			startMotionIfIdle(MOTION_SIT);
 			break;
 
-		case INPUT_COMMAND_STAND:
+		case INPUT_STAND:
 			startMotionIfIdle(MOTION_STAND);
 			break;
 
-		case INPUT_COMMAND_RAPCHEST:
+		case INPUT_RAPCHEST:
 			startMotionIfIdle(MOTION_RAP_CHEST);
 			break;
 
-		case 'h':
+		case INPUT_KICK_L:
 			startMotionIfIdle(MOTION_KICK_L);
 			break;
 
-		case 'k':
+		case INPUT_KICK_R:
 			startMotionIfIdle(MOTION_KICK_R);
 			break;
 
@@ -275,6 +272,40 @@ void update_servo_positions() {
 	}
 	_servo_update_iteration = !_servo_update_iteration;
 }
+/*
+ * Check the sensor values
+ * The output values changes time for time need to check in on that
+ */
+void checkSensor(){
+
+	byte outPutStatus;
+	byte irMid = 0; //read_ir_mid();
+	byte irLeftFoot = read_ir_left();
+
+
+	if(irMid > 0x00E0 || irLeftFoot > 0x050){
+			outPutStatus = OUTPUT_STOP;
+
+			if(irMidOld > irMid + 0x0010 && irLeftFootOld > irLeftFoot + 0x001A)
+				outPutStatus = OUTPUT_OK;
+	}else
+		outPutStatus = OUTPUT_OK;
+
+
+//	PrintString("\n OLD: ");
+//	TxDWord16(irLeftFootOld);
+//	PrintString("\n New: ");
+//	TxDWord16(irLeftFoot);
+//	PrintString("\n OUT PUT: ");
+	if(oldUtPutStatus != outPutStatus){
+		TxDByte_PC(outPutStatus);
+		oldUtPutStatus = outPutStatus;
+	}
+
+	irMidOld = irMid;
+	irLeftFootOld = irLeftFoot;
+}
+
 //Print stuff
 //
 void TxDWord16(u16 wSentData)
@@ -302,7 +333,9 @@ void TxDByte_PC(u8 bTxdData)
 }
 
 
-
+/*
+ * NEED for some weird error
+ */
 void _exit(void) {
     while(1) {
         // Loop until reset
