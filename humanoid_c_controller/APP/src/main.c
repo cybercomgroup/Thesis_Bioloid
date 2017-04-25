@@ -23,8 +23,11 @@
 #include "sensors.h"
 //#include <stdlib.h>
 
-void trickByRobot();
 void update_servo_positions();
+void TxDWord16(u16 wSentData);
+void TxDByte16(u8 bSentData);
+void TxDByte_PC(u8 bTxdData);
+
 
 void inputMotion(byte ReceivedData);
 
@@ -47,6 +50,7 @@ int main(void) {
 
 	/* External vars for the motion state machine state */
 	byte	ReceivedData = 0, oldReceivedData = 0;
+	u16 ir_test;
 	char    tmpComm[128];
 	char * ReceivedCommand;
 	ReceivedCommand = tmpComm;
@@ -61,8 +65,12 @@ int main(void) {
 		update_servo_positions();
 		gyro_update();
 
-
-
+		ir_test = read_ir_mid();
+		//mDelay(1000);
+		if(ir_test > 0x44C){
+			PrintString("\n New value: \n");
+			TxDWord16(ir_test);
+		}
 		ReceivedData = std_getchar();
 		if(ReceivedData != oldReceivedData )
 			inputMotion(ReceivedData);
@@ -82,24 +90,72 @@ int main(void) {
 }
 
 void inputMotion(byte ReceivedData){
-		if(ReceivedData == 'l'){
-					std_putchar(ReceivedData);
-					PrintString(" * \t* Turn on LEDs!\r\n");
-					SetLED(POWER, 1);
-					SetLED(PLAY, 1);
-					SetLED(MANAGE, 1);
-					SetLED(PROGRAM, 1);
-				}
-				else if(ReceivedData == 'o'){
-				//else if(strcmp(ReceivedCommand, "led off")){
-					std_putchar(ReceivedData);
-					PrintString(" * \t* Turn off LEDs!\r\n");
-					SetLED(POWER, 0);
-					SetLED(PLAY, 0);
-					SetLED(MANAGE, 0);
-					SetLED(PROGRAM, 0);
-				}
-				//else if(strcmp(ReceivedCommand, "motors report")){
+
+		switch(ReceivedData){
+
+		case 'l':
+			PrintString(" * \t* Turn on LEDs!\r\n");
+			SetLED(POWER, 1);
+			SetLED(PLAY, 1);
+			SetLED(MANAGE, 1);
+			SetLED(PROGRAM, 1);
+			break;
+
+		case 'o':
+			PrintString(" * \t* Turn off LEDs!\r\n");
+			SetLED(POWER, 0);
+			SetLED(PLAY, 0);
+			SetLED(MANAGE, 0);
+			SetLED(PROGRAM, 0);
+			break;
+
+		case 'p':
+			PrintString("\nPlaying Some music\n");
+			Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
+			break;
+
+		case 'b':
+			bioloid_command = COMMAND_STOP;
+			break;
+
+		case 'w':
+			startMotionIfIdle(MOTION_WALK_FORWARD);
+			break;
+
+		case 's':
+			startMotionIfIdle(MOTION_WALK_BACkWARD);
+			break;
+
+		case 'a':
+			startMotionIfIdle(MOTION_TURN_LEFT);
+			break;
+
+		case 'd':
+			startMotionIfIdle(MOTION_TURN_RIGHT);
+			break;
+
+		case 'g':
+			startMotionIfIdle(MOTION_SIT);
+			break;
+
+		case 'u':
+			startMotionIfIdle(MOTION_STAND);
+			break;
+
+		case 'c':
+			startMotionIfIdle(MOTION_RAP_CHEST);
+			break;
+
+		case 'h':
+			startMotionIfIdle(MOTION_KICK_L);
+			break;
+
+		case 'k':
+			startMotionIfIdle(MOTION_KICK_R);
+			break;
+
+
+		}
 		/*
 		 * Do not know what this does
 				else if(ReceivedData == 'm'){
@@ -164,48 +220,9 @@ void inputMotion(byte ReceivedData){
 					PrintString("\nDXL DEVICES:");
 					Printu32d(num);
 					PrintString("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-				}*/
-				else if(ReceivedData == 'p'){
-					PrintString("\nPlaying Some music\n");
-					Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
 				}
-				else if(ReceivedData == 'b'){
-					bioloid_command = COMMAND_STOP;
 
-				}
-			// just testing
-				else if(ReceivedData == 't'){
-					executeMotion(26); // stand up
-					mDelay(2000);
-					executeMotion(7);
-					mDelay(2000);
-					executeMotion(25); // sit down again
-				}
-				else if(ReceivedData == 'w'){
-					startMotionIfIdle(MOTION_WALK_FORWARD);
-				}
-				else if(ReceivedData == 'u'){
-					startMotionIfIdle(MOTION_STAND);
-
-				}
-				else if(ReceivedData == 's'){
-					startMotionIfIdle(MOTION_WALK_BACkWARD);
-				}
-				else if(ReceivedData == 'g'){
-					startMotionIfIdle(MOTION_SIT);
-				}
-				else if(ReceivedData == 'c'){
-					startMotionIfIdle(5);
-
-				}
-				else if(ReceivedData == 'd'){
-					startMotionIfIdle(MOTION_TURN_RIGHT);
-				}
-				else if(ReceivedData == 'a'){
-					startMotionIfIdle(MOTION_TURN_LEFT);
-				}
-		/*
-		 * DONT NOw what this is
+		  DONT NOw what this is
 				else if(ReceivedData == 'i'){
 					PrintString("\n(IR_L, IR_R, DMS):\t(");
 					Prints32d(ReadIR(EPORT1A));
@@ -244,19 +261,32 @@ void update_servo_positions() {
 	}
 	_servo_update_iteration = !_servo_update_iteration;
 }
-
-void trickByRobot(){
-	executeMotion(5);
-	mDelay(100);
-	Buzzed(150,150);
-	mDelay(100);
-	executeMotion(1);
-	mDelay(100);
-	Buzzed(150,150);
-	mDelay(100);
-	executeMotion(30);
-
+//TEST
+void TxDWord16(u16 wSentData)
+{
+	TxDByte16((wSentData >> 8) & 0xff);
+	TxDByte16(wSentData & 0xff);
 }
+void TxDByte16(u8 bSentData)
+{
+	byte bTmp;
+
+	bTmp = ((byte) (bSentData >> 4) & 0x0f) + (byte) '0';
+	if (bTmp > '9')
+		bTmp += 7;
+	TxDByte_PC(bTmp);
+	bTmp = (byte) (bSentData & 0x0f) + (byte) '0';
+	if (bTmp > '9')
+		bTmp += 7;
+	TxDByte_PC(bTmp);
+}
+void TxDByte_PC(u8 bTxdData)
+{
+	USART_SendData(USART3,bTxdData);
+	while( USART_GetFlagStatus(USART3, USART_FLAG_TC)==RESET );
+}
+
+
 
 void _exit(void) {
     while(1) {
