@@ -97,7 +97,7 @@ void motionPageInit()
 		if (AX12_ENABLED[i] != AX12Servos[i])
 		{
 			// configuration does not match
-			PrintString("\nConfiguration of enabled AX-12 servos does not match motion.h. ABORT!\n");
+//			PrintString("\nConfiguration of enabled AX-12 servos does not match motion.h. ABORT!\n");
 			exit(-1);
 		}
 	}
@@ -439,13 +439,13 @@ uint8 executeMotionSequence()
 	// first we deal with state changes at the end of a motion page
 	if ( current_step == CurrentMotion.Steps && (motion_state == STEP_FINISHED || motion_state == PAUSE_FINISHED) )
 	{
-		PrintString("Motion step finished: nextPage %d\n", CurrentMotion.NextPage);
+//		PrintString("Motion step finished: nextPage %d\n", CurrentMotion.NextPage);
 		// check if we just finished an exit page
 		if ( exit_flag == 1 )
 		{
 			if ( CurrentMotion.ExitPage != 0 ) {
 				// go to next exit page, then check again.
-				PrintString("Going to exit page (from exit page): %d\n", CurrentMotion.ExitPage);
+//				PrintString("Going to exit page (from exit page): %d\n", CurrentMotion.ExitPage);
 				current_motion_page = CurrentMotion.ExitPage;
 			} else {
 				// yes, reset flag and change motion state and then return to not complicate things
@@ -493,7 +493,7 @@ uint8 executeMotionSequence()
 		// Option 5 - repeat the current motion page
 		else if ( CurrentMotion.RepeatTime > repeat_counter )
 		{
-			PrintString("Repeating motion page (%d'th time): %d\n", repeat_counter+1, current_motion_page);
+//			PrintString("Repeating motion page (%d'th time): %d\n", repeat_counter+1, current_motion_page);
 			// Update step, repeat counter and motion status
 			current_step = 1;
 			repeat_counter++;
@@ -505,13 +505,13 @@ uint8 executeMotionSequence()
 		// Option 6 - switch to NextPage motion page
 		else if ( CurrentMotion.NextPage > 0 && CurrentMotion.NextPage <= NUM_MOTION_PAGES )
 		{
-			PrintString("Switching to next motion page: %d -> %d\n", current_motion_page, CurrentMotion.NextPage);
+//			PrintString("Switching to next motion page: %d -> %d\n", current_motion_page, CurrentMotion.NextPage);
 			current_motion_page = CurrentMotion.NextPage;
 		}
 		// Nothing else to do - stop motion
 		else
 		{
-			PrintString("Finished motion page: %d\n", current_motion_page);
+//			PrintString("Finished motion page: %d\n", current_motion_page);
 			motion_state = MOTION_STOPPED;
 			return motion_state;
 		}
@@ -675,8 +675,8 @@ void unpackMotion2(int StartPage) {
 			if ( CurrentMotion.StepValues[step][i] > 1023 )
 			{
 				// obviously have unpacked rubbish, stop right here
-				PrintString("\nUnpack Motion Page %i, Step %i - rubbish data. STOP.", StartPage, step+1);
-				PrintString("\nServo ID%i, Step Value = %i, Min = %i, Max = %i \n", AX12_IDS[i], CurrentMotion.StepValues[step][i], SERVO_MIN_VALUES[i],SERVO_MAX_VALUES[i] );
+//				PrintString("\nUnpack Motion Page %i, Step %i - rubbish data. STOP.", StartPage, step+1);
+//				PrintString("\nServo ID%i, Step Value = %i, Min = %i, Max = %i \n", AX12_IDS[i], CurrentMotion.StepValues[step][i], SERVO_MIN_VALUES[i],SERVO_MAX_VALUES[i] );
 				exit(-1);
 			}
 		}
@@ -738,9 +738,9 @@ void unpackMotion(int StartPage)
 		{
 			if ( CurrentMotion.StepValues[s][i] > SERVO_MAX_VALUES[i] || CurrentMotion.StepValues[s][i] < SERVO_MIN_VALUES[i] )
 			{
-				// obviously have unpacked rubbish, stop right here
-				PrintString("\nUnpack Motion Page %i, Step %i - rubbish data. STOP.", StartPage, s+1);
-				PrintString("\nServo ID%i, Step Value = %i, Min = %i, Max = %i \n", AX12_IDS[i], CurrentMotion.StepValues[s][i], SERVO_MIN_VALUES[i],SERVO_MAX_VALUES[i] );
+//				// obviously have unpacked rubbish, stop right here
+//				PrintString("\nUnpack Motion Page %i, Step %i - rubbish data. STOP.", StartPage, s+1);
+//				PrintString("\nServo ID%i, Step Value = %i, Min = %i, Max = %i \n", AX12_IDS[i], CurrentMotion.StepValues[s][i], SERVO_MIN_VALUES[i],SERVO_MAX_VALUES[i] );
 				exit(-1);
 			}
 		}

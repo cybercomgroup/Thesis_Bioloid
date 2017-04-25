@@ -485,11 +485,11 @@ int Big_main(void) {
 			//Start time
 			unsigned long lTimeWaitEnd;
 			lTimerStart = getMillis();
-#ifdef MILLIS
-			PrintString("Barebones lTimerStart ");
-			Printu32d(lTimerStart);
-			PrintString("\n");
-#endif
+//#ifdef MILLIS
+//			PrintString("Barebones lTimerStart ");
+//			Printu32d(lTimerStart);
+//			PrintString("\n");
+//#endif
 			DoBackgroundProcess();
 			//Read input
 			CheckVoltage();        // check our voltages...
@@ -640,22 +640,22 @@ int Big_main(void) {
 
 					//Get endtime and calculate wait time
 					lTimeWaitEnd = lTimerStart + PrevServoMoveTime;
-#ifdef MILLIS
-					PrintString("Barebones lTimeWaitEnd ");
-					Printu32d(lTimeWaitEnd);km
-					PrintString("\n");
-#endif
-					//DebugWrite(A1, HIGH);
+//#ifdef MILLIS
+//					PrintString("Barebones lTimeWaitEnd ");
+//					Printu32d(lTimeWaitEnd);km
+//					PrintString("\n");
+//#endif
+//					//DebugWrite(A1, HIGH);
 					do {
 						// Wait the appropriate time, call any background process while waiting...
 						DoBackgroundProcess();
 					} while (getMillis() < lTimeWaitEnd);
 					//DebugWrite(A1, LOW);
-#ifdef MILLIS
-					PrintString("Barebones lTimeWaitEnd-Millis  ");
-					Printu32d(getMillis);
-					PrintString("\n");
-#endif
+//#ifdef MILLIS
+//					PrintString("Barebones lTimeWaitEnd-Millis  ");
+//					Printu32d(getMillis);
+//					PrintString("\n");
+//#endif
 
 				}
 				// Only do commit if we are actually doing something...
@@ -673,21 +673,21 @@ int Big_main(void) {
 
 					//lTimeWaitEnd = getMillis() + 600; // setup to process background stuff while we wait...
 					lTimeWaitEnd = getMillis() + 600; // setup to process background stuff while we wait...
-#ifdef MILLIS
-					PrintString("Barebones lTimeWaitEnd ");
-					Printu32d(lTimeWaitEnd);
-					PrintString("\n");
-#endif
+//#ifdef MILLIS
+//					PrintString("Barebones lTimeWaitEnd ");
+//					Printu32d(lTimeWaitEnd);
+//					PrintString("\n");
+//#endif
 					do {
 						// Wait the appropriate time, call any background process while waiting...
 						DoBackgroundProcess();
 					} while (getMillis() < lTimeWaitEnd);
 					//delay(600);
-#ifdef MILLIS
-					PrintString("Barebones lTimeWaitEnd-Millis  ");
-					Printu32d(getMillis);
-					PrintString("\n");
-#endif
+//#ifdef MILLIS
+//					PrintString("Barebones lTimeWaitEnd-Millis  ");
+//					Printu32d(getMillis);
+//					PrintString("\n");
+//#endif
 				} else {
 					FreeServos();
 				}

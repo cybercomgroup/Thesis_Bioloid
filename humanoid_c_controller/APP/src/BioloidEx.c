@@ -45,11 +45,11 @@ void BioloidControllerEx() {
 	frameLength = BIOLOID_FRAME_LENGTH;
 	interpolating = 0;
 	nextframe_ = getMillis();
-#ifdef MILLIS
-	PrintString("BioloidEX nextframe_ ");
-	Printu32d(nextframe_);
-	PrintString("\n");
-#endif
+//#ifdef MILLIS
+//	PrintString("BioloidEX nextframe_ ");
+//	Printu32d(nextframe_);
+//	PrintString("\n");
+//#endif
 }
 
 /* new-style setup */

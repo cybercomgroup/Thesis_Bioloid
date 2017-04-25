@@ -21,12 +21,14 @@
 #include "pose.h"
 #include "walk.h"
 #include "sensors.h"
+#include "typedefs.h"
 //#include <stdlib.h>
 
 void update_servo_positions();
 void TxDWord16(u16 wSentData);
 void TxDByte16(u8 bSentData);
 void TxDByte_PC(u8 bTxdData);
+
 
 
 void inputMotion(byte ReceivedData);
@@ -50,11 +52,10 @@ int main(void) {
 
 	/* External vars for the motion state machine state */
 	byte	ReceivedData = 0, oldReceivedData = 0;
-	u16 ir_test;
+	u16 irMid, irLeftFoot;
 	char    tmpComm[128];
 	char * ReceivedCommand;
 	ReceivedCommand = tmpComm;
-	PrintString("Starting Program by turning on POWER LED!\r\n");
 	SetLED(POWER, 1);
 	executeMotion(MOTION_STAND);
 
@@ -65,16 +66,31 @@ int main(void) {
 		update_servo_positions();
 		gyro_update();
 
-		ir_test = read_ir_mid();
-		//mDelay(1000);
-		if(ir_test > 0x44C){
-			PrintString("\n New value: \n");
-			TxDWord16(ir_test);
-		}
+
+/* ALL IR SENSORS VALUE ARE IN HEX
+ * Ir sensor Left foot:
+ *  go between 0000-03FF
+ * 	~013B is around 5cm from its foot
+ *	Ir sensor mid:
+ *	Between 0000- Superhigh - hard to define
+ *	~0650 is 10cm from it
+ *
+ */
+		irMid = read_ir_mid();
+		irLeftFoot = read_ir_left();
+//		mDelay(1000);
+//		//TxDWord16(irMid);
+//		PrintString(" \n New Value: \n");
+//		TxDWord16(irMid);
+////		TxDWord16('New Value: \n');
+
+		if(irMid > 0x0650 || irLeftFoot > 0x13B)
+			TxDByte_PC(OUTPUT_COMMAND_STOP);
+
 		ReceivedData = std_getchar();
 		if(ReceivedData != oldReceivedData )
 			inputMotion(ReceivedData);
-
+		//mDelay(150);
 		oldReceivedData = ReceivedData;
 
 		executeMotionSequence();
@@ -83,8 +99,6 @@ int main(void) {
 		//mDelay(100);
 	}
 
-    PrintString("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-    PrintString("CM-530 Experimental Example         ");
     //Buzzed(150, 2300);    // 217 Hz ~ A_4
 
 }
@@ -94,7 +108,7 @@ void inputMotion(byte ReceivedData){
 		switch(ReceivedData){
 
 		case 'l':
-			PrintString(" * \t* Turn on LEDs!\r\n");
+//			PrintString(" * \t* Turn on LEDs!\r\n");
 			SetLED(POWER, 1);
 			SetLED(PLAY, 1);
 			SetLED(MANAGE, 1);
@@ -102,15 +116,15 @@ void inputMotion(byte ReceivedData){
 			break;
 
 		case 'o':
-			PrintString(" * \t* Turn off LEDs!\r\n");
+//			PrintString(" * \t* Turn off LEDs!\r\n");
 			SetLED(POWER, 0);
 			SetLED(PLAY, 0);
 			SetLED(MANAGE, 0);
 			SetLED(PROGRAM, 0);
 			break;
 
-		case 'p':
-			PrintString("\nPlaying Some music\n");
+		case INPUT_COMMAND_SOUND:
+//			PrintString("\nPlaying Some music\n");
 			Buzzed(150, 200);    // 2500 Hz ~ Ds_7/Eb_7
 			break;
 
@@ -118,31 +132,31 @@ void inputMotion(byte ReceivedData){
 			bioloid_command = COMMAND_STOP;
 			break;
 
-		case 'w':
+		case INPUT_COMMAND_WALK_F:
 			startMotionIfIdle(MOTION_WALK_FORWARD);
 			break;
 
-		case 's':
+		case INPUT_COMMAND_WALK_B:
 			startMotionIfIdle(MOTION_WALK_BACkWARD);
 			break;
 
-		case 'a':
+		case INPUT_COMMAND_TURN_L:
 			startMotionIfIdle(MOTION_TURN_LEFT);
 			break;
 
-		case 'd':
+		case INPUT_COMMAND_TURN_R:
 			startMotionIfIdle(MOTION_TURN_RIGHT);
 			break;
 
-		case 'g':
+		case INPUT_COMMAND_SIT:
 			startMotionIfIdle(MOTION_SIT);
 			break;
 
-		case 'u':
+		case INPUT_COMMAND_STAND:
 			startMotionIfIdle(MOTION_STAND);
 			break;
 
-		case 'c':
+		case INPUT_COMMAND_RAPCHEST:
 			startMotionIfIdle(MOTION_RAP_CHEST);
 			break;
 
@@ -261,7 +275,8 @@ void update_servo_positions() {
 	}
 	_servo_update_iteration = !_servo_update_iteration;
 }
-//TEST
+//Print stuff
+//
 void TxDWord16(u16 wSentData)
 {
 	TxDByte16((wSentData >> 8) & 0xff);

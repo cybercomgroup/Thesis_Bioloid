@@ -45,7 +45,7 @@ static uint8 walk_state = 0;
 // Note: it is called from motion.c's executeMotion() when a new walk command is issued (from previously not walking)
 void walk_init()
 {
-	PrintString("walk_init\n");
+//	PrintString("walk_init\n");
 	int commStatus = 0;
 
 	// reset walk state and command

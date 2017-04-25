@@ -291,7 +291,7 @@ void setJointOffsetById(u8 id, s16 offset)
 void setJointOffsetSpeedById(u8 id, s16 offset, u16 speed)
 {
 	if (id == 0 || id > NUM_AX12_SERVOS) {
-		PrintString("setJointOffsetById: invalid servo id, did you perhaps send the index?\n");
+//		PrintString("setJointOffsetById: invalid servo id, did you perhaps send the index?\n");
 	}
 	if (offset_timings[id-1] != 0)
 		return;
@@ -324,7 +324,7 @@ void apply_new_pose_and_offsets()
 {
 
 	if (pose_mode != POSE_MODE_SYNC) {
-		PrintString("Tried to apply new pose and offsets while Not in SYNC pose mode!\n");
+//		PrintString("Tried to apply new pose and offsets while Not in SYNC pose mode!\n");
 		// see set_pose_mode
 		return;
 	}
