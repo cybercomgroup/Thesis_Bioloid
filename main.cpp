@@ -124,19 +124,30 @@ void demoMode()
   unsigned char send_byte = 42;
   unsigned char send_buffer[SEND_CHARS];
   string s = "";
+  bool quit;
   audio_init();
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   {
-    while (audio_getRecognizerQueueSize() > 0 && !s.compare("Quit"))
-		{
-			s = audio_popRecognizedString();
-
-			if(!s.compare("Turn left"))
+    while(!quit)
+    {
+      while (audio_getRecognizerQueueSize() > 0)
       {
-        cout<<"Turning left"<<endl;
-      }
+        s = audio_popRecognizedString();
 
-		}
+        if(!s.compare("Turn left"))
+        {
+          cout<<"Turning left"<<endl;
+        }
+        else if(!s.compare("Turn right"))
+        {
+          cout<<"Turning right"<<endl;
+        }
+        else if(!s.compare("Quit"))
+        {
+          quit = true;
+        }
+      }
+    }
     RS232_CloseComport(comport);
   }
   audio_destroy();
