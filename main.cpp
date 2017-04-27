@@ -52,6 +52,9 @@ int main (int argc, char *argv[]) {
   if(demo)
     demoVoice();
 
+  if(man)
+    manualMode();
+
   return 0;
 }
 
