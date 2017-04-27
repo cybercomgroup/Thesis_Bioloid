@@ -24,7 +24,7 @@ int main( int argc, char** argv )
 
     //Cascade
     cv::CascadeClassifier cascade;
-    cascade.load("face_cascade.xml");
+    cascade.load("cascades/face_cascade.xml");
 
     //Capture
     cv::VideoCapture cap(0);

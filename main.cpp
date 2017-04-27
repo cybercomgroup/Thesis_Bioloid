@@ -66,7 +66,7 @@ void demoImage()
 
       //Cascade
       CascadeClassifier cascade;
-      cascade.load("image/face_cascade.xml");
+      cascade.load("image/cascades/face_cascade.xml");
 
       VideoCapture cap(0);
       if (!cap.isOpened()) {
