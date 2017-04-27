@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 
-void audio_init(const std::string &vocePath, bool initSynthesis, bool initRecognition, const std::string &grammarPath, const std::string &grammarName);
+void audio_init(const std::string &vocePath="audio/lib", bool initSynthesis=false, bool initRecognition=true, const std::string &grammarPath="audio/grammar", const std::string &grammarName="control");
 
 void audio_destroy();
 

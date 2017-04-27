@@ -7,7 +7,7 @@ using namespace std;
 double countRBG(Mat img, Vec3b rgb, double diff);
 
 
-int capture(int width, int height, bool rot)
+int image_capture(int width, int height, bool rot)
 {
   VideoCapture cap(0);
   if (!cap.isOpened()) {
@@ -67,7 +67,7 @@ int capture(int width, int height, bool rot)
   cout << "bye!" <<endl;
   return 0;
 }
-void detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
+void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
 {
   vector<Rect> detected;
   double t = 0;
@@ -95,7 +95,7 @@ cascade to detect
 print boolean, if true prints time for detections
 flip boolean, if true flips image before detections
 */
-vector<Rect> detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
+vector<Rect> image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
 {
   vector<Rect> detected;
   double t = 0;
@@ -114,7 +114,7 @@ vector<Rect> detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool
   return detected;
 }
 
-bool isInside(Rect moving, Rect still, int xOffset = 0, int yOffset = 0)
+bool image_isInside(Rect moving, Rect still, int xOffset = 0, int yOffset = 0)
 {
   Point p = Point(moving.x + xOffset, moving.y + yOffset);
   return still.contains(p);

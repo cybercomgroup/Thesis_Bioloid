@@ -5,7 +5,7 @@
 using namespace std;
 using namespace cv;
 
-int capture(int, int, bool);
-void detectAndDraw(Mat&, CascadeClassifier&, bool, bool);
-vector<Rect> detectAndGet(Mat&, CascadeClassifier&, bool, bool);
-bool isInside(Rect, Rect, int, int);
+int image_capture(int, int, bool);
+void image_detectAndDraw(Mat&, CascadeClassifier&, bool, bool);
+vector<Rect> image_detectAndGet(Mat&, CascadeClassifier&, bool, bool);
+bool image_isInside(Rect, Rect, int, int);

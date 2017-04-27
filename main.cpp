@@ -1,5 +1,6 @@
 #include "rs232.h"
 #include "image/image.h"
+#include "audio/audio.h"
 
 #include <iostream>
 #include <string>
@@ -13,12 +14,14 @@ using namespace cv;
 #define SEND_CHARS      10      // or whatever size of buffer you want to send
 
 void manualMode();
+void demoMode();
 
 //Parser and global belonging variables
 void cParser(int argN, char *argv[]);
 
 bool test = false;
 bool rot = false;
+bool demo = false;
 int comport = 16; //pNUMBER
 int baudrate = 57600; //bNUMBER
 
@@ -35,14 +38,18 @@ int main (int argc, char *argv[]) {
   }
 
   cout<<"The program is running these values:"<<endl;
+  cout<<"Demo: "<<demo<<endl;
   cout<<"Testmode: "<<test<<endl;
   cout<<"Comport: "<<comport<<endl;
   cout<<"Baudrate: "<<baudrate<<endl;
 
-
   unsigned char receive_buffer[RECEIVE_CHARS];
   unsigned char send_byte = 42;
   unsigned char send_buffer[SEND_CHARS];
+
+  demoMode();
+
+  /*
 
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   {
@@ -76,7 +83,7 @@ int main (int argc, char *argv[]) {
           }
 
           //Detection
-          vector<Rect> detected = detectAndGet(img,cascade,true,false);
+          vector<Rect> detected = image_detectAndGet(img,cascade,true,false);
 
           int rWidth = 100;
           int rHeight = 480;
@@ -90,7 +97,7 @@ int main (int argc, char *argv[]) {
           {
             rectangle(img, detected[i], Scalar(255,0,0));
             send_buffer[0] = 'p';
-            if(isInside(detected[0],r,detected[0].width/2,detected[0].height/2)){RS232_SendBuf(comport, send_buffer, SEND_CHARS);}
+            if(image_isInside(detected[0],r,detected[0].width/2,detected[0].height/2)){RS232_SendBuf(comport, send_buffer, SEND_CHARS);}
           }
 
           //imshow( "result", img );
@@ -107,8 +114,32 @@ int main (int argc, char *argv[]) {
 
   //RS232_CloseComport(comport);
 
-
+  */
   return 0;
+}
+
+void demoMode()
+{
+  unsigned char receive_buffer[RECEIVE_CHARS];
+  unsigned char send_byte = 42;
+  unsigned char send_buffer[SEND_CHARS];
+  string s = "";
+  audio_init();
+  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
+  {
+    while (audio_getRecognizerQueueSize() > 0 && !s.compare("Quit"))
+		{
+			s = audio_popRecognizedString();
+
+			if(!s.compare("Turn left"))
+      {
+        cout<<"Turning left"<<endl;
+      }
+
+		}
+    RS232_CloseComport(comport);
+  }
+  audio_destroy();
 }
 
 void manualMode()

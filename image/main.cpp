@@ -41,7 +41,7 @@ int main( int argc, char** argv )
       }
 
       //Detection
-      vector<Rect> detected = detectAndGet(img,cascade,true,false);
+      vector<Rect> detected = image_detectAndGet(img,cascade,true,false);
 
       int rWidth = 100;
       int rHeight = 480;
