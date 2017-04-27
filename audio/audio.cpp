@@ -2,42 +2,42 @@
 #include "voce.h"
 
 
-void audio_init(const std::string &vocePath, bool initSynthesis, bool initRecognition, const std::string &grammarPath, const std::string &grammarName)
+void audio::audio_init(const std::string &vocePath, bool initSynthesis, bool initRecognition, const std::string &grammarPath, const std::string &grammarName)
 {
 	voce::init(vocePath, initSynthesis, initRecognition, grammarPath, grammarName);
 }
 
-void audio_destroy()
+void audio::audio_destroy()
 {
 	voce::destroy();
 }
 
-void audio_synthesize(const std::string &message)
+void audio::audio_synthesize(const std::string &message)
 {
 	voce::synthesize(message);
 }
 
-void audio_stopSynthesizing()
+void audio::audio_stopSynthesizing()
 {
 	voce::stopSynthesizing();
 }
 
-int audio_getRecognizerQueueSize()
+int audio::audio_getRecognizerQueueSize()
 {
 	return voce::getRecognizerQueueSize();
 }
 
-std::string audio_popRecognizedString ()
+std::string audio::audio_popRecognizedString ()
 {
 	voce::popRecognizedString();
 }
 
-void audio_setRecognizerEnabled (bool e)
+void audio::audio_setRecognizerEnabled (bool e)
 {
 	voce::setRecognizerEnabled(e);
 }
 
-bool audio_isRecognizerEnabled ()
+bool audio::audio_isRecognizerEnabled ()
 {
 	return voce::isRecognizerEnabled();
 }

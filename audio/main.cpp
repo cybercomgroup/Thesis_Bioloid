@@ -22,42 +22,53 @@
  * license-LGPL.txt and license-BSD.txt for more details.                *
  *                                                                       *
  *************************************************************************/
+
 #include "audio.h"
+
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 /// A sample application showing how to use Voce's speech synthesis
 /// capabilities.
 
 int main(int argc, char **argv)
 {
-	audio_init("lib", true, false, "", "");
+	audio a;
+	a.audio_init("./lib", false, true, "./grammar", "control");
 
-	audio_synthesize("This is a speech synthesis test.");
-	audio_synthesize("Type a message to hear it spoken aloud.");
+	std::cout << "This is a speech recognition test. "
+		<< "Speak digits from 0-9 into the microphone. "
+		<< "Speak 'quit' to quit." << std::endl;
 
-	std::cout << "This is a speech synthesis test.  "
-		<< "Type a message to hear it spoken aloud." << std::endl;
-	std::cout << "Type 's' + 'enter' to make the "
-		<< "synthesizer stop speaking.  Type 'q' + 'enter' to quit."
-		<< std::endl;
-
-	std::string s;
-
-	while (s != "q")
+	bool quit = false;
+	while (!quit)
 	{
-		// Read a line from keyboard.
-		std::getline(std::cin, s);
-		std::cout<<"You wrote: "<<s<<std::endl;
-		if ("s" == s)
+		// Normally, applications would do application-specific things
+		// here.  For this sample, we'll just sleep for a little bit.
+#ifdef WIN32
+		::Sleep(200);
+#else
+		usleep(200);
+#endif
+
+		while (a.audio_getRecognizerQueueSize() > 0)
 		{
-			audio_stopSynthesizing();
-		}
-		else
-		{
-			// Speak what was typed.
-			audio_synthesize(s);
+			std::string s = a.audio_popRecognizedString();
+
+			// Check if the string contains 'quit'.
+			if (std::string::npos != s.rfind("quit"))
+			{
+				quit = true;
+			}
+
+			std::cout << "You said: " << s << std::endl;
+			//voce::synthesize(s);
 		}
 	}
 
-	audio_destroy();
+	a.audio_destroy();
 	return 0;
 }

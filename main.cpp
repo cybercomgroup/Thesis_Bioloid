@@ -1,6 +1,6 @@
 #include "rs232.h"
 #include "image/image.h"
-#include "audio/audio.h"
+#include "audio/voce.h"
 
 #include <iostream>
 #include <string>
@@ -125,14 +125,14 @@ void demoMode()
   unsigned char send_buffer[SEND_CHARS];
   string s = "";
   bool quit;
-  audio_init();
+  voce::init("audio/lib", false, true, "audio/grammar", "control");
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   {
     while(!quit)
     {
-      while (audio_getRecognizerQueueSize() > 0)
+      while (voce::getRecognizerQueueSize() > 0)
       {
-        s = audio_popRecognizedString();
+        s = voce::popRecognizedString();
 
         if(!s.compare("Turn left"))
         {
@@ -150,7 +150,7 @@ void demoMode()
     }
     RS232_CloseComport(comport);
   }
-  audio_destroy();
+  voce::destroy();
 }
 
 void manualMode()
