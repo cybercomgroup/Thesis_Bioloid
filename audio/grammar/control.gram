@@ -6,6 +6,6 @@
 
 grammar control;
 
-public <miscellaneous> = (quit);
+public <miscellaneous> = (banana);
 
 public <command> = (turn left | turn right);

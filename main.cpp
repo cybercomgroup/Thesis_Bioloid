@@ -146,7 +146,7 @@ void demoMode()
           send_buffer[0] = 'a';
           RS232_SendBuf(comport, send_buffer, 1);
         }
-        else if(!s.compare("quit"))
+        else if(!s.compare("banana"))
         {
           quit = true;
         }
