@@ -9,5 +9,3 @@ grammar control;
 public <miscellaneous> = (quit);
 
 public <command> = (turn left | turn right);
-
-#public <directions> = (left | right);
