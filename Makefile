@@ -19,3 +19,7 @@ image/image.o:
 audio/audio.o:
 	#Inside audio/
 	+$(MAKE) -C audio
+
+clean:
+	rm *.o
+	rm $(EX)
