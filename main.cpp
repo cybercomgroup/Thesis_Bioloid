@@ -18,11 +18,11 @@ void demoImage();
 void demoVoice();
 
 //Parser and global belonging variables
-void cParser(int argN, char *argv[]);
+bool cParser(int argN, char *argv[]);
 
 bool man = false;
 bool rot = false;
-bool demo = false;
+int demo = 0;
 int comport = 16; //pNUMBER
 int baudrate = 57600; //bNUMBER
 
@@ -40,7 +40,8 @@ int main (int argc, char *argv[]) {
   //Set up:
   if(argc > 1)
   {
-    cParser((argc),argv);
+    if(!cParser((argc),argv))
+      return 0;
   }
 
   cout<<"The program is running these values:"<<endl;
@@ -52,7 +53,10 @@ int main (int argc, char *argv[]) {
   if(man)
     manualMode();
 
-  if(demo)
+  if(demo == 1)
+    demoImage();
+
+  if(demo == 2)
     demoImage();
 
   return 0;
@@ -99,9 +103,10 @@ void demoImage()
         for(int i = 0; i < detected.size(); i++)
         {
           cout<<"Detected something!"<<endl;
-          rectangle(img, detected[i], Scalar(255,0,0));
+          //rectangle(img, detected[i], Scalar(255,0,0));
           send_buffer[0] = 'p';
-          if(image_isInside(detected[0],r,detected[0].width/2,detected[0].height/2)){RS232_SendBuf(comport, send_buffer, SEND_CHARS);}
+          RS232_SendBuf(comport, send_buffer, 1);
+          //if(image_isInside(detected[0],r,detected[0].width/2,detected[0].height/2)){RS232_SendBuf(comport, send_buffer, SEND_CHARS);}
         }
 
         //imshow( "result", img );
@@ -217,7 +222,7 @@ void manualMode()
   }
 }
 
-void cParser(int argN, char *argv[])
+bool cParser(int argN, char *argv[])
 {
   int number;
   string input;
@@ -230,12 +235,16 @@ void cParser(int argN, char *argv[])
     }
     switch(argv[i][0])
     {
-      case 't':
+      case 'm':
         man = true;
       break;
 
+      case 'r':
+        rot = true;
+      break;
+
       case 'd':
-        demo = true;
+        demo = number;
       break;
 
       case 'p':
@@ -246,12 +255,18 @@ void cParser(int argN, char *argv[])
         baudrate = number;
       break;
 
-      case 'r':
-        rot = true;
+      case 'h':
+        cout<<"m for manual"<<endl;
+        cout<<"r to rotate camera image"<<endl;
+        cout<<"d<NUMBER> for demo"<<endl;
+        cout<<"p<NUMBER> for input of comport"<<endl;
+        cout<<"b<NUMBER> for input of baudrate"<<endl;
+        return false;
       break;
 
       default:
       break;
     }
+    return true;
   }
 }
