@@ -49,11 +49,11 @@ int main (int argc, char *argv[]) {
   cout<<"Comport: "<<comport<<endl;
   cout<<"Baudrate: "<<baudrate<<endl;
 
-  if(demo)
-    demoVoice();
-
   if(man)
     manualMode();
+
+  if(demo)
+    demoImage();
 
   return 0;
 }
@@ -230,23 +230,23 @@ void cParser(int argN, char *argv[])
     switch(argv[i][0])
     {
       case 't':
-      man = true;
+        man = true;
       break;
 
       case 'd':
-      demo = true;
+        demo = true;
       break;
 
       case 'p':
-      comport = number;
+        comport = number;
       break;
 
       case 'b':
-      baudrate = number;
+        baudrate = number;
       break;
 
       case 'r':
-      rot = true;
+        rot = true;
       break;
 
       default:
