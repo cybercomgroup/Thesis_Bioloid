@@ -49,7 +49,8 @@ int main (int argc, char *argv[]) {
   cout<<"Comport: "<<comport<<endl;
   cout<<"Baudrate: "<<baudrate<<endl;
 
-  demoVoice();
+  if(demo)
+    demoVoice();
 
   return 0;
 }
@@ -126,13 +127,11 @@ void demoVoice()
         cout<<"You said: "<< s <<endl;
         if(!s.compare("left"))
         {
-          cout<<"Turning left"<<endl;
           send_buffer[0] = 'a';
           RS232_SendBuf(comport, send_buffer, 1);
         }
         else if(!s.compare("right"))
         {
-          cout<<"Turning right"<<endl;
           send_buffer[0] = 'd';
           RS232_SendBuf(comport, send_buffer, 1);
         }
@@ -141,6 +140,11 @@ void demoVoice()
           send_buffer[0] = 'b';
           RS232_SendBuf(comport, send_buffer, 1);
         }
+
+        int key = cv::waitKey(1);
+        key = (key==255) ? -1 : key; //#Solve bug in 3.2.0
+        if (key>=0)
+        quit = true;
       }
     }
     RS232_CloseComport(comport);
@@ -224,6 +228,10 @@ void cParser(int argN, char *argv[])
     {
       case 't':
       man = true;
+      break;
+
+      case 'd':
+      demo = true;
       break;
 
       case 'p':

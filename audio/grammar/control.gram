@@ -8,4 +8,4 @@ grammar control;
 
 
 
-public <command> = (left | right | stop | go *);
+public <command> = (left | right | stop | go);
