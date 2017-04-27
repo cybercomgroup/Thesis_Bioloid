@@ -66,7 +66,7 @@ void demoImage()
     {
       //Main loop:
       Mat img;
-      img = cv::imread("image/img.png");
+      //img = cv::imread("image/img.png");
 
       //Cascade
       CascadeClassifier cascade;
@@ -86,7 +86,7 @@ void demoImage()
         }
 
         //Detection
-        vector<Rect> detected = image_detectAndGet(img,cascade,true,false);
+        vector<Rect> detected = image_detectAndGet(img,cascade,false,false);
 
         int rWidth = 100;
         int rHeight = 480;
@@ -98,6 +98,7 @@ void demoImage()
 
         for(int i = 0; i < detected.size(); i++)
         {
+          cout<<"Detected something!"<<endl;
           rectangle(img, detected[i], Scalar(255,0,0));
           send_buffer[0] = 'p';
           if(image_isInside(detected[0],r,detected[0].width/2,detected[0].height/2)){RS232_SendBuf(comport, send_buffer, SEND_CHARS);}
