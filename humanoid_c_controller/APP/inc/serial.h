@@ -16,6 +16,9 @@
 
 byte CheckPCNewArrive(void);
 byte RxDByte_PC(void);
+void TxDByte16(u8 bSentData);
+void TxDByte_PC(u8 bTxdData);
+void TxDWord16(u16 wSentData);
 /**
  * High-level function to initialize the PC UART Library.
  * @param baudrate The baudrate [bps] to be used.

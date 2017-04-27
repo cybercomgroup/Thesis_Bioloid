@@ -25,9 +25,9 @@
 //#include <stdlib.h>
 
 void update_servo_positions();
-void TxDWord16(u16 wSentData);
-void TxDByte16(u8 bSentData);
-void TxDByte_PC(u8 bTxdData);
+//void TxDWord16(u16 wSentData);
+//void TxDByte16(u8 bSentData);
+//void TxDByte_PC(u8 bTxdData);
 void checkSensor();
 
 
@@ -283,7 +283,7 @@ void checkSensor(){
 	byte irLeftFoot = read_ir_left();
 
 
-	if(irMid > 0x00E0 || irLeftFoot > 0x050){
+	if(irMid > 0x00E0 || irLeftFoot > 0x030){
 			outPutStatus = OUTPUT_STOP;
 
 			if(irMidOld > irMid + 0x0010 && irLeftFootOld > irLeftFoot + 0x001A)
@@ -298,6 +298,7 @@ void checkSensor(){
 //	TxDWord16(irLeftFoot);
 //	PrintString("\n OUT PUT: ");
 	if(oldUtPutStatus != outPutStatus){
+		//Skickar status till sändaren
 		TxDByte_PC(outPutStatus);
 		oldUtPutStatus = outPutStatus;
 	}
@@ -306,31 +307,6 @@ void checkSensor(){
 	irLeftFootOld = irLeftFoot;
 }
 
-//Print stuff
-//
-void TxDWord16(u16 wSentData)
-{
-	TxDByte16((wSentData >> 8) & 0xff);
-	TxDByte16(wSentData & 0xff);
-}
-void TxDByte16(u8 bSentData)
-{
-	byte bTmp;
-
-	bTmp = ((byte) (bSentData >> 4) & 0x0f) + (byte) '0';
-	if (bTmp > '9')
-		bTmp += 7;
-	TxDByte_PC(bTmp);
-	bTmp = (byte) (bSentData & 0x0f) + (byte) '0';
-	if (bTmp > '9')
-		bTmp += 7;
-	TxDByte_PC(bTmp);
-}
-void TxDByte_PC(u8 bTxdData)
-{
-	USART_SendData(USART3,bTxdData);
-	while( USART_GetFlagStatus(USART3, USART_FLAG_TC)==RESET );
-}
 
 
 /*

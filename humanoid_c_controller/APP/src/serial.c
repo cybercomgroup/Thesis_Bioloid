@@ -95,6 +95,30 @@ void std_gets(char* str, int size)
 	}
 	return;
 }
+//####################################
+void TxDWord16(u16 wSentData)
+{
+	TxDByte16((wSentData >> 8) & 0xff);
+	TxDByte16(wSentData & 0xff);
+}
+void TxDByte16(u8 bSentData)
+{
+	byte bTmp;
+
+	bTmp = ((byte) (bSentData >> 4) & 0x0f) + (byte) '0';
+	if (bTmp > '9')
+		bTmp += 7;
+	TxDByte_PC(bTmp);
+	bTmp = (byte) (bSentData & 0x0f) + (byte) '0';
+	if (bTmp > '9')
+		bTmp += 7;
+	TxDByte_PC(bTmp);
+}
+void TxDByte_PC(u8 bTxdData)
+{
+	USART_SendData(USART3,bTxdData);
+	while( USART_GetFlagStatus(USART3, USART_FLAG_TC)==RESET );
+}
 
 ////##############################################################################
 //char* std_gets(char* str) {
