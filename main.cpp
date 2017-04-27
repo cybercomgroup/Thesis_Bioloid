@@ -126,8 +126,8 @@ void demoMode()
   string s = "";
   bool quit;
   voce::init("audio/lib", false, true, "audio/grammar", "control");
-  /*if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
-  {*/
+  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
+  {
     while(!quit)
     {
       while (voce::getRecognizerQueueSize() > 0)
@@ -137,19 +137,23 @@ void demoMode()
         if(!s.compare("turn left"))
         {
           cout<<"Turning left"<<endl;
+          send_buffer[0] = 'a';
+          RS232_SendBuf(comport, send_buffer, 1);
         }
         else if(!s.compare("turn right"))
         {
           cout<<"Turning right"<<endl;
+          send_buffer[0] = 'a';
+          RS232_SendBuf(comport, send_buffer, 1);
         }
         else if(!s.compare("quit"))
         {
           quit = true;
         }
       }
-    }/*
+    }
     RS232_CloseComport(comport);
-  }*/
+  }
   voce::destroy();
 }
 

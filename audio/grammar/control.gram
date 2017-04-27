@@ -8,6 +8,6 @@ grammar control;
 
 public <miscellaneous> = (quit);
 
-public <command> = turn <directions>;
+public <command> = (turn left | turn right);
 
-public <directions> = (left | right) ;
+#public <directions> = (left | right);
