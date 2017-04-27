@@ -29,7 +29,7 @@
 
 int main(int argc, char **argv)
 {
-	audio_init("../../../lib", true, false, "", "");
+	audio_init("lib", true, false, "", "");
 
 	audio_synthesize("This is a speech synthesis test.");
 	audio_synthesize("Type a message to hear it spoken aloud.");
