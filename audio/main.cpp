@@ -23,7 +23,7 @@
  *                                                                       *
  *************************************************************************/
 
-#include "audio.h"
+#include "voce.h"
 
 #ifdef WIN32
 #include <windows.h>
@@ -36,8 +36,8 @@
 
 int main(int argc, char **argv)
 {
-	audio a;
-	a.audio_init("./lib", false, true, "./grammar", "control");
+
+	voce::init("./lib", false, true, "./grammar", "control");
 
 	std::cout << "This is a speech recognition test. "
 		<< "Speak digits from 0-9 into the microphone. "
@@ -54,9 +54,9 @@ int main(int argc, char **argv)
 		usleep(200);
 #endif
 
-		while (a.audio_getRecognizerQueueSize() > 0)
+		while (voce::getRecognizerQueueSize() > 0)
 		{
-			std::string s = a.audio_popRecognizedString();
+			std::string s = voce::popRecognizedString();
 
 			// Check if the string contains 'quit'.
 			if (std::string::npos != s.rfind("quit"))
@@ -69,6 +69,6 @@ int main(int argc, char **argv)
 		}
 	}
 
-	a.audio_destroy();
+	voce::destroy();
 	return 0;
 }

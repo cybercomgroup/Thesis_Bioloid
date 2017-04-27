@@ -6,4 +6,6 @@
 
 grammar control;
 
-public <command> = (turn left | turn right);
+
+
+public <command> = (left | right | stop | go *);
