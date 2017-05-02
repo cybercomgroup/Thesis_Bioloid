@@ -9,7 +9,7 @@ all: subdirs main.o rs232.o
 	#Create exectuble
 	$(CC) -std=c++11 -L$(JAVA)/jre/lib/$(PROC)/server/ main.o rs232.o image/image.o `pkg-config --libs opencv` -o $(EX) -ljvm
 
-cleanandbuild: cleanall all
+redo: cleanall all
 
 #INSIDE THIS FOLDER
 allbasic: main.o rs232.o image/image.o
