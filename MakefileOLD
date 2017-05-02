@@ -3,14 +3,7 @@ EX=main
 JAVA=$(JAVA_HOME)
 #CFLAGS=
 
-
-#USING RECURSIVE
-all: subdirs main.o rs232.o
-	#Create exectuble
-	$(CC) -std=c++11 -L$(JAVA)/jre/lib/$(PROC)/server/ main.o rs232.o image/image.o `pkg-config --libs opencv` -o $(EX) -ljvm
-
-#INSIDE THIS FOLDER
-allbasic: main.o rs232.o image/image.o
+all: main.o rs232.o image/image.o
 	#Create exectuble
 	$(CC) -std=c++11 -L$(JAVA)/jre/lib/$(PROC)/server/ main.o rs232.o image/image.o `pkg-config --libs opencv` -o $(EX) -ljvm
 
@@ -23,15 +16,14 @@ main.o: main.cpp
 rs232.o: rs232.c rs232.h
 	$(CC) -std=c++11 -c rs232.c
 
+image/image.o:
+	#Inside image/
+	+$(MAKE) -C image
+
+audio/audio.o:
+	#Inside audio/
+	+$(MAKE) -C audio
+
 clean:
-	rm -f *.o
-	rm -f $(EX)
-
-#INSIDE SUBDIRS
-subdirs:
-	$(MAKE) -C image
-	$(MAKE) -C audio
-
-cleanall: clean
-	cd image && $(MAKE) clean
-	cd audio && $(MAKE) clean
+	rm *.o
+	rm $(EX)

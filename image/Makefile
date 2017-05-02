@@ -12,7 +12,7 @@ image.o: image.cpp image.h
 	$(CC) -std=c++11 -c `pkg-config --cflags opencv` image.cpp
 
 clean:
-	rm *.o
-	rm $(EX)	
+	rm -f *.o
+	rm -f $(EX)	
 
 #g++ `pkg-config --cflags opencv` facedetect.cpp `pkg-config --libs opencv` -o facedetect
