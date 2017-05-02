@@ -283,7 +283,8 @@ void checkSensor(){
 	byte irLeftFoot = read_ir_left();
 
 
-	if(irMid > 0x00E0 || irLeftFoot > 0x030){
+
+	if(irMid > 0x00E0 || irLeftFoot > 0x0030){
 			outPutStatus = OUTPUT_STOP;
 
 			if(irMidOld > irMid + 0x0010 && irLeftFootOld > irLeftFoot + 0x001A)
