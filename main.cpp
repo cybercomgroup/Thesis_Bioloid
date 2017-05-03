@@ -1,3 +1,4 @@
+
 #include "rs232.h"
 #include "image/image.h"
 #include "audio/voce.h"
@@ -170,7 +171,8 @@ void testDemo()
 
 void mainMode()
 {
-  char objectClose, objectClosetmp;
+  char  objectClosetmp;
+bool obC = false;
   int a = 0;
   int b = 0;
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
@@ -178,23 +180,29 @@ void mainMode()
         //commandAction = commandVoice(); // outcomment for testing
         testDemo();
         objectClosetmp = RS232_PollComport(comport, send_buffer, 1);
-        if(objectClosetmp == 'g'){
+        cout<<objectClosetmp<<endl;
+	if(objectClosetmp == 'g'){
           a++;
+	cout<< "A higher" << endl;
         }else if(objectClosetmp == 'b'){
           b++;
+	cout<< "B higher"<< endl;
         }
         if(a > 50){
-          objectClose = 'g';
+         obC = false;
           b = a = 0;
         }else if( b > 50){
-          objectClose = 'b';
+          obC = true;
           b = a = 0;
         }
-          if(send_buffer[0] != '0' && objectClose != 'b'){
-                RS232_SendBuf(comport, send_buffer, 1);
+	//cout<<objectClose<<endl;
+          if(send_buffer[0] != '0' && !obC){
+        	cout<<"not close"<<endl; 
+	//       RS232_SendBuf(comport, send_buffer, 1);
           }else{
             send_buffer[0] = 'd';
-            RS232_SendBuf(comport, send_buffer, 1);
+            cout<< "close"<<endl;
+		//RS232_SendBuf(comport, send_buffer, 1);
           }
     }
         RS232_CloseComport(comport);
