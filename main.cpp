@@ -23,7 +23,7 @@ bool cParser(int argN, char *argv[]);
 
 bool man = false;
 bool rot = false;
-int demo = 0;
+int demo = 3;
 int comport = 16; //pNUMBER
 int baudrate = 57600; //bNUMBER
 
@@ -61,7 +61,7 @@ int main (int argc, char *argv[]) {
     demoImage();
 
   if(demo == 3)
-
+    mainMode();
 
   return 0;
 }
