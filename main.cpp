@@ -60,7 +60,7 @@ int main (int argc, char *argv[]) {
 //  if(demo == 2)
 //    demoImage();
 
-//  if(demo == 3)
+  if(demo == 3)
     mainMode();
 
   return 0;
@@ -170,36 +170,35 @@ void testDemo()
 
 void mainMode()
 {
-	int a = b = 0;
-  char objectClose = 'u';
-//	cout<<"test first"<<endl; 
- if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
+  char objectClose, objectClosetmp;
+  int a = 0;
+  int b = 0;
+  if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
     while(1){
-//	cout<<"test second"<< endl;
         //commandAction = commandVoice(); // outcomment for testing
-      //  testDemo();
-	
-	
-        objectClose = RS232_PollComport(comport, send_buffer, 1);
-	if(objectClose == 'g'){
-	a++;
-	}else if(objectClose == 'b'){
-	b++;
-}
-        cout<< objectClose <<endl;
-        printf("%c", objectClose);  
-	if(send_buffer[0] != '0' && objectClose != 'b'){
-		cout<<"not close"<<endl;
-//                RS232_SendBuf(comport, send_buffer, 1);
+        testDemo();
+        objectClosetmp = RS232_PollComport(comport, send_buffer, 1);
+        if(objectClosetmp == 'g'){
+          a++;
+        }else if(objectClosetmp == 'b'){
+          b++;
+        }
+        if(a > 50){
+          objectClose = 'g';
+          b = a = 0;
+        }else if( b > 50){
+          objectClose = 'b';
+          b = a = 0;
+        }
+          if(send_buffer[0] != '0' && objectClose != 'b'){
+                RS232_SendBuf(comport, send_buffer, 1);
           }else{
-//            send_buffer[0] = 'd';
-//            RS232_SendBuf(comport, send_buffer, 1);
-	cout<<"Close"<< endl;
+            send_buffer[0] = 'd';
+            RS232_SendBuf(comport, send_buffer, 1);
           }
     }
-	RS232_CloseComport(comport);
+        RS232_CloseComport(comport);
   }
-
 }
 
 void manualMode()
