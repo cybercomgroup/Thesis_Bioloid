@@ -15,7 +15,7 @@ using namespace cv;
 
 void manualMode();
 void demoImage();
-char[] commandVoice();
+char commandVoice();
 void mainMode();
 
 //Parser and global belonging variables
@@ -164,14 +164,14 @@ char[] commandVoice()
 
 char[] testDemo()
 {
-  char[] test;
+  char test[];
   return test[0] = 'w';
 }
 
 void mainMode()
 {
   char objectClose;
-  char[] commandAction;
+  char commandAction[];
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
     while(1){
         //commandAction = commandVoice(); // outcomment for testing
