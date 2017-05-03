@@ -15,7 +15,7 @@ using namespace cv;
 
 void manualMode();
 void demoImage();
-char commandVoice();
+void commandVoice();
 void mainMode();
 
 //Parser and global belonging variables
@@ -176,7 +176,7 @@ void mainMode()
         //commandAction = commandVoice(); // outcomment for testing
         testDemo();
         objectClose = RS232_PollComport(comport, send_buffer, 1);
-        cout<<objectClose<<end1;
+        cout<<objectClose<<endl;
           if(send_buffer[0] != '0' && objectClose != 'b'){
                 RS232_SendBuf(comport, send_buffer, 1);
           }else{
