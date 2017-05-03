@@ -62,11 +62,20 @@ void manualMode(int comport, int baudrate)
   }
 }
 
-int comm_OpenComport(int comport, int boudrate, const char * config);
+int comm_OpenComport(int comport, int boudrate, const char * config)
 {
-  return RS232_OpenComport(comport, boudrate, config)
+  return RS232_OpenComport(comport, boudrate, config);
 }
-int RS232_PollComport(int comport, unsigned char *receive_buffer, int receive_chars);
-int RS232_SendByte(int, unsigned char);
-int RS232_SendBuf(int, unsigned char *, int);
-void RS232_CloseComport(int);
+int comm_PollComport(int comport, unsigned char *receive_buffer, int receive_chars)
+{
+  return RS232_PollComport(int comport, unsigned char *receive_buffer, int receive_chars);
+}
+//int RS232_SendByte(int comport, unsigned char byte);
+int comm_SendBuf(int comport, unsigned char *send_buffer, int send_chars)
+{
+  return RS232_SendBuf(comport,send_buffer,send_chars);
+}
+void comm_CloseComport(int comport)
+{
+  RS232_CloseComport(comport);
+}

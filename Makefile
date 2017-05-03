@@ -28,8 +28,8 @@ clean:
 
 #INSIDE SUBDIRS
 subdirs:
-	$(MAKE) -C image
-	$(MAKE) -C audio
+	cd image && $(MAKE) dep
+	#$(MAKE) -C audio
 
 #Removes all .o files and exectubles inside the project and subfolders
 cleanall: clean

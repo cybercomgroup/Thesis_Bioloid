@@ -65,7 +65,7 @@ int RS232_OpenComport(int comport_number, int baudrate, const char *mode)
     printf("Illegal comport number\n");
     return(1);
   }
-  
+
   switch(baudrate)
   {
     case      50 : baudr = B50;
