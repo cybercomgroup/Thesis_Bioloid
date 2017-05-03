@@ -15,7 +15,8 @@ using namespace cv;
 
 void manualMode();
 void demoImage();
-void demoVoice();
+char[] commandVoice();
+void mainMode();
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
@@ -121,7 +122,7 @@ void demoImage()
   }
 }
 
-void demoVoice()
+char[] commandVoice()
 {
   string s = "";
   bool quit;
@@ -136,18 +137,15 @@ void demoVoice()
         cout<<"You said: "<< s <<endl;
         if(!s.compare("left"))
         {
-          send_buffer[0] = 'a';
-          RS232_SendBuf(comport, send_buffer, 1);
+          return send_buffer[0] = 'a';
         }
         else if(!s.compare("right"))
         {
-          send_buffer[0] = 'd';
-          RS232_SendBuf(comport, send_buffer, 1);
+          return send_buffer[0] = 'd';
         }
         else if(!s.compare("stop"))
         {
-          send_buffer[0] = 'b';
-          RS232_SendBuf(comport, send_buffer, 1);
+          return send_buffer[0] = 'b';
         }
 
         int key = cv::waitKey(1);
@@ -159,6 +157,31 @@ void demoVoice()
     RS232_CloseComport(comport);
   }
   voce::destroy();
+}
+
+char[] testDemo()
+{
+  char[] test;
+  return test[0] = 'w';
+}
+
+void mainMode()
+{
+  char objectClose;
+  char[] commandAction;
+  if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
+    while(1){
+        commandAction = commandVoice();
+        objectClose = RS232_PollComport(comport, send_buffer, 1);
+          if(commandAction[0] != '0' && objectClose != 'b'){
+                RS232_SendBuf(comport, commandAction, 1);
+          }else{
+            commandAction[0] = 'd';
+            RS232_SendBuf(comport, commandAction, 1);
+          }
+    }
+  }
+
 }
 
 void manualMode()
