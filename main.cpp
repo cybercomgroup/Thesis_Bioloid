@@ -60,6 +60,9 @@ int main (int argc, char *argv[]) {
   if(demo == 2)
     demoImage();
 
+  if(demo == 3)
+
+
   return 0;
 }
 
@@ -171,7 +174,8 @@ void mainMode()
   char[] commandAction;
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
     while(1){
-        commandAction = commandVoice();
+        //commandAction = commandVoice(); // outcomment for testing
+        commandAction = testDemo();
         objectClose = RS232_PollComport(comport, send_buffer, 1);
           if(commandAction[0] != '0' && objectClose != 'b'){
                 RS232_SendBuf(comport, commandAction, 1);
