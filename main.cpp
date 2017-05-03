@@ -51,14 +51,14 @@ int main (int argc, char *argv[]) {
   cout<<"Comport: "<<comport<<endl;
   cout<<"Baudrate: "<<baudrate<<endl;
 
-  if(man)
-    manualMode();
+//  if(man)
+//    manualMode();
 
-  if(demo == 1)
-    demoImage();
+//  if(demo == 1)
+//    demoImage();
 
-  if(demo == 2)
-    demoImage();
+//  if(demo == 2)
+//    demoImage();
 
   if(demo == 3)
     mainMode();
