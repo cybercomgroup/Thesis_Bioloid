@@ -1,5 +1,5 @@
 
-#include "rs232.h"
+#include "comm/rs232.h"
 #include "image/image.h"
 #include "audio/voce.h"
 
@@ -197,7 +197,7 @@ bool obC = false;
         }
 	//cout<<objectClose<<endl;
           if(send_buffer[0] != '0' && !obC){
-        	cout<<"not close"<<endl; 
+        	cout<<"not close"<<endl;
 	//       RS232_SendBuf(comport, send_buffer, 1);
           }else{
             send_buffer[0] = 'd';

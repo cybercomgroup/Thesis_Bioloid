@@ -32,6 +32,7 @@ clean:
 dep:
 	cd image && $(MAKE) dep
 	cd audio && $(MAKE) dep
+	cd comm && $(MAKE) dep
 
 #INSIDE SUBDIRS
 subdirs:
@@ -42,3 +43,4 @@ subdirs:
 cleanall: clean
 	cd image && $(MAKE) clean
 	cd audio && $(MAKE) clean
+	cd comm && $(MAKE) clean
