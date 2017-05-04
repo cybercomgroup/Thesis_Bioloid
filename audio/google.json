@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "analog-oven-166012",
+  "private_key_id": "66e26fe3cff1b67a4bf3217a19c38f7b06700092",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCxBg2eBi7D0aLm\ncLoJKlANXyqOPLSXkCAHqoQp28ES6lCAPqN7pzx5rtSrorsyog8Ij9YpI7cebLKE\nD4DI2xZpoybVZANqsovKzToflC7AI4AZvu3/E643kETCwxIIPJ1gUZG8qlxUmOR+\niYvBmpqMjAht+5lP0nCF8GVoakRF4XKTMy8TyEyY+Q/NgqdqmtAytl5QerSTber3\n+j9hx369lFmkCa71w+2siHl175tFXBYt8dpI33+9nn8k03qkkzvlw+384O2+Yk5q\nuvsCwLc1RZGVHV5q0v3DMKmHBgm3e3HKT8q7O/eSxdsRLMf9EgqtwzJoBXuOKLOd\n7B7iFy19AgMBAAECggEAXoHIy1CprslAmp4b88CvNDRWV9F46GF9eBpErMQxc5O8\nnnrSdLV3x87aozchkYqLVBrWTuhOXuPQ+kf8jT7J3GPJ26qlWFUx5HdkTG+j9df+\nD8Cq9r7fB7Lxwri568PQkRd7Iqog2Nk3Q4bTIe0UDWzFI1JrKv5CLH+G5BO3l0Y9\ng8K/hN275rBxEfWJtma/R56jJQ8Yvm8+/wkKuqYRwJriW6h4jLOWWdAQDMkUTveK\nAPoaRYYxaPZjt+74NG63xDAWKOaxuo5g6WIjvbHi9uIDiTYmjU3Md3UCmdioarSQ\nEXkIyX/AHqZURzn69xKDeLsAM+BFP2a3Wu0uKam4UQKBgQDfEt7MT+ZaIRA1TV/e\n2zXx7keP94qRBsl24dSzaSokEjP83IhyRrEWlRPIyi5G4IfB3PJI4a1T0P5PFBE2\nz1ULst48KMkxEkcIDJRaxYeE/lwV1BztTa4/ygL6lY3ikmPLmqI5RnQNFABnwGLa\nMz/hIJwaMPcy3Y4gve4U7GJy7wKBgQDLJx8Q91q6J76I8dHcskbx42Xq+RJWyPZN\npFsIxMbSpTJGMhq9603wBFsgUamdgMBcrtt8r0cTfg5JMGCC93bRnYTGGnlaYks/\nZ2gAJh6lYA32PiLGI5RppTq4spRhEb1W8fIJbt1x3hsYFBJ3Vh3yGHnEfWke/I1p\noCCf7uq2UwKBgHrAKIenI+vOq9uY4zt/xvSFGS34mnBpmqznYiMDqKPGvILVW+P+\nUG5LxGJGFyb7YNjl2xEN1lH7/CTJtxtBBdx1JeNW0jdFhn7AZVZ5wbQGP+fnG6/d\nghgp8m+voi7ePToJsmDwCuYzbnGpJPxLHUilqCCldzGvRwlvWjZ7SUVTAoGAN28e\naAfHBwLvV/j8dgdjmn+dgOekHHBL3VXazWK8iiAvvr3PVEGQC810fDYsXWETnHbO\nR5CgiW4dQdVkkHgsQPiFkXUJ5iLqO4vg8iF0vVWfmbDM1lpBFi7S/jEkkfRAQShW\nDkLlRDwCEqjvfQbPtw78syQxehYaFFdwb5PHEicCgYEAlIAxuxfCGpx4k2r0kWyo\nLWnUNftqhJsXHRgiB2MZXXlJaDIIhdz2kuEd7DUPdqnyBQ9yPWSAffBTQtVPwuSB\nf2PCI1mDHgHQfKo3VaU3YUGrluir6U3U2r5C/F0cwLlQ8AR09ZpwwA/EpDZR0M45\n03Y3f4f20IZMP98YR3LM93k=\n-----END PRIVATE KEY-----\n",
+  "client_email": "robot-voice-362@analog-oven-166012.iam.gserviceaccount.com",
+  "client_id": "104073920421266132563",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/robot-voice-362%40analog-oven-166012.iam.gserviceaccount.com"
+}
