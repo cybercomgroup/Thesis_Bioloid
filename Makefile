@@ -5,7 +5,7 @@ JAVA=$(JAVA_HOME)
 
 
 #USING RECURSIVE
-all: subdirs main.o rs232.o
+all: dep main.o rs232.o
 	#Create exectuble
 	$(CC) -std=c++11 -L$(JAVA)/jre/lib/$(PROC)/server/ main.o rs232.o image/image.o `pkg-config --libs opencv` -o $(EX) -ljvm
 
@@ -28,6 +28,10 @@ rs232.o: rs232.c rs232.h
 clean:
 	rm -f *.o
 	rm -f $(EX)
+
+dep:
+	cd image && $(MAKE) dep
+	cd audio && $(MAKE) dep
 
 #INSIDE SUBDIRS
 subdirs:

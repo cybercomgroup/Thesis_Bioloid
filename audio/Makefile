@@ -14,6 +14,8 @@ main.o: main.cpp
 audio.o: audio.cpp audio.h
 	$(CC) -std=c++11 -c -g -I$(JAVA)/include/ -I$(JAVA)/include/linux/ -L$(JAVA)/jre/bin/java -L$(JAVA)/jre/lib/$(PROC)/server/ audio.cpp -ljvm
 
+dep: audio.o
+
 clean:
 	rm -f *.o
 	rm -f $(EX)
