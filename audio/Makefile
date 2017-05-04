@@ -6,13 +6,13 @@ EX=main
 JAVA=$(JAVA_HOME)
 
 all: audio.o main.o
-	$(CC) -std=c++11 -I$(JAVA)/include/ -I$(JAVA)/include/linux/ -L$(JAVA)/jre/bin/java -L$(JAVA)/jre/lib/$(PROC)/server/ main.o -o $(EX) -ljvm
+	$(CC) -std=c++11 main.o audio.o -o $(EX) `pkg-config --cflags --libs pocketsphinx sphinxbase`
 
 main.o: main.cpp
-	$(CC) -std=c++11 -c -g -I$(JAVA)/include/ -I$(JAVA)/include/linux/ -L$(JAVA)/jre/bin/java -L$(JAVA)/jre/lib/$(PROC)/server/ main.cpp
+	$(CC) -std=c++11 -c main.cpp 
 
 audio.o: audio.cpp audio.h
-	$(CC) -std=c++11 -c -g -I$(JAVA)/include/ -I$(JAVA)/include/linux/ -L$(JAVA)/jre/bin/java -L$(JAVA)/jre/lib/$(PROC)/server/ audio.cpp -ljvm
+	$(CC) -std=c++11 -c audio.cpp `pkg-config --cflags --libs pocketsphinx sphinxbase`
 
 dep: audio.o
 
