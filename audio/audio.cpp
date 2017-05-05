@@ -56,7 +56,7 @@ int audio_listenForCommand()
 	int32 k;
 	string hyp = "";
 
-	if ((ad = ad_open_dev("hw:0,0",
+	if ((ad = ad_open_dev(cmd_ln_str_r(config, "-adcdev"),
 												(int) cmd_ln_float32_r(config,
 																							 "-samprate"))) == NULL)
 			E_FATAL("Failed to open audio device\n");
