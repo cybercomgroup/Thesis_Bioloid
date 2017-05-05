@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
   string s;
   int pos;
   audio_init("./5993.lm","./5993.dic");
-  thread listen(audio_listenForCommand,"ROBOT");
+  thread listen(audio_listenForCommand);
   while(1)
   {
     if(audio_getCommandsSize() > -1){

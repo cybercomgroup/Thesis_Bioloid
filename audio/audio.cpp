@@ -23,6 +23,7 @@ int audio_init(string lm, string dict)
 	"-hmm", MODELDIR "/en-us/en-us",
 	"-lm", "./5993.lm",
 	"-dict", "./5993.dic",
+	"-adcdev", "hw:0,0",
 	NULL);
 	if (config == NULL) {
 		fprintf(stderr, "Failed to create config object, see log for details\n");
