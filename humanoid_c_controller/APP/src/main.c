@@ -93,7 +93,7 @@ int main(void) {
 		//apply_new_pose_and_offsets();
 
 		//Mostly use delay for testingTxDByte16(irMidOld);
-//		mDelay(1000);
+		//mDelay(1000);
 	}
 
     //Buzzed(150, 2300);    // 217 Hz ~ A_4
@@ -284,25 +284,23 @@ void checkSensor(){
 
 
 
-	if(irMid > 0x00E0 || irLeftFoot > 0x0030){
+	if(irMid > 0x00E0 || irLeftFoot > 0x0010){
 			outPutStatus = OUTPUT_STOP;
 
-			if(irMidOld > irMid + 0x0010 && irLeftFootOld > irLeftFoot + 0x001A)
+			if(irMidOld > irMid + 0x0010 && irLeftFootOld > irLeftFoot + 0x000A)
 				outPutStatus = OUTPUT_OK;
 	}else
 		outPutStatus = OUTPUT_OK;
 
 
-//	PrintString("\n OLD: ");
-//	TxDWord16(irLeftFootOld);
-//	PrintString("\n New: ");
-//	TxDWord16(irLeftFoot);
-//	PrintString("\n OUT PUT: ");
-	if(oldUtPutStatus != outPutStatus){
+	//PrintString("\n OutPut: ");
 		//Skickar status till sändaren
 		TxDByte_PC(outPutStatus);
-		oldUtPutStatus = outPutStatus;
-	}
+//		PrintString("\n Value in hex: ");
+//		TxDWord16(irLeftFoot);
+
+		//TxDByte_PC(outPutStatus);
+
 
 	irMidOld = irMid;
 	irLeftFootOld = irLeftFoot;
