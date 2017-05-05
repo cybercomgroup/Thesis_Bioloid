@@ -44,7 +44,7 @@ int main (int argc, char *argv[]) {
   if(argc > 1)
   {
     if(!cParser((argc),argv))
-      return 0;
+    return 0;
   }
 
   cout<<"The program is running these values:"<<endl;
@@ -54,16 +54,16 @@ int main (int argc, char *argv[]) {
   cout<<"Baudrate: "<<baudrate<<endl;
 
   if(man)
-    manualMode();
+  manualMode();
 
   if(demo == 1)
-    demoImage();
+  demoImage();
 
   if(demo == 2)
-    demoVoice();
+  demoVoice();
 
   if(demo == 3)
-    mainMode();
+  mainMode();
 
   return 0;
 }
@@ -87,6 +87,7 @@ void demoImage()
         cerr << "ERROR: Unable to open the camera" << endl;
         return;
       }
+      vector<Rect> detected;
       while(1)
       {
         cap >> img;
@@ -96,26 +97,38 @@ void demoImage()
         }
 
         //Detection
-        vector<Rect> detected = image_detectAndGet(img,cascade,false,false);
+        detected = image_detectAndGet(img,cascade,false,false);
+        //image_detectAndDraw(img,cascade,true,false);
 
-        int rWidth = 100;
+
+        int rWidth = 640/3;
         int rHeight = 480;
-        int rx =  ((640/2)-rWidth/2);
+        int rLx =  0;
+        int rMx =  ((640/2)-rWidth/2);
+        int rRx =  (640-rWidth);
         int ry =  0;
-        Rect r = Rect(rx,ry,rWidth,rHeight);//STATIC RECT
+        Rect rL = Rect(rLx,ry,rWidth,rHeight);//STATIC RECT
+        Rect rM = Rect(rMx,ry,rWidth,rHeight);//STATIC RECT
+        Rect rR = Rect(rRx,ry,rWidth,rHeight);//STATIC RECT
 
-        rectangle(img, r, Scalar(0,0,0), -1);
+        /*
+        rectangle(img, rL, Scalar(255,255,255), -1);
+        rectangle(img, rM, Scalar(0,0,0), -1);
+        rectangle(img, rR, Scalar(255,255,255), -1);
+        */
 
+        //REMEMBER DETECTED 0
         for(int i = 0; i < detected.size(); i++)
         {
-          cout<<"Detected something!"<<endl;
-          //rectangle(img, detected[i], Scalar(255,0,0));
-          send_buffer[0] = 'p';
-          RS232_SendBuf(comport, send_buffer, 1);
-          //if(image_isInside(detected[0],r,detected[0].width/2,detected[0].height/2)){RS232_SendBuf(comport, send_buffer, SEND_CHARS);}
+          if(image_isInside(detected[0],rL,detected[0].width/2,detected[0].height/2))
+          cout<<"Left"<<endl;
+          if(image_isInside(detected[0],rM,detected[0].width/2,detected[0].height/2))
+          cout<<"Middle"<<endl;
+          if(image_isInside(detected[0],rR,detected[0].width/2,detected[0].height/2))
+          cout<<"Right"<<endl;
         }
 
-        //imshow( "result", img );
+        imshow( "result", img );
 
         int key = cv::waitKey(1);
         key = (key==255) ? -1 : key; //#Solve bug in 3.2.0
@@ -133,28 +146,28 @@ void demoVoice()
   bool quit;
   audio_init("audio/5993.lm","audio/5993.dic");
   audio_listenForCommand();
-    while(!quit)
+  while(!quit)
+  {
+    if(audio_getCommandsSize() > -1)
     {
-      if(audio_getCommandsSize() > -1)
+      s = audio_popCommand();
+      cout<<"You said: "<< s <<endl;
+      s = parseCommand(s);
+      if(!s.compare("TURN LEFT"))
       {
-        s = audio_popCommand();
-        cout<<"You said: "<< s <<endl;
-        s = parseCommand(s);
-        if(!s.compare("TURN LEFT"))
-        {
-          send_buffer[0] = 'a';
-          return;
-        }
-        else if(!s.compare("TURN RIGHT"))
-        {
-          send_buffer[0] = 'd';
-          return;
-        }
-        else if(!s.compare("GO")) //TEMP
-        {
-          send_buffer[0] = 'b';
-          return;
-        }
+        send_buffer[0] = 'a';
+        return;
+      }
+      else if(!s.compare("TURN RIGHT"))
+      {
+        send_buffer[0] = 'd';
+        return;
+      }
+      else if(!s.compare("GO")) //TEMP
+      {
+        send_buffer[0] = 'b';
+        return;
+      }
     }
   }
   //audio_destroy();
@@ -168,40 +181,40 @@ void testDemo()
 void mainMode()
 {
   char  objectClosetmp;
-bool obC = false;
+  bool obC = false;
   int a = 0;
   int b = 0;
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
     while(1){
-        //commandAction = commandVoice(); // outcomment for testing
-        testDemo();
-        objectClosetmp = RS232_PollComport(comport, send_buffer, 1);
-        cout<<objectClosetmp<<endl;
-	if(objectClosetmp == 'g'){
-          a++;
-	cout<< "A higher" << endl;
-        }else if(objectClosetmp == 'b'){
-          b++;
-	cout<< "B higher"<< endl;
-        }
-        if(a > 50){
-         obC = false;
-          b = a = 0;
-        }else if( b > 50){
-          obC = true;
-          b = a = 0;
-        }
-	//cout<<objectClose<<endl;
-          if(send_buffer[0] != '0' && !obC){
-        	cout<<"not close"<<endl;
-	//       RS232_SendBuf(comport, send_buffer, 1);
-          }else{
-            send_buffer[0] = 'd';
-            cout<< "close"<<endl;
-		//RS232_SendBuf(comport, send_buffer, 1);
-          }
+      //commandAction = commandVoice(); // outcomment for testing
+      testDemo();
+      objectClosetmp = RS232_PollComport(comport, send_buffer, 1);
+      cout<<objectClosetmp<<endl;
+      if(objectClosetmp == 'g'){
+        a++;
+        cout<< "A higher" << endl;
+      }else if(objectClosetmp == 'b'){
+        b++;
+        cout<< "B higher"<< endl;
+      }
+      if(a > 50){
+        obC = false;
+        b = a = 0;
+      }else if( b > 50){
+        obC = true;
+        b = a = 0;
+      }
+      //cout<<objectClose<<endl;
+      if(send_buffer[0] != '0' && !obC){
+        cout<<"not close"<<endl;
+        //       RS232_SendBuf(comport, send_buffer, 1);
+      }else{
+        send_buffer[0] = 'd';
+        cout<< "close"<<endl;
+        //RS232_SendBuf(comport, send_buffer, 1);
+      }
     }
-        RS232_CloseComport(comport);
+    RS232_CloseComport(comport);
   }
 }
 
@@ -224,32 +237,32 @@ void manualMode()
         switch(c)
         {
           case 0:
-            return;
+          return;
           break;
           case 1:
-            while(1)
-            {
-              cout<<"Write buffer to send:"<<endl;
-              cin.clear();
-              cin >> send_buffer;
-              if(send_buffer[0] == '0') {break;}
-              RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-            }
-          break;
-          case 2:
-            cout<<"Not implemented"<<endl;
-            /*
-            while(1)
-            {
+          while(1)
+          {
             cout<<"Write buffer to send:"<<endl;
             cin.clear();
-            cin >> send_byte;
-            if(send_byte == '0') {break;}
-            RS232_SendBuf(comport, send_byte);
-            }*/
+            cin >> send_buffer;
+            if(send_buffer[0] == '0') {break;}
+            RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+          }
+          break;
+          case 2:
+          cout<<"Not implemented"<<endl;
+          /*
+          while(1)
+          {
+          cout<<"Write buffer to send:"<<endl;
+          cin.clear();
+          cin >> send_byte;
+          if(send_byte == '0') {break;}
+          RS232_SendBuf(comport, send_byte);
+        }*/
         break;
         default:
-          cout<<"Please provide proper input"<<endl;
+        cout<<"Please provide proper input"<<endl;
         break;
       }
     }
@@ -261,9 +274,9 @@ void manualMode()
     cout<<"Respone:"<<endl;
     RS232_PollComport(comport, receive_buffer, RECEIVE_CHARS);
     cout<<receive_buffer<<endl; */
-    }
-    RS232_CloseComport(comport);
   }
+  RS232_CloseComport(comport);
+}
 }
 
 bool cParser(int argN, char *argv[])
@@ -280,32 +293,32 @@ bool cParser(int argN, char *argv[])
     switch(argv[i][0])
     {
       case 'm':
-        man = true;
+      man = true;
       break;
 
       case 'r':
-        rot = true;
+      rot = true;
       break;
 
       case 'd':
-        demo = number;
+      demo = number;
       break;
 
       case 'p':
-        comport = number;
+      comport = number;
       break;
 
       case 'b':
-        baudrate = number;
+      baudrate = number;
       break;
 
       case 'h':
-        cout<<"m for manual"<<endl;
-        cout<<"r to rotate camera image"<<endl;
-        cout<<"d<NUMBER> for demo"<<endl;
-        cout<<"p<NUMBER> for input of comport"<<endl;
-        cout<<"b<NUMBER> for input of baudrate"<<endl;
-        return false;
+      cout<<"m for manual"<<endl;
+      cout<<"r to rotate camera image"<<endl;
+      cout<<"d<NUMBER> for demo"<<endl;
+      cout<<"p<NUMBER> for input of comport"<<endl;
+      cout<<"b<NUMBER> for input of baudrate"<<endl;
+      return false;
       break;
 
       default:
