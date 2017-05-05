@@ -6,7 +6,7 @@
 
 
 
-#define MODELDIR "/home/tobbeh/Downloads/sphinx/pocketsphinx-5prealpha/model"
+#define MODELDIR "/home/pi/Downloads/sphinx/pocketsphinx-5prealpha/model"
 
 ps_decoder_t *ps;
 cmd_ln_t *config;
@@ -56,7 +56,7 @@ int audio_listenForCommand()
 	int32 k;
 	string hyp = "";
 
-	if ((ad = ad_open_dev(cmd_ln_str_r(config, "-adcdev"),
+	if ((ad = ad_open_dev("hw:0,0",
 												(int) cmd_ln_float32_r(config,
 																							 "-samprate"))) == NULL)
 			E_FATAL("Failed to open audio device\n");
