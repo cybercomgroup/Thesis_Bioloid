@@ -5,16 +5,18 @@
 #include "pocketsphinx.h"
 
 
+
 #define MODELDIR "/home/tobbeh/Downloads/sphinx/pocketsphinx-5prealpha/model"
 
 ps_decoder_t *ps;
 cmd_ln_t *config;
 char const *hyp, *uttid;
+string commands[30];
 int16 buf[512];
-int rv;
+int rv, commandSize=-1;
 int32 score;
 
-int audio::init()
+int audio_init(string lm, string dict)
 {
 	err_set_logfp(NULL);
 	config = cmd_ln_init(NULL, ps_args(), TRUE,
@@ -35,7 +37,71 @@ int audio::init()
 
 	return 0;
 }
-void audio::listen()
+
+int audio_getCommandsSize()
+{
+	return commandSize;
+}
+
+string audio_popCommand()
+{
+	return commands[commandSize--];
+}
+
+int audio_listenForCommand(string command)
+{
+	ad_rec_t *ad;
+	int16 adbuf[2048];
+	uint8 utt_started, in_speech;
+	int32 k;
+	string hyp = "";
+
+	if ((ad = ad_open_dev(cmd_ln_str_r(config, "-adcdev"),
+												(int) cmd_ln_float32_r(config,
+																							 "-samprate"))) == NULL)
+			E_FATAL("Failed to open audio device\n");
+	if (ad_start_rec(ad) < 0)
+			E_FATAL("Failed to start recording\n");
+
+	if (ps_start_utt(ps) < 0)
+			E_FATAL("Failed to start utterance\n");
+	utt_started = FALSE;
+	E_INFO("Ready....\n");
+
+	for (;;) {
+			if ((k = ad_read(ad, adbuf, 2048)) < 0)
+					E_FATAL("Failed to read audio\n");
+			ps_process_raw(ps, adbuf, k, FALSE, FALSE);
+			in_speech = ps_get_in_speech(ps);
+			if (in_speech && !utt_started) {
+					utt_started = TRUE;
+					E_INFO("Listening...\n");
+			}
+			if (!in_speech && utt_started) {
+					/* speech -> silence transition, time to start new utterance  */
+					ps_end_utt(ps);
+					hyp = ps_get_hyp(ps, NULL );
+					if (hyp != "") {
+							if(commandSize < 30){
+								commandSize++;
+								commands[commandSize] = hyp;
+							}
+							hyp="";
+							/*
+							printf("%s\n", hyp);
+							fflush(stdout);*/
+					}
+					if (ps_start_utt(ps) < 0)
+							E_FATAL("Failed to start utterance\n");
+					utt_started = FALSE;
+					E_INFO("Ready....\n");
+			}
+			usleep(100);
+	}
+	ad_close(ad);
+}
+
+void audio_listen()
 {
     ad_rec_t *ad;
     int16 adbuf[2048];
@@ -84,7 +150,7 @@ void audio::listen()
 }
 
 
-int audio::interpetFile(FILE *fh)
+int audio_interpetFile(FILE *fh)
 {
 	rv = ps_start_utt(ps);
 

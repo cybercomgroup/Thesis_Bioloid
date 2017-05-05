@@ -1,11 +1,13 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
 
-class audio {
-public:
-  int init();
-  void listen();
-  int interpetFile(FILE *fh);
-  void destroy();
-};
+
+int audio_init(string, string);
+void audio_listen();
+string audio_popCommand();
+int audio_getCommandsSize();
+int audio_interpetFile(FILE *fh);
+void audio_destroy();
+int audio_listenForCommand(string command);
