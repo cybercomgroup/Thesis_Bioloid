@@ -9,6 +9,7 @@ width: 640
 height: 480
 */
 
+
 int main( int argc, char** argv )
 {
     bool rot = false;
@@ -32,6 +33,8 @@ int main( int argc, char** argv )
       cerr << "ERROR: Unable to open the camera" << endl;
       return 0;
     }
+
+    vector<Rect> detected;
     while(1)
     {
       cap >> img;
@@ -41,20 +44,35 @@ int main( int argc, char** argv )
       }
 
       //Detection
-      vector<Rect> detected = image_detectAndGet(img,cascade,true,false);
+      detected = image_detectAndGet(img,cascade,false,false);
+      //image_detectAndDraw(img,cascade,true,false);
 
-      int rWidth = 100;
+
+      int rWidth = 640/3;
       int rHeight = 480;
-      int rx =  ((640/2)-rWidth/2);
+      int rLx =  0;
+      int rMx =  ((640/2)-rWidth/2);
+      int rRx =  (640-rWidth);
       int ry =  0;
-      Rect r = Rect(rx,ry,rWidth,rHeight);//STATIC RECT
+      Rect rL = Rect(rLx,ry,rWidth,rHeight);//STATIC RECT
+      Rect rM = Rect(rMx,ry,rWidth,rHeight);//STATIC RECT
+      Rect rR = Rect(rRx,ry,rWidth,rHeight);//STATIC RECT
 
-      rectangle(img, r, Scalar(0,0,0), -1);
+      /*
+      rectangle(img, rL, Scalar(255,255,255), -1);
+      rectangle(img, rM, Scalar(0,0,0), -1);
+      rectangle(img, rR, Scalar(255,255,255), -1);
+      */
 
+      //REMEMBER DETECTED 0
       for(int i = 0; i < detected.size(); i++)
       {
-        rectangle(img, detected[i], Scalar(255,0,0));
-        //cout<<isInside(detected[0],r,detected[0].width/2,detected[0].height/2)<<endl;
+        if(image_isInside(detected[0],rL,detected[0].width/2,detected[0].height/2))
+          cout<<"Left"<<endl;
+        if(image_isInside(detected[0],rM,detected[0].width/2,detected[0].height/2))
+          cout<<"Middle"<<endl;
+        if(image_isInside(detected[0],rR,detected[0].width/2,detected[0].height/2))
+          cout<<"Right"<<endl;
       }
 
       imshow( "result", img );
