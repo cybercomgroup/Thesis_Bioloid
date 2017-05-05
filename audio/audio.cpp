@@ -23,7 +23,6 @@ int audio_init(string lm, string dict)
 	"-hmm", MODELDIR "/en-us/en-us",
 	"-lm", "./5993.lm",
 	"-dict", "./5993.dic",
-	"-adcdev", "hw:0,0",
 	NULL);
 	if (config == NULL) {
 		fprintf(stderr, "Failed to create config object, see log for details\n");
@@ -57,7 +56,7 @@ int audio_listenForCommand()
 	int32 k;
 	string hyp = "";
 
-	if ((ad = ad_open_dev(cmd_ln_str_r(config, "-adcdev"),
+	if ((ad = ad_open_dev("hw:0,0",
 												(int) cmd_ln_float32_r(config,
 																							 "-samprate"))) == NULL)
 			E_FATAL("Failed to open audio device\n");
