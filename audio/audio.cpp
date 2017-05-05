@@ -48,7 +48,7 @@ string audio_popCommand()
 	return commands[commandSize--];
 }
 
-int audio_listenForCommand(string command)
+int audio_listenForCommand()
 {
 	ad_rec_t *ad;
 	int16 adbuf[2048];

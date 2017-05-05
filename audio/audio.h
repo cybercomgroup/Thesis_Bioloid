@@ -10,4 +10,4 @@ string audio_popCommand();
 int audio_getCommandsSize();
 int audio_interpetFile(FILE *fh);
 void audio_destroy();
-int audio_listenForCommand(string command);
+int audio_listenForCommand();

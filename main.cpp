@@ -1,7 +1,7 @@
 
 #include "comm/rs232.h"
 #include "image/image.h"
-#include "audio/voce.h"
+#include "audio/audio.h"
 
 #include <iostream>
 #include <string>
@@ -16,8 +16,9 @@ using namespace cv;
 
 void manualMode();
 void demoImage();
-void commandVoice();
+void demoVoice();
 void mainMode();
+string parseCommand(string s);
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
@@ -52,14 +53,14 @@ int main (int argc, char *argv[]) {
   cout<<"Comport: "<<comport<<endl;
   cout<<"Baudrate: "<<baudrate<<endl;
 
-//  if(man)
-//    manualMode();
+  if(man)
+    manualMode();
 
-//  if(demo == 1)
-//    demoImage();
+  if(demo == 1)
+    demoImage();
 
-//  if(demo == 2)
-//    demoImage();
+  if(demo == 2)
+    demoVoice();
 
   if(demo == 3)
     mainMode();
@@ -126,42 +127,37 @@ void demoImage()
   }
 }
 
-void commandVoice()
+void demoVoice()
 {
   string s = "";
   bool quit;
-  voce::init("audio/lib", false, true, "audio/grammar", "control");
-
+  audio_init("audio/5993.lm","audio/5993.dic");
+  audio_listenForCommand();
     while(!quit)
     {
-      while (voce::getRecognizerQueueSize() > 0)
+      if(audio_getCommandsSize() > -1)
       {
-        s = voce::popRecognizedString();
+        s = audio_popCommand();
         cout<<"You said: "<< s <<endl;
-        if(!s.compare("left"))
+        s = parseCommand(s);
+        if(!s.compare("TURN LEFT"))
         {
           send_buffer[0] = 'a';
           return;
         }
-        else if(!s.compare("right"))
+        else if(!s.compare("TURN RIGHT"))
         {
           send_buffer[0] = 'd';
           return;
         }
-        else if(!s.compare("stop"))
+        else if(!s.compare("GO")) //TEMP
         {
           send_buffer[0] = 'b';
           return;
         }
-
-        int key = cv::waitKey(1);
-        key = (key==255) ? -1 : key; //#Solve bug in 3.2.0
-        if (key>=0)
-        quit = true;
-
     }
   }
-  voce::destroy();
+  //audio_destroy();
 }
 
 void testDemo()
@@ -316,5 +312,18 @@ bool cParser(int argN, char *argv[])
       break;
     }
     return true;
+  }
+}
+
+string parseCommand(string s)
+{
+  //string command;
+  int pos = s.find_first_of(" \t");
+  if(pos != -1)
+  {
+    if(s.substr(0,pos).compare("ROBOT") == 0)
+    {
+      return s.substr(pos);
+    }
   }
 }
