@@ -35,6 +35,16 @@ int main( int argc, char** argv )
     }
 
     vector<Rect> detected;
+    int rWidth = 640/3;
+    int rHeight = 480;
+    int rLx =  0;
+    int rMx =  ((640/2)-rWidth/2);
+    int rRx =  (640-rWidth);
+    int ry =  0;
+    Rect rL = Rect(rLx,ry,rWidth,rHeight);//STATIC RECT
+    Rect rM = Rect(rMx,ry,rWidth,rHeight);//STATIC RECT
+    Rect rR = Rect(rRx,ry,rWidth,rHeight);//STATIC RECT
+    bool turning = false;
     while(1)
     {
       cap >> img;
@@ -48,15 +58,6 @@ int main( int argc, char** argv )
       //image_detectAndDraw(img,cascade,true,false);
 
 
-      int rWidth = 640/3;
-      int rHeight = 480;
-      int rLx =  0;
-      int rMx =  ((640/2)-rWidth/2);
-      int rRx =  (640-rWidth);
-      int ry =  0;
-      Rect rL = Rect(rLx,ry,rWidth,rHeight);//STATIC RECT
-      Rect rM = Rect(rMx,ry,rWidth,rHeight);//STATIC RECT
-      Rect rR = Rect(rRx,ry,rWidth,rHeight);//STATIC RECT
 
       /*
       rectangle(img, rL, Scalar(255,255,255), -1);
@@ -67,12 +68,23 @@ int main( int argc, char** argv )
       //REMEMBER DETECTED 0
       for(int i = 0; i < detected.size(); i++)
       {
-        if(image_isInside(detected[0],rL,detected[0].width/2,detected[0].height/2))
-          cout<<"Left"<<endl;
         if(image_isInside(detected[0],rM,detected[0].width/2,detected[0].height/2))
-          cout<<"Middle"<<endl;
-        if(image_isInside(detected[0],rR,detected[0].width/2,detected[0].height/2))
-          cout<<"Right"<<endl;
+        {
+            cout<<"Middle"<<endl;
+            turning = false;
+            //Break loop
+        }
+        else
+        {
+          if(!turning)
+          {
+            if(image_isInside(detected[0],rL,detected[0].width/2,detected[0].height/2))
+              cout<<"Left"<<endl;
+            if(image_isInside(detected[0],rR,detected[0].width/2,detected[0].height/2))
+              cout<<"Right"<<endl;
+            turning = true;
+          }
+        }
       }
 
       imshow( "result", img );
