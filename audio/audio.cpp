@@ -5,8 +5,13 @@
 #include "pocketsphinx.h"
 
 
-
+#ifdef __linux__
+#define MODELDIR "/home/tobbeh/Downloads/sphinx/pocketsphinx-5prealpha/model"
+#define MIC NULL
+#elif __arm__
 #define MODELDIR "/home/pi/Downloads/sphinx/pocketsphinx-5prealpha/model"
+#define MIC "hw:0,0"
+#endif
 
 ps_decoder_t *ps;
 cmd_ln_t *config;
@@ -56,7 +61,7 @@ int audio_listenForCommand()
 	int32 k;
 	string hyp = "";
 
-	if ((ad = ad_open_dev("hw:0,0",
+	if ((ad = ad_open_dev(MIC,
 												(int) cmd_ln_float32_r(config,
 																							 "-samprate"))) == NULL)
 			E_FATAL("Failed to open audio device\n");
