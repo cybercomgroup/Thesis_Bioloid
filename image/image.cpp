@@ -6,6 +6,62 @@ using namespace std;
 
 double countRBG(Mat img, Vec3b rgb, double diff);
 
+string image_findCascade(CascadeClassifier& cascade, bool rot)
+{
+  //Image
+  Mat img;
+  //img = cv::imread("img.png");
+
+  //Capture
+  cv::VideoCapture cap(0);
+  if (!cap.isOpened()) {
+    cerr << "ERROR: Unable to open the camera" << endl;
+    return 0;
+  }
+
+  vector<Rect> detected;
+  int rWidth = 640/3;
+  int rHeight = 480;
+  int rLx =  0;
+  int rMx =  ((640/2)-rWidth/2);
+  int rRx =  (640-rWidth);
+  int ry =  0;
+  Rect rL = Rect(rLx,ry,rWidth,rHeight);//STATIC RECT
+  Rect rM = Rect(rMx,ry,rWidth,rHeight);//STATIC RECT
+  Rect rR = Rect(rRx,ry,rWidth,rHeight);//STATIC RECT
+  bool turning = false;
+
+  cap >> img;
+
+  if(rot){
+    flip(img, img, -1);
+  }
+
+  //Detection
+  detected = image_detectAndGet(img,cascade,false,false);
+  //image_detectAndDraw(img,cascade,true,false);
+
+
+
+  /*
+  rectangle(img, rL, Scalar(255,255,255), -1);
+  rectangle(img, rM, Scalar(0,0,0), -1);
+  rectangle(img, rR, Scalar(255,255,255), -1);
+  */
+
+  //REMEMBER DETECTED 0
+  for(int i = 0; i < detected.size(); i++)
+  {
+    cap.release();
+    if(image_isInside(detected[0],rM,detected[0].width/2,detected[0].height/2))
+        return "Middle";
+    if(image_isInside(detected[0],rL,detected[0].width/2,detected[0].height/2))
+        return "Left";
+    if(image_isInside(detected[0],rR,detected[0].width/2,detected[0].height/2))
+        return "Right";
+  }
+  return "Outside";
+}
 
 int image_capture(int width, int height, bool rot)
 {
