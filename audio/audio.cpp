@@ -95,6 +95,7 @@ int audio_listenForCommand()
 			if (in_speech && !utt_started) {
 					utt_started = TRUE;
 					E_INFO("Listening...\n");
+          cout<<"Listening..."<<endl;
 			}
 			if (!in_speech && utt_started) {
 					/* speech -> silence transition, time to start new utterance  */
@@ -114,6 +115,7 @@ int audio_listenForCommand()
 							E_FATAL("Failed to start utterance\n");
 					utt_started = FALSE;
 					E_INFO("Ready....\n");
+          cout<<"Ready..."<<endl;
 			}
 			usleep(100);
 	}
