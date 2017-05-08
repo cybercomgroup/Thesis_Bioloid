@@ -72,31 +72,32 @@ int main (int argc, char *argv[]) {
 void demoImage()
 {
   string s = "";
-  bool ready = true;
-  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
+  bool turning = false;
+  cv::CascadeClassifier cascade;
+  cascade.load("image/cascades/face_cascade.xml");
+  //SNABBARE OM DET ÄR INTEGER IST FÖR STRING
+
+  while(1)
   {
-    cv::CascadeClassifier cascade;
-    cascade.load("image/cascades/face_cascade.xml");
-    //SNABBARE OM DET ÄR INTEGER IST FÖR STRING
-    while(s.compare("Middle"))
+    s = image_findCascade(cascade,rot);
+    if(s.compare("Outside"))
     {
-      s = image_findCascade(cascade, rot);
-      if(ready)
-      {
-        ready = false;
-        if(!s.compare("Left") || s.compare("Outside"))
-        {
-          //SEND TURN LEFT
-        }
-        if(!s.compare("Right"))
-        {
-          //SEND TURN right
-        }
+      cout<<s<<endl;
+      if(!s.compare("Middle")){
       }
-      //Ready on timer not to overflow commands
+      if(!s.compare("Left")){
+      }
+      if(!s.compare("Right")){
+      }
     }
-    //SEND POINT
-    RS232_CloseComport(comport);
+    else
+    {
+      if(!turning){
+        turning = true;
+        cout<<"Turning left in search"<<endl;
+      }
+      //Timer för
+    }
   }
 }
 
@@ -128,12 +129,12 @@ void demoVoice()
           send_buffer[0] = 'd';
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
         }
-        else if(!c.compare("STOP")) //TEMP
+        else if(!c.compare("STOP"))
         {
           send_buffer[0] = 'b';
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
         }
-        else if(!c.compare("FIND BANANA")) //TEMP
+        else if(!c.compare("FIND BANANA"))
         {
           send_buffer[0] = 'b';
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
