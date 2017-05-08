@@ -28,7 +28,7 @@ string audio_parseCommand(string s)
   {
     if(s.substr(0,pos).compare("ROBOT") == 0)
     {
-      return s.substr(pos);
+      return s.substr(pos+1);
     }
   }
 	return "";
