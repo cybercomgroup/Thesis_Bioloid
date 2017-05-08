@@ -118,23 +118,24 @@ void demoVoice()
       cout<<"Command: "<<c<<endl;
       if(!c.compare("TURN LEFT"))
       {
+        cout<<"Inside turn left!"<<endl;
         send_buffer[0] = 'a';
-        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        RS232_SendBuf(comport, send_buffer, 1);
       }
       else if(!c.compare("TURN RIGHT"))
       {
         send_buffer[0] = 'd';
-        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        RS232_SendBuf(comport, send_buffer, 1);
       }
       else if(!c.compare("STOP")) //TEMP
       {
         send_buffer[0] = 'b';
-        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        RS232_SendBuf(comport, send_buffer, 1);
       }
       else if(!c.compare("FIND BANANA")) //TEMP
       {
         send_buffer[0] = 'b';
-        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        RS232_SendBuf(comport, send_buffer, 1);
       }
     }
   }
