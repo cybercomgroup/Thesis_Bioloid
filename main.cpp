@@ -7,6 +7,7 @@
 #include <string>
 #include <cstring>
 #include <cstdlib>
+#include <thread>
 
 using namespace std;
 using namespace cv;
@@ -104,13 +105,11 @@ void demoVoice()
   string s = "";
   bool quit;
   audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
-  audio_listenForCommand();
+  thread listen(audio_listenForCommand);
   while(!quit)
   {
     if(audio_getCommandsSize() > -1)
     {
-      s = audio_popCommand();
-      cout<<"You said: "<< s <<endl;
       s = audio_parseCommand(s);
       if(!s.compare("TURN LEFT"))
       {
@@ -122,13 +121,14 @@ void demoVoice()
         send_buffer[0] = 'd';
         return;
       }
-      else if(!s.compare("GO")) //TEMP
+      else if(!s.compare("STOP")) //TEMP
       {
         send_buffer[0] = 'b';
         return;
       }
     }
   }
+  listen.join();
   //audio_destroy();
 }
 
