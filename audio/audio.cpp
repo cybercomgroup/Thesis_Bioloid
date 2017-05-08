@@ -42,6 +42,7 @@ int audio_init(string lm, string dict)
 	"-hmm", MODELDIR "/en-us/en-us",
 	"-lm", lm.c_str(),
 	"-dict", dict.c_str(),
+  "-vad_threshold", "3.0",
 	NULL);
 	if (config == NULL) {
 		fprintf(stderr, "Failed to create config object, see log for details\n");
