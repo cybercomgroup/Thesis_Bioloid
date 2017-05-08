@@ -258,9 +258,48 @@ void manualMode()
     }
     case 2:
     {
-      cv::CascadeClassifier cascade;
-      cascade.load("image/cascades/face_cascade.xml");
-      cout<<image_findCascade(cascade, rot)<<endl;
+      while(1)
+      {
+        cv::CascadeClassifier cascade;
+        cascade.load("image/cascades/banana_cascade.xml");
+
+        cout<<"Tests:"<<endl;
+        cout<<"1 - How many detections"<<endl;
+        cout<<"2 - Where is detection 0"<<endl;
+        cout<<"0 - Exit"<<endl;
+        c = 0;
+        cin.clear();
+        cin>>c;
+        if(!cin.fail())
+        {
+          switch(c)
+          {
+            case 0:
+              return;
+            break;
+            case 1:
+              while(1)
+              {
+                cout<<image_getDetections(cascade)<<endl;
+                cin.clear();
+                cout<<"exit with 0"<<endl;
+                cin >> c;
+                if(c == 0) {break;}
+              }
+            break;
+            case 2:
+              cout<<image_findCascade(cascade, rot)<<endl;
+            break;
+            default:
+                cout<<"Please provide proper input"<<endl;
+            break;
+          }
+        }
+        else
+        {
+          cout<<"Please provide proper input"<<endl;
+        }
+      }
     break;
     }
     default:
