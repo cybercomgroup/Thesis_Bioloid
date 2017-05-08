@@ -75,31 +75,32 @@ int main (int argc, char *argv[]) {
 void demoImage()
 {
   string s = "";
-  bool ready = true;
-  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
+  bool turning = false;
+  cv::CascadeClassifier cascade;
+  cascade.load("image/cascades/face_cascade.xml");
+  //SNABBARE OM DET ÄR INTEGER IST FÖR STRING
+
+  while(1)
   {
-    cv::CascadeClassifier cascade;
-    cascade.load("image/cascades/face_cascade.xml");
-    //SNABBARE OM DET ÄR INTEGER IST FÖR STRING
-    while(s.compare("Middle"))
+    s = image_findCascade(cascade,rot);
+    if(s.compare("Outside"))
     {
-      s = image_findCascade(cascade, rot);
-      if(ready)
-      {
-        ready = false;
-        if(!s.compare("Left") || s.compare("Outside"))
-        {
-          //SEND TURN LEFT
-        }
-        if(!s.compare("Right"))
-        {
-          //SEND TURN right
-        }
+      cout<<s<<endl;
+      if(!s.compare("Middle")){
       }
-      //Ready on timer not to overflow commands
+      if(!s.compare("Left")){
+      }
+      if(!s.compare("Right")){
+      }
     }
-    //SEND POINT
-    RS232_CloseComport(comport);
+    else
+    {
+      if(!turning){
+        turning = true;
+        cout<<"Turning left in search"<<endl;
+      }
+      //Timer för
+    }
   }
 }
 
@@ -131,12 +132,12 @@ void demoVoice()
           send_buffer[0] = 'd';
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
         }
-        else if(!c.compare("STOP")) //TEMP
+        else if(!c.compare("STOP"))
         {
           send_buffer[0] = 'b';
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
         }
-        else if(!c.compare("FIND BANANA")) //TEMP
+        else if(!c.compare("FIND BANANA"))
         {
           send_buffer[0] = 'b';
           RS232_SendBuf(comport, send_buffer, SEND_CHARS);
@@ -294,9 +295,48 @@ void manualMode()
     }
     case 2:
     {
-      cv::CascadeClassifier cascade;
-      cascade.load("image/cascades/face_cascade.xml");
-      cout<<image_findCascade(cascade, rot)<<endl;
+      while(1)
+      {
+        cv::CascadeClassifier cascade;
+        cascade.load("image/cascades/banana_cascade.xml");
+
+        cout<<"Tests:"<<endl;
+        cout<<"1 - How many detections"<<endl;
+        cout<<"2 - Where is detection 0"<<endl;
+        cout<<"0 - Exit"<<endl;
+        c = 0;
+        cin.clear();
+        cin>>c;
+        if(!cin.fail())
+        {
+          switch(c)
+          {
+            case 0:
+              return;
+            break;
+            case 1:
+              while(1)
+              {
+                cout<<image_getDetections(cascade)<<endl;
+                cin.clear();
+                cout<<"exit with 0"<<endl;
+                cin >> c;
+                if(c == 0) {break;}
+              }
+            break;
+            case 2:
+              cout<<image_findCascade(cascade, rot)<<endl;
+            break;
+            default:
+                cout<<"Please provide proper input"<<endl;
+            break;
+          }
+        }
+        else
+        {
+          cout<<"Please provide proper input"<<endl;
+        }
+      }
     break;
     }
     default:

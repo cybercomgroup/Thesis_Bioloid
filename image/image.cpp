@@ -143,6 +143,29 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool 
   //imshow( "result", img );
 }
 
+int image_getDetections(CascadeClassifier& cascade)
+{
+  cv::Mat img;
+  cv::VideoCapture cap(0);
+  if (!cap.isOpened()) {
+    cerr << "ERROR: Unable to open the camera" << endl;
+    return 0;
+  }
+
+  cap>>img;
+
+  vector<Rect> detected;
+  double t = 0;
+  Mat gray;
+
+  cvtColor( img, gray, COLOR_BGR2GRAY );
+
+
+  cascade.detectMultiScale(gray,detected, 1.3, 5);
+
+  return detected.size();
+}
+
 /*
 Detects given cascade and returns an vector containing the detected rectangles
 @ARGS:

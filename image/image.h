@@ -10,3 +10,4 @@ void image_detectAndDraw(Mat&, CascadeClassifier&, bool, bool);
 vector<Rect> image_detectAndGet(Mat&, CascadeClassifier&, bool, bool);
 bool image_isInside(Rect, Rect, int, int);
 string image_findCascade(CascadeClassifier&, bool);
+int image_getDetections(CascadeClassifier&);
