@@ -76,9 +76,7 @@ int audio_listenForCommand()
 	int32 k;
 	string hyp = "";
 
-	if ((ad = ad_open_dev(MIC,
-												(int) cmd_ln_float32_r(config,
-																							 "-samprate"))) == NULL)
+	if ((ad = ad_open_dev(MIC,(int) cmd_ln_float32_r(config,"-samprate"))) == NULL)
 			E_FATAL("Failed to open audio device\n");
 	if (ad_start_rec(ad) < 0)
 			E_FATAL("Failed to start recording\n");

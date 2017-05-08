@@ -102,45 +102,47 @@ void demoImage()
 
 void demoVoice()
 {
-  string s,c = "";
-  bool quit;
-  audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
-  thread listen(audio_listenForCommand);
-  while(!quit)
+  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   {
-    if(audio_getCommandsSize() > -1)
+    string s,c = "";
+    bool quit;
+    audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
+    thread listen(audio_listenForCommand);
+    while(!quit)
     {
-      s = "";
-      s = audio_popCommand();
-      cout<<"Popped command: "<<s<<endl;
-      c = "";
-      c = audio_parseCommand(s);
-      cout<<"Command: "<<c<<endl;
-      if(!c.compare("TURN LEFT"))
+      if(audio_getCommandsSize() > -1)
       {
-        send_buffer[0] = 'a';
-        send_buffer[1] = '\n';
-        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-      }
-      else if(!c.compare("TURN RIGHT"))
-      {
-        send_buffer[0] = 'd';
-        RS232_SendBuf(comport, send_buffer, 1);
-      }
-      else if(!c.compare("STOP")) //TEMP
-      {
-        send_buffer[0] = 'b';
-        RS232_SendBuf(comport, send_buffer, 1);
-      }
-      else if(!c.compare("FIND BANANA")) //TEMP
-      {
-        send_buffer[0] = 'b';
-        RS232_SendBuf(comport, send_buffer, 1);
+        s = "";
+        s = audio_popCommand();
+        cout<<"Popped command: "<<s<<endl;
+        c = "";
+        c = audio_parseCommand(s);
+        cout<<"Command: "<<c<<endl;
+        if(!c.compare("TURN LEFT"))
+        {
+          send_buffer[0] = 'a';
+          RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        }
+        else if(!c.compare("TURN RIGHT"))
+        {
+          send_buffer[0] = 'd';
+          RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        }
+        else if(!c.compare("STOP")) //TEMP
+        {
+          send_buffer[0] = 'b';
+          RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        }
+        else if(!c.compare("FIND BANANA")) //TEMP
+        {
+          send_buffer[0] = 'b';
+          RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+        }
       }
     }
+    listen.join();
+    //audio_destroy();
   }
-  listen.join();
-  //audio_destroy();
 }
 
 void testDemo()
@@ -200,7 +202,6 @@ void manualMode()
   {
     case 1:
     {
-      audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
       if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
       {
         while(1)
