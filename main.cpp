@@ -20,6 +20,9 @@ void manualMode();
 void demoImage();
 void demoVoice();
 void mainMode();
+bool findColor();
+int seeColor();
+inline void delay(unsigned long ms);
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
@@ -147,7 +150,8 @@ void demoVoice()
 
 void testDemo()
 {
-  send_buffer[0] = 'w';
+ send_buffer[0] = 'w';
+ RS232_SendBuf(comport, send_buffer, 1);  
 }
 
 void mainMode()
@@ -159,9 +163,13 @@ void mainMode()
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
     while(1){
       //commandAction = commandVoice(); // outcomment for testing
-      testDemo();
-      objectClosetmp = RS232_PollComport(comport, send_buffer, 1);
-      cout<<objectClosetmp<<endl;
+      //testDemo();
+      objectClosetmp = RS232_PollComport(comport, send_buffer, 1);   
+	
+	bool test = findColor();	
+
+      cout<<test<<endl;
+/*
       if(objectClosetmp == 'g'){
         a++;
         cout<< "A higher" << endl;
@@ -184,11 +192,39 @@ void mainMode()
         send_buffer[0] = 'd';
         cout<< "close"<<endl;
         //RS232_SendBuf(comport, send_buffer, 1);
-      }
+      }*/
     }
     RS232_CloseComport(comport);
   }
 }
+
+bool findColor(){
+	int i = 0;
+	int tmp = seeColor();
+ 	while(tmp != 2 && i <8 ){
+		if(seeColor() == 3)
+			send_buffer[0] = 'a';
+		else
+			send_buffer[0] = 'd';
+		RS232_SendBuf(comport, send_buffer, 1);
+		send_buffer[0] = 'b';
+		RS232_SendBuf(comport, send_buffer, 1);
+		tmp = seeColor(); 
+		i++;
+	}
+
+	return i!=7;		
+}
+
+int seeColor(){
+	
+	return 1 ;	
+}
+
+inline void delay(unsigned long ms){
+	usleep(ms * 1000);
+}
+
 
 void manualMode()
 {
