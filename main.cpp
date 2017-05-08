@@ -103,7 +103,7 @@ void demoVoice()
 {
   string s = "";
   bool quit;
-  audio_init("audio/lib/5993.lm","audio/lib/5993.dic");
+  audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
   audio_listenForCommand();
   while(!quit)
   {

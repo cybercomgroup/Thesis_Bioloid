@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
   string s;
   int pos;
-  audio_init("lib/5993.lm","lib/5993.dic");
+  audio_init("lib/2005.lm","lib/2005.dic");
   thread listen(audio_listenForCommand);
   while(1)
   {
