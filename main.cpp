@@ -55,7 +55,7 @@ int main (int argc, char *argv[]) {
   cout<<"Baudrate: "<<baudrate<<endl;
 
   if(man)
-  manualMode();
+    manualMode();
 
   if(demo == 1)
     demoImage();
@@ -119,17 +119,22 @@ void demoVoice()
       if(!c.compare("TURN LEFT"))
       {
         send_buffer[0] = 'a';
-        return;
+        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
       }
       else if(!c.compare("TURN RIGHT"))
       {
         send_buffer[0] = 'd';
-        return;
+        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
       }
       else if(!c.compare("STOP")) //TEMP
       {
         send_buffer[0] = 'b';
-        return;
+        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+      }
+      else if(!c.compare("FIND BANANA")) //TEMP
+      {
+        send_buffer[0] = 'b';
+        RS232_SendBuf(comport, send_buffer, SEND_CHARS);
       }
     }
   }
@@ -184,63 +189,81 @@ void mainMode()
 
 void manualMode()
 {
-  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
+  int c = 0;
+  cout<<"Test:"<<endl;
+  cout<<"1 - Comm"<<endl;
+  cout<<"2 - Image"<<endl;
+  cin.clear();
+  cin>>c;
+  switch (c)
   {
-    int c;
-    while(1)
+    case 1:
     {
-      cout<<"Tests:"<<endl;
-      cout<<"1 - Write buffer"<<endl;
-      cout<<"2 - Write byte"<<endl;
-      cout<<"0 - Exit"<<endl;
-      c = 0;
-      cin.clear();
-      cin>>c;
-      if(!cin.fail())
+      if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
       {
-        switch(c)
+        while(1)
         {
-          case 0:
-          return;
-          break;
-          case 1:
-          while(1)
-          {
-            cout<<"Write buffer to send:"<<endl;
-            cin.clear();
-            cin >> send_buffer;
-            if(send_buffer[0] == '0') {break;}
-            RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-          }
-          break;
-          case 2:
-          cout<<"Not implemented"<<endl;
-          /*
-          while(1)
-          {
-          cout<<"Write buffer to send:"<<endl;
+          cout<<"Tests:"<<endl;
+          cout<<"1 - Write buffer"<<endl;
+          cout<<"2 - Write byte"<<endl;
+          cout<<"0 - Exit"<<endl;
+          c = 0;
           cin.clear();
-          cin >> send_byte;
-          if(send_byte == '0') {break;}
-          RS232_SendBuf(comport, send_byte);
-        }*/
-        break;
-        default:
-        cout<<"Please provide proper input"<<endl;
-        break;
+          cin>>c;
+          if(!cin.fail())
+          {
+            switch(c)
+            {
+              case 0:
+                return;
+              break;
+              case 1:
+                while(1)
+                {
+                  cout<<"Write buffer to send:"<<endl;
+                  cin.clear();
+                  cin >> send_buffer;
+                  if(send_buffer[0] == '0') {break;}
+                  RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+                }
+              break;
+              case 2:
+                cout<<"Not implemented"<<endl;
+                /*
+                while(1)
+                {
+                cout<<"Write buffer to send:"<<endl;
+                cin.clear();
+                cin >> send_byte;
+                if(send_byte == '0') {break;}
+                RS232_SendBuf(comport, send_byte);
+                }*/
+              break;
+              default:
+                  cout<<"Please provide proper input"<<endl;
+              break;
+            }
+          }
+          else
+          {
+            cout<<"Please provide proper input"<<endl;
+          }
       }
+      RS232_CloseComport(comport);
+      }
+    break;
     }
-    else
+    case 2:
     {
-      cout<<"Please provide proper input"<<endl;
+      cv::CascadeClassifier cascade;
+      cascade.load("image/cascades/face_cascade.xml");
+      cout<<image_findCascade(cascade, rot)<<endl;
+    break;
     }
-    /*
-    cout<<"Respone:"<<endl;
-    RS232_PollComport(comport, receive_buffer, RECEIVE_CHARS);
-    cout<<receive_buffer<<endl; */
+    default:
+      cout<<"Please provide proper command"<<endl;
+    break;
   }
-  RS232_CloseComport(comport);
-}
 }
 
 bool cParser(int argN, char *argv[])
