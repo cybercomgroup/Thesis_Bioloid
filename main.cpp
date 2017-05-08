@@ -20,7 +20,7 @@ void manualMode();
 void demoImage();
 void demoVoice();
 void mainMode();
-bool findColor();
+bool turnToColor();
 int seeColor();
 inline void delay(unsigned long ms);
 
@@ -66,8 +66,7 @@ int main (int argc, char *argv[]) {
   if(demo == 2)
     demoVoice();
 
-  if(demo == 3)
-    mainMode();
+  if(demo == 3) mainMode();
 
   return 0;
 }
@@ -162,14 +161,15 @@ void mainMode()
   int a = 0;
   int b = 0;
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
-    while(1){
+   // while(1){
       //commandAction = commandVoice(); // outcomment for testing
       //testDemo();
       objectClosetmp = RS232_PollComport(comport, send_buffer, 1);   
 	
-	bool test = findColor();	
+	bool test = turnToColor();	
 
       cout<<test<<endl;
+	delay(3000);
 /*
       if(objectClosetmp == 'g'){
         a++;
@@ -194,16 +194,18 @@ void mainMode()
         cout<< "close"<<endl;
         //RS232_SendBuf(comport, send_buffer, 1);
       }*/
-    }
+ //   }
     RS232_CloseComport(comport);
   }
 }
-
-bool findColor(){
+//Yeah turns to the right color, if there is one
+// Finds color return True
+// else false
+bool turnToColor(){
 	int i = 0;
 	int tmp = seeColor();
- 	while(tmp != 2 && i <8 ){
-		if(seeColor() == 3)
+ 	while(tmp != 2 && i <9 ){
+		if(tmp== 3)
 			send_buffer[0] = 'a';
 		else
 			send_buffer[0] = 'd';
@@ -212,9 +214,11 @@ bool findColor(){
 		RS232_SendBuf(comport, send_buffer, 1);
 		tmp = seeColor(); 
 		i++;
+		delay(2300);
+	cout<<"I value: " << i << endl;
 	}
-
-	return i!=7;		
+	cout<<"OUT OF WHILE LOOP"<<endl;
+	return i == 8 ? true : false ;		
 }
 
 int seeColor(){
