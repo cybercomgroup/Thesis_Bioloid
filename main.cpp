@@ -11,6 +11,7 @@
 using namespace std;
 using namespace cv;
 
+
 #define RECEIVE_CHARS   8      // or whatever size of buffer you want to receive
 #define SEND_CHARS      10      // or whatever size of buffer you want to send
 
@@ -18,7 +19,6 @@ void manualMode();
 void demoImage();
 void demoVoice();
 void mainMode();
-string parseCommand(string s);
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
@@ -103,7 +103,7 @@ void demoVoice()
 {
   string s = "";
   bool quit;
-  audio_init("audio/5993.lm","audio/5993.dic");
+  audio_init("audio/lib/5993.lm","audio/lib/5993.dic");
   audio_listenForCommand();
   while(!quit)
   {
@@ -111,7 +111,7 @@ void demoVoice()
     {
       s = audio_popCommand();
       cout<<"You said: "<< s <<endl;
-      s = parseCommand(s);
+      s = audio_parseCommand(s);
       if(!s.compare("TURN LEFT"))
       {
         send_buffer[0] = 'a';
@@ -284,18 +284,5 @@ bool cParser(int argN, char *argv[])
       break;
     }
     return true;
-  }
-}
-
-string parseCommand(string s)
-{
-  //string command;
-  int pos = s.find_first_of(" \t");
-  if(pos != -1)
-  {
-    if(s.substr(0,pos).compare("ROBOT") == 0)
-    {
-      return s.substr(pos);
-    }
   }
 }

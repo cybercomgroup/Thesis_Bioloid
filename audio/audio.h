@@ -3,7 +3,7 @@
 
 using namespace std;
 
-
+string audio_parseCommand(string s);
 int audio_init(string, string);
 void audio_listen();
 string audio_popCommand();

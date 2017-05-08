@@ -4,7 +4,6 @@
 #include <sphinxbase/ad.h>
 #include "pocketsphinx.h"
 
-
 #ifdef __linux__
 #define MODELDIR "/home/tobbeh/Downloads/sphinx/pocketsphinx-5prealpha/model"
 #define MIC NULL
@@ -21,13 +20,29 @@ int16 buf[512];
 int rv, commandSize=-1;
 int32 score;
 
+string audio_parseCommand(string s)
+{
+  //string command;
+  if(s == "")
+    return "";
+  int pos = s.find_first_of(" \t");
+  if(pos != -1)
+  {
+    if(s.substr(0,pos).compare("ROBOT") == 0)
+    {
+      return s.substr(pos);
+    }
+  }
+}
+
+
 int audio_init(string lm, string dict)
 {
 	err_set_logfp(NULL);
 	config = cmd_ln_init(NULL, ps_args(), TRUE,
 	"-hmm", MODELDIR "/en-us/en-us",
-	"-lm", "./5993.lm",
-	"-dict", "./5993.dic",
+	"-lm", lm.c_str(),
+	"-dict", dict.c_str(),
 	NULL);
 	if (config == NULL) {
 		fprintf(stderr, "Failed to create config object, see log for details\n");

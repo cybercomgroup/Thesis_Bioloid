@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
   string s;
   int pos;
-  audio_init("./5993.lm","./5993.dic");
+  audio_init("lib/5993.lm","lib/5993.dic");
   thread listen(audio_listenForCommand);
   while(1)
   {
@@ -16,22 +16,9 @@ int main(int argc, char *argv[])
       s="";
       s=audio_popCommand();
       cout<<"Popped command: "<<s<<endl;
-      cout<<"Command: "<<parseCommand(s)<<endl;
+      cout<<"Command: "<<audio_parseCommand(s)<<endl;
     }
   }
   listen.join();
   return 0;
-}
-
-string parseCommand(string s)
-{
-  //string command;
-  int pos = s.find_first_of(" \t");
-  if(pos != -1)
-  {
-    if(s.substr(0,pos).compare("ROBOT") == 0)
-    {
-      return s.substr(pos);
-    }
-  }
 }
