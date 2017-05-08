@@ -115,7 +115,7 @@ void demoVoice()
       cout<<"Popped command: "<<s<<endl;
       c = "";
       c = audio_parseCommand(s);
-      cout<<"Command: "<<s<<endl;
+      cout<<"Command: "<<c<<endl;
       if(!c.compare("TURN LEFT"))
       {
         send_buffer[0] = 'a';
