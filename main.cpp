@@ -119,7 +119,7 @@ void demoVoice()
       if(!c.compare("TURN LEFT"))
       {
         send_buffer[0] = 'a';
-        send_buffer[1] = '\n'
+        send_buffer[1] = '\n';
         RS232_SendBuf(comport, send_buffer, SEND_CHARS);
       }
       else if(!c.compare("TURN RIGHT"))
@@ -200,6 +200,7 @@ void manualMode()
   {
     case 1:
     {
+      audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
       if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
       {
         while(1)
