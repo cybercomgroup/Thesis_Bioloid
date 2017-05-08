@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
       s="";
       s=audio_popCommand();
       cout<<"Popped command: "<<s<<endl;
-      cout<<"Command: "<<audio_parseCommand(s)<<endl;
+      //cout<<"Command: "<<audio_parseCommand(s)<<endl;
     }
   }
   listen.join();

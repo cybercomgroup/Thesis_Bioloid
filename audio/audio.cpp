@@ -4,12 +4,12 @@
 #include <sphinxbase/ad.h>
 #include "pocketsphinx.h"
 
-
-#define MODELDIR "/home/tobbeh/Downloads/sphinx/pocketsphinx-5prealpha/model"
-#define MIC NULL
 #ifdef __arm__
 #define MODELDIR "/home/pi/Downloads/sphinx/pocketsphinx-5prealpha/model"
 #define MIC "hw:0,0"
+#else
+#define MODELDIR "/home/tobbeh/Downloads/sphinx/pocketsphinx-5prealpha/model"
+#define MIC NULL
 #endif
 
 ps_decoder_t *ps;
@@ -23,8 +23,6 @@ int32 score;
 string audio_parseCommand(string s)
 {
   //string command;
-  if(s == "")
-    return "";
   int pos = s.find_first_of(" \t");
   if(pos != -1)
   {
@@ -33,6 +31,7 @@ string audio_parseCommand(string s)
       return s.substr(pos);
     }
   }
+	return "";
 }
 
 
