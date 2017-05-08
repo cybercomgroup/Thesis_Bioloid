@@ -102,7 +102,7 @@ void demoImage()
 
 void demoVoice()
 {
-  string s = "";
+  string s,c = "";
   bool quit;
   audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
   thread listen(audio_listenForCommand);
@@ -110,18 +110,23 @@ void demoVoice()
   {
     if(audio_getCommandsSize() > -1)
     {
-      s = audio_parseCommand(s);
-      if(!s.compare("TURN LEFT"))
+      s = "";
+      s = audio_popCommand();
+      cout<<"Popped command: "<<s<<endl;
+      c = "";
+      c = audio_parseCommand(s);
+      cout<<"Command: "<<s<<endl;
+      if(!c.compare("TURN LEFT"))
       {
         send_buffer[0] = 'a';
         return;
       }
-      else if(!s.compare("TURN RIGHT"))
+      else if(!c.compare("TURN RIGHT"))
       {
         send_buffer[0] = 'd';
         return;
       }
-      else if(!s.compare("STOP")) //TEMP
+      else if(!c.compare("STOP")) //TEMP
       {
         send_buffer[0] = 'b';
         return;
