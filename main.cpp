@@ -226,7 +226,8 @@ bool turnToColor(){
 		RS232_SendBuf(comport, send_buffer, 1);
 		send_buffer[0] = 'b';
 		RS232_SendBuf(comport, send_buffer, 1);
-		tmp = image_whereIsCascade(frame,cascade,false,true);
+    cap >> frame;
+		tmp = image_whereIsCascade(frame,cascade,true,true);
 		i++;
 		delay(2300);
 	cout<<"I value: " << i << endl;
