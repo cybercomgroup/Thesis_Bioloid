@@ -154,7 +154,7 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool 
   Mat gray;
 
   if(flip){
-    cv::flip(img, gray, -1);
+    cv::flip(img, img, -1);
   }
 
   cvtColor( img, gray, COLOR_BGR2GRAY );

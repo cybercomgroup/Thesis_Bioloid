@@ -8,6 +8,8 @@ using namespace cv;
 width: 640
 height: 480
 */
+void detectionTest(Mat& image, CascadeClassifier& cascade);
+void orientationTest(Mat& image, CascadeClassifier& cascade);
 
 
 int main( int argc, char** argv )
@@ -27,7 +29,7 @@ int main( int argc, char** argv )
     Mat frame;
     while(1) {
       cap >> frame;
-      image_detectAndDraw(frame, cascade, true, false);
+      orientationTest(frame, cascade);
       imshow("Live",frame);
 
       int key = cv::waitKey(5);
@@ -37,4 +39,22 @@ int main( int argc, char** argv )
     }
     cap.release();
     return 0;
+}
+
+void detectionTest(Mat& image, CascadeClassifier& cascade)
+{
+  image_detectAndDraw(image, cascade, true, false);
+}
+
+void orientationTest(Mat& image, CascadeClassifier& cascade)
+{
+  int ori;
+  ori = image_whereIsCascade(image, cascade, true, false);
+
+  if(ori == 4)
+    cout<<"left"<<endl;
+  if(ori == 5)
+    cout<<"middle"<<endl;
+  if(ori == 6)
+    cout<<"right"<<endl;
 }
