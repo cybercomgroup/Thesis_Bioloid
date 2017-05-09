@@ -12,10 +12,13 @@ height: 480
 
 int main( int argc, char** argv )
 {
-    bool rot = false;
+    bool show,rot = false;
     if(argc > 1){
       if(argv[1][0] == 'r'){
         rot = true;
+      }
+      if(argv[2][0] == 's'){
+        show = true;
       }
     }
     //image_capture(640,480,false);
@@ -34,7 +37,8 @@ int main( int argc, char** argv )
     while(1) {
       cap >> frame;
       ori=image_whereIsCascade(frame, cascade, false, rot);
-      imshow("Live",frame);
+      if(show)
+        imshow("Live",frame);
 
       cout << ori << endl;
       int key = cv::waitKey(5);
