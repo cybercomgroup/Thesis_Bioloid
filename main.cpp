@@ -220,6 +220,8 @@ bool turnToColor(){
  	while( 1 ){
     cap >> frame;
 		tmp = image_whereIsCascade(frame,cascade,true,true);
+    imshow("Frame",frame);
+    cv::waitKey(5);
 //TEMP
     if(tmp != -1)
       cout<<"Something inside"<<endl;
