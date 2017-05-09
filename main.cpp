@@ -19,7 +19,7 @@ using namespace cv;
 void manualMode();
 void demoImage();
 void demoVoice();
-void mainMode();
+void demoTurn();
 bool turnToColor();
 int seeColor();
 inline void delay(unsigned long ms);
@@ -29,7 +29,7 @@ bool cParser(int argN, char *argv[]);
 
 bool man = false;
 bool rot = false;
-int demo = 3;
+int demo = 0;
 int comport = 16; //pNUMBER
 int baudrate = 57600; //bNUMBER
 
@@ -66,14 +66,15 @@ int main (int argc, char *argv[]) {
   if(demo == 2)
     demoVoice();
 
-  if(demo == 3) mainMode();
+  if(demo == 3)
+    demoTurn();
 
   return 0;
 }
 
 void demoImage()
 {
-  string s = "";
+  string s;
   bool turning = false;
   cv::CascadeClassifier cascade;
   cascade.load("image/cascades/face_cascade.xml");
@@ -81,7 +82,7 @@ void demoImage()
 
   while(1)
   {
-    s = image_findCascade(cascade,rot);
+    s = "kek";//image_findCascade(cascade,rot);
     if(s.compare("Outside"))
     {
       cout<<s<<endl;
@@ -154,7 +155,7 @@ void testDemo()
  RS232_SendBuf(comport, send_buffer, 1);
 }
 
-void mainMode()
+void demoTurn()
 {
   char  objectClosetmp;
   bool obC = false;
@@ -329,7 +330,7 @@ void manualMode()
               }
             break;
             case 2:
-              cout<<image_findCascade(cascade, rot)<<endl;
+              //cout<<image_findCascade(cascade, rot)<<endl;
             break;
             default:
                 cout<<"Please provide proper input"<<endl;
