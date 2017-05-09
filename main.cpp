@@ -20,6 +20,7 @@ void manualMode();
 void demoImage();
 void demoVoice();
 void demoTurn();
+void demodTurn();
 bool turnToColor();
 int seeColor();
 inline void delay(unsigned long ms);
@@ -74,33 +75,102 @@ int main (int argc, char *argv[]) {
 
 void demoImage()
 {
-  string s;
+  int ori = -1;
   bool turning = false;
+
+  VideoCapture cap(0);
+  if (!cap.isOpened()) {
+    cerr << "ERROR: Unable to open the camera" << endl;
+    return;
+  }
+
   cv::CascadeClassifier cascade;
   cascade.load("image/cascades/face_cascade.xml");
   //SNABBARE OM DET ÄR INTEGER IST FÖR STRING
 
+  Mat img;
+
   while(1)
   {
-    s = "kek";//image_findCascade(cascade,rot);
-    if(s.compare("Outside"))
+    cap >> img;
+    ori = image_whereIsCascade(img,cascade,false,false);
+    cout<<ori<<endl;
+    imshow("Image", img);
+    cv::waitKey(5);
+    if(ori != -1) //Outside
     {
-      cout<<s<<endl;
-      if(!s.compare("Middle")){
+      if(ori == 4){
+        cout<<"Left"<<endl;
       }
-      if(!s.compare("Left")){
+      if(ori == 5){
+        cout<<"Middle"<<endl;
       }
-      if(!s.compare("Right")){
+      if(ori == 6){
+        cout<<"Right"<<endl;
       }
     }
     else
     {
       if(!turning){
         turning = true;
-        cout<<"Turning left in search"<<endl;
+        cout<<"Turning left in search detection"<<endl;
       }
       //Timer för
     }
+  }
+}
+
+void demoTurn()
+{
+  int ori = -1;
+  bool turning = false;
+
+  VideoCapture cap(0);
+  if (!cap.isOpened()) {
+    cerr << "ERROR: Unable to open the camera" << endl;
+    return;
+  }
+
+  cv::CascadeClassifier cascade;
+  cascade.load("image/cascades/face_cascade.xml");
+  //SNABBARE OM DET ÄR INTEGER IST FÖR STRING
+
+  Mat img;
+
+  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
+  {
+    while(1)
+    {
+      cap >> img;
+      ori = image_whereIsCascade(img,cascade,false,false);
+      cout<<ori<<endl;
+      imshow("Image", img);
+      cv::waitKey(5);
+      if(ori != -1) //Outside
+      {
+        if(ori == 4){
+          cout<<"Left"<<endl;
+        }
+        if(ori == 5){
+          cout<<"Middle"<<endl;
+        }
+        if(ori == 6){
+          cout<<"Right"<<endl;
+        }
+        send_buffer[0] = 'b';
+        RS232_SendBuf(comport, send_buffer, 1);
+        break;
+      }
+      else
+      {
+        if(!turning){
+          turning = true;
+          cout<<"Turning left in search detection"<<endl;
+        }
+        //Timer för
+      }
+    }
+    RS232_CloseComport(comport);
   }
 }
 
@@ -155,7 +225,7 @@ void testDemo()
  RS232_SendBuf(comport, send_buffer, 1);
 }
 
-void demoTurn()
+void demodTurn()
 {
   char  objectClosetmp;
   bool obC = false;
@@ -217,15 +287,12 @@ bool turnToColor(){
 
   int i = 0;
 	int tmp = 0;
+  bool turning = false;
  	while( 1 ){
     cap >> frame;
 		tmp = image_whereIsCascade(frame,cascade,true,true);
     imshow("Frame",frame);
     cv::waitKey(5);
-//TEMP
-    if(tmp != -1)
-      cout<<"Something inside"<<endl;
-//TEMP
     if(tmp == 4)
       send_buffer[0] = 'a';
 		else
@@ -236,7 +303,7 @@ bool turnToColor(){
     if(tmp == 5) //Middle
       return true;
     i++;
-		delay(3000);
+		//delay(3000);
 	cout<<"I value: " << i << endl;
 	}
 	cout<<"OUT OF WHILE LOOP"<<endl;
