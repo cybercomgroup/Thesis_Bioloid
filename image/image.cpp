@@ -44,45 +44,6 @@ int image_whereIsCascade(Mat& img, CascadeClassifier& cascade, bool print)
   return -1;
 }
 
-string image_findCascade(Mat& img, CascadeClassifier& cascade, bool print)
-{
-  vector<Rect> detected;
-  int rWidth = 640/3;
-  int rHeight = 480;
-  int rLx =  0;
-  int rMx =  ((640/2)-rWidth/2);
-  int rRx =  (640-rWidth);
-  int ry =  0;
-  Rect rL = Rect(rLx,ry,rWidth,rHeight);//STATIC RECT
-  Rect rM = Rect(rMx,ry,rWidth,rHeight);//STATIC RECT
-  Rect rR = Rect(rRx,ry,rWidth,rHeight);//STATIC RECT
-  bool turning = false;
-
-  //Detection
-  detected = image_detectAndGet(img,cascade,print);
-  //image_detectAndDraw(img,cascade,true,false);
-
-
-
-  /*
-  rectangle(img, rL, Scalar(255,255,255), -1);
-  rectangle(img, rM, Scalar(0,0,0), -1);
-  rectangle(img, rR, Scalar(255,255,255), -1);
-  */
-
-  //REMEMBER DETECTED 0
-  for(int i = 0; i < detected.size(); i++)
-  {
-    if(image_isInside(detected[0],rM,detected[0].width/2,detected[0].height/2))
-        return "Middle";
-    if(image_isInside(detected[0],rL,detected[0].width/2,detected[0].height/2))
-        return "Left";
-    if(image_isInside(detected[0],rR,detected[0].width/2,detected[0].height/2))
-        return "Right";
-  }
-  return "Outside";
-}
-
 int image_capture(int width, int height)
 {
   VideoCapture cap(0);
@@ -139,12 +100,12 @@ int image_capture(int width, int height)
   cout << "bye!" <<endl;
   return 0;
 }
+
 void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print)
 {
   vector<Rect> detected;
   double t = 0;
   Mat gray;
-
 
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
@@ -157,20 +118,10 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print)
   {
     rectangle(img, detected[i], Scalar(255,0,0));
   }
-  //imshow( "result", img );
 }
 
-int image_getDetections(CascadeClassifier& cascade)
+int image_getNumDetections(Mat& img, CascadeClassifier& cascade, bool print)
 {
-  cv::Mat img;
-  cv::VideoCapture cap(0);
-  if (!cap.isOpened()) {
-    cerr << "ERROR: Unable to open the camera" << endl;
-    return 0;
-  }
-
-  cap>>img;
-
   vector<Rect> detected;
   double t = 0;
   Mat gray;
@@ -178,7 +129,10 @@ int image_getDetections(CascadeClassifier& cascade)
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
 
+  if(print){t = (double)getTickCount();}
   cascade.detectMultiScale(gray,detected, 1.3, 5);
+  if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
+
 
   return detected.size();
 }
@@ -205,6 +159,7 @@ vector<Rect> image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print
 
   return detected;
 }
+
 Rect image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, int index)
 {
   vector<Rect> detected;
@@ -227,7 +182,6 @@ bool image_isInside(Rect moving, Rect still, int xOffset = 0, int yOffset = 0)
   Point p = Point(moving.x + xOffset, moving.y + yOffset);
   return still.contains(p);
 }
-
 
 double countRBG(Mat img, Vec3b rgb, double diff)
 {

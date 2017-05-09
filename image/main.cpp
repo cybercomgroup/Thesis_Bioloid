@@ -21,6 +21,7 @@ void cParser( int argc, char** argv );
 
 void detectionTest(Mat& image, CascadeClassifier& cascade);
 void orientationTest(Mat& image, CascadeClassifier& cascade);
+void numDetectionsTest(Mat& img, CascadeClassifier& cascade);
 
 
 int main( int argc, char** argv )
@@ -48,6 +49,9 @@ int main( int argc, char** argv )
       break;
       case 2:
         orientationTest(frame, cascade);
+      break;
+      case 3:
+        numDetectionsTest(frame, cascade);
       break;
       default:
       break;
@@ -82,6 +86,11 @@ void orientationTest(Mat& image, CascadeClassifier& cascade)
     cout<<"right"<<endl;
 }
 
+void numDetectionsTest(Mat& img, CascadeClassifier& cascade)
+{
+  cout<<"Detections in camera feed: " <<image_getNumDetections(img, cascade, printDetectionTime)<<endl;
+}
+
 void cParser( int argc, char** argv )
 {
   int opt;
@@ -114,6 +123,8 @@ void cParser( int argc, char** argv )
         cout<<"Available demos:"<<endl;
         cout<<"1 - detectionTest"<<endl;
         cout<<"2 - orientationTest"<<endl;
+        cout<<"3 - numDetectionsTest"<<endl;
+        cout<<endl;
         break;
     }
   }
@@ -123,4 +134,6 @@ void cParser( int argc, char** argv )
   cout<<"Camera feed: "<<cameraFeed<<endl;
   cout<<"Print cascade detection time: "<<printDetectionTime<<endl;
   cout<<"Demo: "<<demo<<endl;
+
+  cout<<"Press any button to exit the program"<<endl;
 }

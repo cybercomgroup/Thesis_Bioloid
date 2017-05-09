@@ -5,11 +5,10 @@
 using namespace std;
 using namespace cv;
 
-int image_capture(int, int);
 void image_detectAndDraw(Mat&, CascadeClassifier&, bool);
 vector<Rect> image_detectAndGet(Mat&, CascadeClassifier&, bool);
 Rect image_detectAndGet(Mat&, CascadeClassifier&, bool, int);
-bool image_isInside(Rect, Rect, int, int);
-string image_findCascade(Mat&, CascadeClassifier&, bool);
 int image_whereIsCascade(Mat&, CascadeClassifier&, bool);
-int image_getDetections(CascadeClassifier&);
+int image_getNumDetections(Mat& img, CascadeClassifier&, bool);
+bool image_isInside(Rect, Rect, int, int);
+int image_capture(int, int);
