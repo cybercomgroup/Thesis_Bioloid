@@ -153,6 +153,10 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool 
   double t = 0;
   Mat gray;
 
+  if(flip){
+    cv::flip(img, gray, -1);
+  }
+
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
