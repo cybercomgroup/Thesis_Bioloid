@@ -1,0 +1,74 @@
+Language model created by QuickLM on Mon May  8 04:40:18 EDT 2017
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 9 sentences and 14 words
+
+\data\
+ngram 1=14
+ngram 2=21
+ngram 3=16
+
+\1-grams:
+-0.8783 </s> -0.3010
+-0.8783 <s> -0.2394
+-1.8325 BACKWARDS -0.2394
+-1.8325 BANANA -0.2394
+-1.8325 CONTROLLER -0.2394
+-1.8325 FACE -0.2394
+-1.3554 FIND -0.2814
+-1.8325 FORWARD -0.2394
+-1.5315 GO -0.2881
+-1.8325 LEFT -0.2394
+-1.8325 RIGHT -0.2394
+-1.8325 ROBOT -0.2394
+-1.8325 STOP -0.2394
+-1.5315 TURN -0.2881
+
+\2-grams:
+-0.7782 <s> FIND 0.0000
+-0.9542 <s> GO 0.0000
+-1.2553 <s> ROBOT 0.0000
+-1.2553 <s> STOP 0.0000
+-0.9542 <s> TURN 0.0000
+-0.3010 BACKWARDS </s> -0.3010
+-0.3010 BANANA </s> -0.3010
+-0.3010 CONTROLLER </s> -0.3010
+-0.3010 FACE </s> -0.3010
+-0.7782 FIND BANANA 0.0000
+-0.7782 FIND CONTROLLER 0.0000
+-0.7782 FIND FACE 0.0000
+-0.3010 FORWARD </s> -0.3010
+-0.6021 GO BACKWARDS 0.0000
+-0.6021 GO FORWARD 0.0000
+-0.3010 LEFT </s> -0.3010
+-0.3010 RIGHT </s> -0.3010
+-0.3010 ROBOT </s> -0.3010
+-0.3010 STOP </s> -0.3010
+-0.6021 TURN LEFT 0.0000
+-0.6021 TURN RIGHT 0.0000
+
+\3-grams:
+-0.7782 <s> FIND BANANA
+-0.7782 <s> FIND CONTROLLER
+-0.7782 <s> FIND FACE
+-0.6021 <s> GO BACKWARDS
+-0.6021 <s> GO FORWARD
+-0.3010 <s> ROBOT </s>
+-0.3010 <s> STOP </s>
+-0.6021 <s> TURN LEFT
+-0.6021 <s> TURN RIGHT
+-0.3010 FIND BANANA </s>
+-0.3010 FIND CONTROLLER </s>
+-0.3010 FIND FACE </s>
+-0.3010 GO BACKWARDS </s>
+-0.3010 GO FORWARD </s>
+-0.3010 TURN LEFT </s>
+-0.3010 TURN RIGHT </s>
+
+\end\
