@@ -215,13 +215,14 @@ bool turnToColor(){
   Mat frame;
 
 
-  int i,tmp = 0;
- 	while( i <9 ){
+  int i = 0;
+	int tmp = 0;
+ 	while( 1 ){
     cap >> frame;
 		tmp = image_whereIsCascade(frame,cascade,true,true);
 //TEMP
     if(tmp != -1)
-      return true;
+      cout<<"Something inside"<<endl;
 //TEMP
     if(tmp == 4)
       send_buffer[0] = 'a';
