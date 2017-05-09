@@ -151,7 +151,7 @@ void demoVoice()
 void testDemo()
 {
  send_buffer[0] = 'w';
- RS232_SendBuf(comport, send_buffer, 1);  
+ RS232_SendBuf(comport, send_buffer, 1);
 }
 
 void mainMode()
@@ -164,9 +164,9 @@ void mainMode()
    // while(1){
       //commandAction = commandVoice(); // outcomment for testing
       //testDemo();
-      objectClosetmp = RS232_PollComport(comport, send_buffer, 1);   
-	
-	bool test = turnToColor();	
+      objectClosetmp = RS232_PollComport(comport, send_buffer, 1);
+
+	bool test = turnToColor();
 
       cout<<test<<endl;
 	delay(3000);
@@ -212,18 +212,18 @@ bool turnToColor(){
 		RS232_SendBuf(comport, send_buffer, 1);
 		send_buffer[0] = 'b';
 		RS232_SendBuf(comport, send_buffer, 1);
-		tmp = seeColor(); 
+		tmp = seeColor();
 		i++;
 		delay(2300);
 	cout<<"I value: " << i << endl;
 	}
 	cout<<"OUT OF WHILE LOOP"<<endl;
-	return i == 8 ? true : false ;		
+	return i == 8 ? true : false ;
 }
 
 int seeColor(){
-	
-	return 1 ;	
+
+	return 1;
 }
 
 inline void delay(unsigned long ms){

@@ -27,15 +27,16 @@ int main( int argc, char** argv )
     }
 
     cv::CascadeClassifier cascade;
-    cascade.load("cascades/banana_cascade.xml");
+    cascade.load("cascades/face_cascade.xml");
 
+    int ori;
     Mat frame;
     while(1) {
       cap >> frame;
-      image_detectAndDraw(frame,cascade,false,false);
+      ori=image_whereIsCascade(frame, cascade, false, rot);
       imshow("Live",frame);
 
-
+      cout << ori << endl;
       int key = cv::waitKey(5);
       key = (key==255) ? -1 : key; //#Solve bug in 3.2.0
       if (key>=0)

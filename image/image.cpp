@@ -6,19 +6,46 @@ using namespace std;
 
 double countRBG(Mat img, Vec3b rgb, double diff);
 
-string image_findCascade(CascadeClassifier& cascade, bool rot)
+/*
+NAME IS TEMP
+This function finds the first cascade in the image and then returns it's
+orientation based on an keypad. The orientation is based on the center of the
+cascade.
+@ARGS:
+Image
+cascade to detect
+print boolean, if true prints time for detections
+flip boolean, if true flips image before detections
+returns:
+4 = left
+5 = middle
+6 = right
+-1 = error
+*/
+int image_whereIsCascade(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
 {
-  //Image
-  Mat img;
-  //img = cv::imread("img.png");
+  Rect detected = image_detectAndGet(img,cascade,print,flip,1);
 
-  //Capture
-  cv::VideoCapture cap(0);
-  if (!cap.isOpened()) {
-    cerr << "ERROR: Unable to open the camera" << endl;
-    return 0;
-  }
+  if(detected.x == -1)
+    return -1;
 
+  int point = detected.x + detected.width/2;
+
+  //Left side
+  if(point < img.cols/3)
+    return 4;
+  //Middle
+  if(point >= img.cols/3 && point <= ((img.cols/3)*2))
+    return 5;
+  //Right
+  if(point > ((img.cols/3)*2))
+    return 6;
+
+  return -1;
+}
+
+string image_findCascade(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
+{
   vector<Rect> detected;
   int rWidth = 640/3;
   int rHeight = 480;
@@ -31,14 +58,12 @@ string image_findCascade(CascadeClassifier& cascade, bool rot)
   Rect rR = Rect(rRx,ry,rWidth,rHeight);//STATIC RECT
   bool turning = false;
 
-  cap >> img;
-
-  if(rot){
-    flip(img, img, -1);
+  if(flip){
+    cv::flip(img, img, -1);
   }
 
   //Detection
-  detected = image_detectAndGet(img,cascade,false,false);
+  detected = image_detectAndGet(img,cascade,print,flip);
   //image_detectAndDraw(img,cascade,true,false);
 
 
@@ -52,7 +77,6 @@ string image_findCascade(CascadeClassifier& cascade, bool rot)
   //REMEMBER DETECTED 0
   for(int i = 0; i < detected.size(); i++)
   {
-    cap.release();
     if(image_isInside(detected[0],rM,detected[0].width/2,detected[0].height/2))
         return "Middle";
     if(image_isInside(detected[0],rL,detected[0].width/2,detected[0].height/2))
@@ -191,6 +215,26 @@ vector<Rect> image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
   return detected;
+}
+Rect image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool flip, int index)
+{
+  vector<Rect> detected;
+  double t = 0;
+  Mat gray;
+
+  cvtColor( img, gray, COLOR_BGR2GRAY );
+
+  if(flip){
+    cv::flip(gray, gray, -1);
+  }
+
+  if(print){t = (double)getTickCount();}
+  cascade.detectMultiScale(gray, detected, 1.3, 5);
+  if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
+
+  if(detected.size()>=index)
+    return detected[index];
+  return Rect(-1,-1,0,0);
 }
 
 bool image_isInside(Rect moving, Rect still, int xOffset = 0, int yOffset = 0)
