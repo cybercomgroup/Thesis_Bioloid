@@ -203,17 +203,30 @@ void demoTurn()
 // Finds color return True
 // else false
 bool turnToColor(){
-	int i = 0;
-	int tmp = seeColor();
- 	while(tmp != 2 && i <9 ){
-		if(tmp== 3)
+  VideoCapture cap(0);
+  if (!cap.isOpened()) {
+    cerr << "ERROR: Unable to open the camera" << endl;
+    return 0;
+  }
+
+  cv::CascadeClassifier cascade;
+  cascade.load("image/cascades/face_cascade.xml");
+
+  Mat frame;
+
+  cap >> frame;
+
+  int i = 0;
+	int tmp = image_whereIsCascade(frame,cascade,false,true);
+ 	while(tmp != 5 && i <9 ){
+		if(tmp == 4)
 			send_buffer[0] = 'a';
 		else
 			send_buffer[0] = 'd';
 		RS232_SendBuf(comport, send_buffer, 1);
 		send_buffer[0] = 'b';
 		RS232_SendBuf(comport, send_buffer, 1);
-		tmp = seeColor();
+		tmp = image_whereIsCascade(frame,cascade,false,true);
 		i++;
 		delay(2300);
 	cout<<"I value: " << i << endl;
