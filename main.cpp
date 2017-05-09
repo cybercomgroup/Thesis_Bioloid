@@ -214,26 +214,30 @@ bool turnToColor(){
 
   Mat frame;
 
-  cap >> frame;
 
-  int i = 0;
-	int tmp = image_whereIsCascade(frame,cascade,false,true);
- 	while(tmp != 5 && i <9 ){
-		if(tmp == 4)
-			send_buffer[0] = 'a';
+  int i,tmp = 0;
+ 	while( i <9 ){
+    cap >> frame;
+		tmp = image_whereIsCascade(frame,cascade,true,true);
+//TEMP
+    if(tmp != -1)
+      return true;
+//TEMP
+    if(tmp == 4)
+      send_buffer[0] = 'a';
 		else
 			send_buffer[0] = 'd';
 		RS232_SendBuf(comport, send_buffer, 1);
 		send_buffer[0] = 'b';
 		RS232_SendBuf(comport, send_buffer, 1);
-    cap >> frame;
-		tmp = image_whereIsCascade(frame,cascade,true,true);
-		i++;
-		delay(2300);
+    if(tmp == 5) //Middle
+      return true;
+    i++;
+		delay(3000);
 	cout<<"I value: " << i << endl;
 	}
 	cout<<"OUT OF WHILE LOOP"<<endl;
-	return i == 8 ? true : false ;
+	return false ;
 }
 
 int seeColor(){
