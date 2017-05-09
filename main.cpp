@@ -1,4 +1,3 @@
-
 #include "comm/rs232.h"
 #include "image/image.h"
 #include "audio/audio.h"
@@ -16,7 +15,6 @@ using namespace cv;
 #define RECEIVE_CHARS   8      // or whatever size of buffer you want to receive
 #define SEND_CHARS      10      // or whatever size of buffer you want to send
 
-void manualMode();
 void demoImage();
 void demoVoice();
 void demoTurn();
@@ -28,7 +26,6 @@ inline void delay(unsigned long ms);
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
 
-bool man = false;
 bool rot = false;
 int demo = 0;
 int comport = 16; //pNUMBER
@@ -54,12 +51,9 @@ int main (int argc, char *argv[]) {
 
   cout<<"The program is running these values:"<<endl;
   cout<<"Demo: "<<demo<<endl;
-  cout<<"Manualmode: "<<man<<endl;
   cout<<"Comport: "<<comport<<endl;
   cout<<"Baudrate: "<<baudrate<<endl;
 
-  if(man)
-    manualMode();
 
   if(demo == 1)
     demoImage();
@@ -93,10 +87,10 @@ void demoImage()
   while(1)
   {
     cap >> img;
-    ori = image_whereIsCascade(img,cascade,false,false);
+    ori = image_whereIsCascade(img,cascade,false);
     cout<<ori<<endl;
-    imshow("Image", img);
-    cv::waitKey(5);
+//    imshow("Image", img);
+//    cv::waitKey(5);
     if(ori != -1) //Outside
     {
       if(ori == 4){
@@ -133,7 +127,6 @@ void demoTurn()
 
   cv::CascadeClassifier cascade;
   cascade.load("image/cascades/face_cascade.xml");
-  //SNABBARE OM DET ÄR INTEGER IST FÖR STRING
 
   Mat img;
 
@@ -142,10 +135,10 @@ void demoTurn()
     while(1)
     {
       cap >> img;
-      ori = image_whereIsCascade(img,cascade,false,false);
+      ori = image_whereIsCascade(img,cascade,false);
       cout<<ori<<endl;
-      imshow("Image", img);
-      cv::waitKey(5);
+      //imshow("Image", img);
+      //cv::waitKey(5);
       if(ori != -1) //Outside
       {
         if(ori == 4){
@@ -290,7 +283,7 @@ bool turnToColor(){
   bool turning = false;
  	while( 1 ){
     cap >> frame;
-		tmp = image_whereIsCascade(frame,cascade,true,true);
+		tmp = image_whereIsCascade(frame,cascade,true);
     imshow("Frame",frame);
     cv::waitKey(5);
     if(tmp == 4)
@@ -320,123 +313,6 @@ inline void delay(unsigned long ms){
 }
 
 
-void manualMode()
-{
-  int c = 0;
-  cout<<"Test:"<<endl;
-  cout<<"1 - Comm"<<endl;
-  cout<<"2 - Image"<<endl;
-  cin.clear();
-  cin>>c;
-  switch (c)
-  {
-    case 1:
-    {
-      if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
-      {
-        while(1)
-        {
-          cout<<"Tests:"<<endl;
-          cout<<"1 - Write buffer"<<endl;
-          cout<<"2 - Write byte"<<endl;
-          cout<<"0 - Exit"<<endl;
-          c = 0;
-          cin.clear();
-          cin>>c;
-          if(!cin.fail())
-          {
-            switch(c)
-            {
-              case 0:
-                return;
-              break;
-              case 1:
-                while(1)
-                {
-                  cout<<"Write buffer to send:"<<endl;
-                  cin.clear();
-                  cin >> send_buffer;
-                  if(send_buffer[0] == '0') {break;}
-                  RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-                }
-              break;
-              case 2:
-                cout<<"Not implemented"<<endl;
-                /*
-                while(1)
-                {
-                cout<<"Write buffer to send:"<<endl;
-                cin.clear();
-                cin >> send_byte;
-                if(send_byte == '0') {break;}
-                RS232_SendBuf(comport, send_byte);
-                }*/
-              break;
-              default:
-                  cout<<"Please provide proper input"<<endl;
-              break;
-            }
-          }
-          else
-          {
-            cout<<"Please provide proper input"<<endl;
-          }
-      }
-      RS232_CloseComport(comport);
-      }
-    break;
-    }
-    case 2:
-    {
-      while(1)
-      {
-        cv::CascadeClassifier cascade;
-        cascade.load("image/cascades/banana_cascade.xml");
-
-        cout<<"Tests:"<<endl;
-        cout<<"1 - How many detections"<<endl;
-        cout<<"2 - Where is detection 0"<<endl;
-        cout<<"0 - Exit"<<endl;
-        c = 0;
-        cin.clear();
-        cin>>c;
-        if(!cin.fail())
-        {
-          switch(c)
-          {
-            case 0:
-              return;
-            break;
-            case 1:
-              while(1)
-              {
-                cout<<image_getDetections(cascade)<<endl;
-                cin.clear();
-                cout<<"exit with 0"<<endl;
-                cin >> c;
-                if(c == 0) {break;}
-              }
-            break;
-            case 2:
-              //cout<<image_findCascade(cascade, rot)<<endl;
-            break;
-            default:
-                cout<<"Please provide proper input"<<endl;
-            break;
-          }
-        }
-        else
-        {
-          cout<<"Please provide proper input"<<endl;
-        }
-      }
-    break;
-    }
-    default:
-      cout<<"Please provide proper command"<<endl;
-    break;
-  }
-}
 
 bool cParser(int argN, char *argv[])
 {
@@ -451,10 +327,6 @@ bool cParser(int argN, char *argv[])
     }
     switch(argv[i][0])
     {
-      case 'm':
-      man = true;
-      break;
-
       case 'r':
       rot = true;
       break;
