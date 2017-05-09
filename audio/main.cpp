@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
   thread listen(audio_listenForCommand);
   while(1)
   {
-    if(audio_getCommandsSize() > -1){
+    if(audio_getCommandsSize() > 0){
       s="";
       s=audio_popCommand();
       cout<<"Popped command: "<<s<<endl;
