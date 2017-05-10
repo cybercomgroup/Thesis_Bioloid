@@ -88,7 +88,13 @@ void orientationTest(Mat& image, CascadeClassifier& cascade)
 
 void numDetectionsTest(Mat& img, CascadeClassifier& cascade)
 {
-  cout<<"Detections in camera feed: " <<image_getNumDetections(img, cascade, printDetectionTime)<<endl;
+  cout<<"Press any button to run detection, 0 exits"<<endl;
+  int c = 1;
+  while(c != 0)
+  {
+      cout<<"Detections in camera feed: " <<image_getNumDetections(img, cascade, printDetectionTime)<<endl;
+      cin>>c;
+  }
 }
 
 void cParser( int argc, char** argv )
