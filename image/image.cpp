@@ -3,6 +3,10 @@
 using namespace cv;
 using namespace std;
 
+/*
+width: 640
+height: 480
+*/
 
 double countRBG(Mat img, Vec3b rgb, double diff);
 
@@ -110,7 +114,7 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print)
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, 1.3, 5);
+  cascade.detectMultiScale(gray,detected, 1.3, 5, 0, Size(10,10));
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
 

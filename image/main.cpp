@@ -36,7 +36,7 @@ int main( int argc, char** argv )
   }
 
   cv::CascadeClassifier cascade;
-  cascade.load("cascades/face_cascade.xml");
+  cascade.load("cascades/controller_cascade.xml");
 
   Mat frame;
   while(1) {
