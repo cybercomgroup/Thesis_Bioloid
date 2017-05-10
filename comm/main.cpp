@@ -1,4 +1,4 @@
-#include "rs232.h"
+#include "comm.h"
 #include <iostream>
 
 using namespace std;
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
 void manualSend(int comport, int baudrate)
 {
-  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
+  if(comm_OpenComport(comport, baudrate) != 1)
   {
     int c;
     while(1)
@@ -48,7 +48,7 @@ void manualSend(int comport, int baudrate)
               cin.clear();
               cin >> send_buffer;
               if(send_buffer[0] == '0') {break;}
-              RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+              comm_SendBuf(comport, send_buffer, SEND_CHARS);
             }
           break;
           case 2:
@@ -73,7 +73,7 @@ void manualSend(int comport, int baudrate)
         cout<<"Please provide proper input"<<endl;
       }
     }
-    RS232_CloseComport(comport);
+    comm_CloseComport(comport);
   }
 
 }
