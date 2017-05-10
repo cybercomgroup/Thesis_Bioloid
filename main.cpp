@@ -128,8 +128,8 @@ void mainDemo(){
 	while(!turnTo && i > 0){
 		cout<< "Did we get here" << endl;
 		turnTo = turnToColor();
-//		i--;
-	//		delay(2000);
+		i--;
+			delay(1000);
 	}
 	cout<<"did we get here"<<endl;
 	while( i < 50 )
@@ -255,11 +255,7 @@ void demoVoice()
 void sysInt(){
   RS232_OpenComport(comport, baudrate, "8N1")
 
-  VideoCapture cap(0);
-  if (!cap.isOpened()) {
-    cerr << "ERROR: Unable to open the camera" << endl;
-    return 0;
-  }
+
 
 
 
@@ -269,6 +265,46 @@ void testDemo()
 {
  send_buffer[0] = 'w';
  RS232_SendBuf(comport, send_buffer, 1);
+}
+
+int imageFind(){
+  int tmp = -1, left = 0, right = 0, mid = 0, none = 0;
+  VideoCapture cap(0);
+  if (!cap.isOpened()) {
+    cerr << "ERROR: Unable to open the camera" << endl;
+    return 0;
+  }
+
+  cv::CascadeClassifier cascade;
+  cascade.load("image/cascades/controller_cascade.xml");
+
+  Mat frame;
+
+  cap >> frame;
+  imshow("Frame",frame);
+  cv::waitKey(5);
+
+for(int i = 0; i < 100){
+    tmp = image_whereIsCascade(frame,cascade,false);
+    switch(tmp)
+    case 4:
+      left++;
+      break;
+    case 5:
+      mid++;
+      break;
+    case 6:
+      right++;
+      break;
+
+    default:
+      none++;
+      break;
+    }
+
+  int maxTmp = (left > right) ? left : right;
+  int maxTmp2 = (mid > none) ? mid : none;
+  return ((maxTmp > maxTmp2) ? maxTmp : maxTmp2 );
 }
 
 //Yeah turns to the right color, if there is one
@@ -282,16 +318,8 @@ bool turnToColor(){
 	int tmp = 0;
   bool turning = false;
  	//while( 1 ){
-  cv::CascadeClassifier cascade;
-  cascade.load("image/cascades/controller_cascade.xml");
 
-  Mat frame;
-
-  cap >> frame;
-  imshow("Frame",frame);
-  cv::waitKey(5);
-
-  tmp = image_whereIsCascade(frame,cascade,true);
+    tmp = imageFind();
 	cout<<"Value is: " << tmp<< endl;
 	switch(tmp){
 	case 4:
@@ -304,6 +332,9 @@ bool turnToColor(){
 		send_buffer[0] = 'd'; break;
 
 	}
+
+  //one Second delay.
+  delay(1000);
 
 	RS232_SendBuf(comport, send_buffer, 1);
 	send_buffer[0] = 'b';
