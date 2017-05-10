@@ -15,9 +15,10 @@ int demo = 0;
 bool rotImage = false;
 bool cameraFeed = true;
 bool printDetectionTime = true;
+string cascadeFile = "face_cascade.xml";
 
 
-void cParser( int argc, char** argv );
+bool cParser( int argc, char** argv );
 
 void detectionTest(Mat& image, CascadeClassifier& cascade);
 void orientationTest(Mat& image, CascadeClassifier& cascade);
@@ -26,7 +27,8 @@ void numDetectionsTest(Mat& img, CascadeClassifier& cascade);
 
 int main( int argc, char** argv )
 {
-  cParser(argc, argv);
+  if(!cParser(argc, argv))
+    return 0;
 
 
   VideoCapture cap(cameraDevice);
@@ -36,7 +38,7 @@ int main( int argc, char** argv )
   }
 
   cv::CascadeClassifier cascade;
-  cascade.load("cascades/controller_cascade.xml");
+  cascade.load("cascades/" + cascadeFile);
 
   Mat frame;
   while(1) {
@@ -97,7 +99,7 @@ void numDetectionsTest(Mat& img, CascadeClassifier& cascade)
   }
 }
 
-void cParser( int argc, char** argv )
+bool cParser( int argc, char** argv )
 {
   int opt;
   while ((opt = getopt (argc, argv, "c:sfpd:h")) != -1)
@@ -119,8 +121,12 @@ void cParser( int argc, char** argv )
       case 'd':
         demo = atoi(optarg);
         break;
+      case 'x':
+        cascadeFile = optarg;
+        break;
       case 'h':
         cout<<"-c [arg] capture device"<<endl;
+        cout<<"-x [arg] cascade file inside /cascades"<<endl;
         cout<<"-f rotates the camera feed"<<endl;
         cout<<"-s show camera feed to user"<<endl;
         cout<<"-p turn on/off detection time prints"<<endl;
@@ -131,15 +137,16 @@ void cParser( int argc, char** argv )
         cout<<"2 - orientationTest"<<endl;
         cout<<"3 - numDetectionsTest"<<endl;
         cout<<endl;
+        return false;
         break;
     }
   }
   cout<<"The program is run using these settings:"<<endl;
   cout<<"Capture device: "<<cameraDevice<<endl;
+  cout<<"Cascade file: "<<cascadeFile<<endl;
   cout<<"Rotation: "<<rotImage<<endl;
   cout<<"Camera feed: "<<cameraFeed<<endl;
   cout<<"Print cascade detection time: "<<printDetectionTime<<endl;
   cout<<"Demo: "<<demo<<endl;
-
-  cout<<"Press any button to exit the program"<<endl;
+  return true;
 }
