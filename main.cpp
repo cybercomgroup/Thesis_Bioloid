@@ -21,6 +21,7 @@ void demoImage();
 void demoVoice();
 void demoTurn();
 void demodTurn();
+void mainDemo();
 bool turnToColor();
 int seeColor();
 inline void delay(unsigned long ms);
@@ -30,7 +31,7 @@ bool cParser(int argN, char *argv[]);
 
 bool man = false;
 bool rot = false;
-int demo = 0;
+int demo = 3;
 int comport = 16; //pNUMBER
 int baudrate = 57600; //bNUMBER
 
@@ -68,7 +69,7 @@ int main (int argc, char *argv[]) {
     demoVoice();
 
   if(demo == 3)
-    demoTurn();
+    mainDemo();
 
   return 0;
 }
@@ -120,6 +121,28 @@ void demoImage()
   }
 }
 
+void mainDemo(){
+	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
+		//voice command 
+		//lÃgg in nÃgot har som gÃr att man fÃr ett int vÃrde som bestÃmmer vad vi gÃr.
+	//	switch(command){
+	//	}
+	int i = 9;
+	bool turnTo = turnToColor();	
+	while(!turnTo && i > 0){
+		cout<< "Did we get here" << endl;
+		turnTo = turnToColor();
+//		i--;
+	//		delay(2000);
+	}	
+//	while
+	} 
+	RS232_CloseComport(comport);
+
+}
+
+//void walkToObject() 
+
 void demoTurn()
 {
   int ori = -1;
@@ -166,6 +189,8 @@ void demoTurn()
         if(!turning){
           turning = true;
           cout<<"Turning left in search detection"<<endl;
+	  send_buffer[0] = 'a';
+       	  RS232_SendBuf(comport, send_buffer, 1);
         }
         //Timer fÃ¶r
       }
@@ -225,50 +250,6 @@ void testDemo()
  RS232_SendBuf(comport, send_buffer, 1);
 }
 
-void demodTurn()
-{
-  char  objectClosetmp;
-  bool obC = false;
-  int a = 0;
-  int b = 0;
-  if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
-   // while(1){
-      //commandAction = commandVoice(); // outcomment for testing
-      //testDemo();
-      objectClosetmp = RS232_PollComport(comport, send_buffer, 1);
-
-	bool test = turnToColor();
-
-      cout<<test<<endl;
-	delay(3000);
-/*
-      if(objectClosetmp == 'g'){
-        a++;
-        cout<< "A higher" << endl;
-      }else if(objectClosetmp == 'b'){
-        b++;
-        cout<< "B higher"<< endl;
-      }
-      if(a > 50){
-        obC = false;
-        b = a = 0;
-      }else if( b > 50){
-        obC = true;
-        b = a = 0;
-      }
-      //cout<<objectClose<<endl;
-      if(send_buffer[0] != '0' && !obC){
-        cout<<"not close"<<endl;
-        //       RS232_SendBuf(comport, send_buffer, 1);
-      }else{
-        send_buffer[0] = 'd';
-        cout<< "close"<<endl;
-        //RS232_SendBuf(comport, send_buffer, 1);
-      }*/
- //   }
-    RS232_CloseComport(comport);
-  }
-}
 //Yeah turns to the right color, if there is one
 // Finds color return True
 // else false
@@ -280,7 +261,7 @@ bool turnToColor(){
   }
 
   cv::CascadeClassifier cascade;
-  cascade.load("image/cascades/face_cascade.xml");
+  cascade.load("image/cascades/controller_cascade.xml");
 
   Mat frame;
 
@@ -288,24 +269,29 @@ bool turnToColor(){
   int i = 0;
 	int tmp = 0;
   bool turning = false;
- 	while( 1 ){
+ 	//while( 1 ){
     cap >> frame;
 		tmp = image_whereIsCascade(frame,cascade,true,true);
     imshow("Frame",frame);
     cv::waitKey(5);
-    if(tmp == 4)
-      send_buffer[0] = 'a';
-		else
-			send_buffer[0] = 'd';
-		RS232_SendBuf(comport, send_buffer, 1);
-		send_buffer[0] = 'b';
-		RS232_SendBuf(comport, send_buffer, 1);
-    if(tmp == 5) //Middle
-      return true;
-    i++;
-		//delay(3000);
-	cout<<"I value: " << i << endl;
-	}
+	cout<<"Value is: " << tmp<< endl;
+	switch(tmp){
+	case 4:
+		send_buffer[0] = 'a'; break;
+	case 5:
+		return 1; break;
+	case 6:
+		send_buffer[0] = 'd'; break;
+	default:
+		send_buffer[0] = 'd'; break;
+
+	} 
+
+	RS232_SendBuf(comport, send_buffer, 1);
+	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, 1);
+   
+	//}
 	cout<<"OUT OF WHILE LOOP"<<endl;
 	return false ;
 }
