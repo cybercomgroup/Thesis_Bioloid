@@ -116,14 +116,15 @@ void demoImage()
 }
 
 void mainDemo(){
-	char object;
-	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
-		//voice command 
-		//lÃgg in nÃgot har som gÃr att man fÃr ett int vÃrde som bestÃmmer vad vi gÃr.
+  sysInt();
+	while(1){
+
+		//voice command
+		//lï¿½gg in nï¿½got har som gï¿½r att man fï¿½r ett int vï¿½rde som bestï¿½mmer vad vi gï¿½r.
 	//	switch(command){
 	//	}
 	int i = 9;
-	bool turnTo = turnToColor();	
+	bool turnTo = turnToColor();
 	while(!turnTo && i > 0){
 		cout<< "Did we get here" << endl;
 		turnTo = turnToColor();
@@ -133,22 +134,22 @@ void mainDemo(){
 	cout<<"did we get here"<<endl;
 	while( i < 50 )
 	{
-	send_buffer[0] = 'w'; 
+	send_buffer[0] = 'w';
 	RS232_SendBuf(comport, send_buffer, 1);
 	cout<<"in the while"<<endl;
 	object = RS232_PollComport(comport, receive_buffer, 1);
 	cout<<receive_buffer<<endl;
 	if(receive_buffer[0]  == 'b') i++;
-	else i--;		
-	} 
+	else i--;
+	}
 	send_buffer[0] = 'b';
-		RS232_SendBuf(comport, send_buffer, 1); 
-	} 
+		RS232_SendBuf(comport, send_buffer, 1);
+  }
 	RS232_CloseComport(comport);
 
 }
 
-//void walkToObject() 
+//void walkToObject()
 
 void demoTurn()
 {
@@ -250,16 +251,10 @@ void demoVoice()
   }
 }
 
-void testDemo()
-{
- send_buffer[0] = 'w';
- RS232_SendBuf(comport, send_buffer, 1);
-}
+//Opens the porst and stuff
+void sysInt(){
+  RS232_OpenComport(comport, baudrate, "8N1")
 
-//Yeah turns to the right color, if there is one
-// Finds color return True
-// else false
-bool turnToColor(){
   VideoCapture cap(0);
   if (!cap.isOpened()) {
     cerr << "ERROR: Unable to open the camera" << endl;
@@ -271,32 +266,47 @@ bool turnToColor(){
 
   Mat frame;
 
+  cap >> frame;
+  imshow("Frame",frame);
+  cv::waitKey(5);
+
+}
+
+void testDemo()
+{
+ send_buffer[0] = 'w';
+ RS232_SendBuf(comport, send_buffer, 1);
+}
+
+//Yeah turns to the right color, if there is one
+// Finds color return True
+// else false
+bool turnToColor(){
+
+
 
   int i = 0;
 	int tmp = 0;
   bool turning = false;
  	//while( 1 ){
-    cap >> frame;
-		tmp = image_whereIsCascade(frame,cascade,true);
-    imshow("Frame",frame);
-    cv::waitKey(5);
+  tmp = image_whereIsCascade(frame,cascade,true);
 	cout<<"Value is: " << tmp<< endl;
 	switch(tmp){
 	case 4:
 		send_buffer[0] = 'a'; break;
 	case 5:
-		return 1; break;
+		return true; break;
 	case 6:
 		send_buffer[0] = 'd'; break;
 	default:
 		send_buffer[0] = 'd'; break;
 
-	} 
+	}
 
 	RS232_SendBuf(comport, send_buffer, 1);
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, 1);
-   
+
 	//}
 	cout<<"OUT OF WHILE LOOP"<<endl;
 	return false ;
