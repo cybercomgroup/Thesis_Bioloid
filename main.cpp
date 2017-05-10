@@ -116,6 +116,7 @@ void demoImage()
 }
 
 void mainDemo(){
+	char object;
 	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
 		//voice command 
 		//l√gg in n√got har som g√r att man f√r ett int v√rde som best√mmer vad vi g√r.
@@ -128,8 +129,20 @@ void mainDemo(){
 		turnTo = turnToColor();
 //		i--;
 	//		delay(2000);
-	}	
-//	while
+	}
+	cout<<"did we get here"<<endl;
+	while( i < 50 )
+	{
+	send_buffer[0] = 'w'; 
+	RS232_SendBuf(comport, send_buffer, 1);
+	cout<<"in the while"<<endl;
+	object = RS232_PollComport(comport, receive_buffer, 1);
+	cout<<receive_buffer<<endl;
+	if(receive_buffer[0]  == 'b') i++;
+	else i--;		
+	} 
+	send_buffer[0] = 'b';
+		RS232_SendBuf(comport, send_buffer, 1); 
 	} 
 	RS232_CloseComport(comport);
 
