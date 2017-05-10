@@ -15,6 +15,7 @@ int demo = 0;
 bool rotImage = false;
 bool cameraFeed = true;
 bool printDetectionTime = true;
+bool printRunTime = false;
 string cascadeFile = "face_cascade.xml";
 
 
@@ -30,6 +31,7 @@ int main( int argc, char** argv )
   if(!cParser(argc, argv))
     return 0;
 
+  double t = 0;
 
   VideoCapture cap(cameraDevice);
   if (!cap.isOpened()) {
@@ -42,6 +44,7 @@ int main( int argc, char** argv )
 
   Mat frame;
   while(1) {
+    if(printRunTime){t = (double)getTickCount();}
     cap >> frame;
 
     switch(demo)
@@ -65,6 +68,7 @@ int main( int argc, char** argv )
     key = (key==255) ? -1 : key; //#Solve bug in 3.2.0
     if (key>=0)
     break;
+    if(printRunTime){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
   }
   cap.release();
   return 0;
