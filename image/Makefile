@@ -18,3 +18,9 @@ clean:
 	rm -f $(EX)
 
 #g++ `pkg-config --cflags opencv` facedetect.cpp `pkg-config --libs opencv` -o facedetect
+#Optimize:
+
+optimize:
+	$(CC) -std=c++11 -O3 -c main.cpp
+	$(CC) -std=c++11 -O3 -c `pkg-config --cflags opencv` image.cpp
+	$(CC) -std=c++11 -O3 main.o image.o `pkg-config --libs opencv` -o $(EX)

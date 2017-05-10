@@ -1,6 +1,10 @@
 # Thesis Bioloid
  Sebastian Lind and Tobias Laving
 
+RASP IP ON CABLE:
+10.90.131.122
+
+
 1. CONFIG
 2. USAGE BELOW
 

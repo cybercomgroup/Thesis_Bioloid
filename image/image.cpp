@@ -3,6 +3,10 @@
 using namespace cv;
 using namespace std;
 
+/*
+width: 640
+height: 480
+*/
 
 double countRBG(Mat img, Vec3b rgb, double diff);
 
@@ -22,9 +26,9 @@ returns:
 6 = right
 -1 = error
 */
-int image_whereIsCascade(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
+int image_whereIsCascade(Mat& img, CascadeClassifier& cascade, bool print)
 {
-  Rect detected = image_detectAndGet(img,cascade,print,flip,1);
+  Rect detected = image_detectAndGet(img,cascade,print,1);
 
   if(detected.x == -1)
     return -1;
@@ -44,50 +48,7 @@ int image_whereIsCascade(Mat& img, CascadeClassifier& cascade, bool print, bool 
   return -1;
 }
 
-string image_findCascade(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
-{
-  vector<Rect> detected;
-  int rWidth = 640/3;
-  int rHeight = 480;
-  int rLx =  0;
-  int rMx =  ((640/2)-rWidth/2);
-  int rRx =  (640-rWidth);
-  int ry =  0;
-  Rect rL = Rect(rLx,ry,rWidth,rHeight);//STATIC RECT
-  Rect rM = Rect(rMx,ry,rWidth,rHeight);//STATIC RECT
-  Rect rR = Rect(rRx,ry,rWidth,rHeight);//STATIC RECT
-  bool turning = false;
-
-  if(flip){
-    cv::flip(img, img, -1);
-  }
-
-  //Detection
-  detected = image_detectAndGet(img,cascade,print,flip);
-  //image_detectAndDraw(img,cascade,true,false);
-
-
-
-  /*
-  rectangle(img, rL, Scalar(255,255,255), -1);
-  rectangle(img, rM, Scalar(0,0,0), -1);
-  rectangle(img, rR, Scalar(255,255,255), -1);
-  */
-
-  //REMEMBER DETECTED 0
-  for(int i = 0; i < detected.size(); i++)
-  {
-    if(image_isInside(detected[0],rM,detected[0].width/2,detected[0].height/2))
-        return "Middle";
-    if(image_isInside(detected[0],rL,detected[0].width/2,detected[0].height/2))
-        return "Left";
-    if(image_isInside(detected[0],rR,detected[0].width/2,detected[0].height/2))
-        return "Right";
-  }
-  return "Outside";
-}
-
-int image_capture(int width, int height, bool rot)
+int image_capture(int width, int height)
 {
   VideoCapture cap(0);
   if (!cap.isOpened()) {
@@ -103,10 +64,6 @@ int image_capture(int width, int height, bool rot)
   cout << "Start grabbing, press a key on Live window to terminate" << endl;
   while(1) {
     cap >> frame;
-
-    if(rot){
-      flip(frame, frame, -1);
-    }
 
 
     cvtColor(frame, hsv, COLOR_BGR2HSV);
@@ -147,20 +104,17 @@ int image_capture(int width, int height, bool rot)
   cout << "bye!" <<endl;
   return 0;
 }
-void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
+
+void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print)
 {
   vector<Rect> detected;
   double t = 0;
   Mat gray;
 
-  if(flip){
-    cv::flip(img, img, -1);
-  }
-
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, 1.3, 5);
+  cascade.detectMultiScale(gray,detected, 1.3, 5, 0, Size(10,10));
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
 
@@ -168,20 +122,10 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print, bool 
   {
     rectangle(img, detected[i], Scalar(255,0,0));
   }
-  //imshow( "result", img );
 }
 
-int image_getDetections(CascadeClassifier& cascade)
+int image_getNumDetections(Mat& img, CascadeClassifier& cascade, bool print)
 {
-  cv::Mat img;
-  cv::VideoCapture cap(0);
-  if (!cap.isOpened()) {
-    cerr << "ERROR: Unable to open the camera" << endl;
-    return 0;
-  }
-
-  cap>>img;
-
   vector<Rect> detected;
   double t = 0;
   Mat gray;
@@ -189,7 +133,10 @@ int image_getDetections(CascadeClassifier& cascade)
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
 
+  if(print){t = (double)getTickCount();}
   cascade.detectMultiScale(gray,detected, 1.3, 5);
+  if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
+
 
   return detected.size();
 }
@@ -202,17 +149,13 @@ cascade to detect
 print boolean, if true prints time for detections
 flip boolean, if true flips image before detections
 */
-vector<Rect> image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool flip)
+vector<Rect> image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print)
 {
   vector<Rect> detected;
   double t = 0;
   Mat gray;
 
   cvtColor( img, gray, COLOR_BGR2GRAY );
-
-  if(flip){
-    cv::flip(gray, gray, -1);
-  }
 
   if(print){t = (double)getTickCount();}
   cascade.detectMultiScale(gray, detected, 1.3, 5);
@@ -220,17 +163,14 @@ vector<Rect> image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print
 
   return detected;
 }
-Rect image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, bool flip, int index)
+
+Rect image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, int index)
 {
   vector<Rect> detected;
   double t = 0;
   Mat gray;
 
   cvtColor( img, gray, COLOR_BGR2GRAY );
-
-  if(flip){
-    cv::flip(gray, gray, -1);
-  }
 
   if(print){t = (double)getTickCount();}
   cascade.detectMultiScale(gray, detected, 1.3, 5);
@@ -246,7 +186,6 @@ bool image_isInside(Rect moving, Rect still, int xOffset = 0, int yOffset = 0)
   Point p = Point(moving.x + xOffset, moving.y + yOffset);
   return still.contains(p);
 }
-
 
 double countRBG(Mat img, Vec3b rgb, double diff)
 {
@@ -271,6 +210,5 @@ double countRBG(Mat img, Vec3b rgb, double diff)
       }
     }
   }
-  imshow("Thresh",thresh);
   return matching / (img.rows * img.cols);
 }
