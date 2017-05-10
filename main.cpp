@@ -261,14 +261,7 @@ void sysInt(){
     return 0;
   }
 
-  cv::CascadeClassifier cascade;
-  cascade.load("image/cascades/controller_cascade.xml");
 
-  Mat frame;
-
-  cap >> frame;
-  imshow("Frame",frame);
-  cv::waitKey(5);
 
 }
 
@@ -289,6 +282,15 @@ bool turnToColor(){
 	int tmp = 0;
   bool turning = false;
  	//while( 1 ){
+  cv::CascadeClassifier cascade;
+  cascade.load("image/cascades/controller_cascade.xml");
+
+  Mat frame;
+
+  cap >> frame;
+  imshow("Frame",frame);
+  cv::waitKey(5);
+
   tmp = image_whereIsCascade(frame,cascade,true);
 	cout<<"Value is: " << tmp<< endl;
 	switch(tmp){
