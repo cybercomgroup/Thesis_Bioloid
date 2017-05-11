@@ -20,10 +20,11 @@ string cascadeFile = "face_cascade.xml";
 
 
 bool cParser( int argc, char** argv );
+void printSettings();
 
 void detectionTest(Mat& image, CascadeClassifier& cascade);
 void orientationTest(Mat& image, CascadeClassifier& cascade);
-void numDetectionsTest(Mat& img, CascadeClassifier& cascade);
+bool numDetectionsTest(Mat& img, CascadeClassifier& cascade);
 
 
 int main( int argc, char** argv )
@@ -43,7 +44,8 @@ int main( int argc, char** argv )
   cascade.load("cascades/" + cascadeFile);
 
   Mat frame;
-  while(1) {
+  bool loop = true;
+  while(loop) {
     if(printRunTime){t = (double)getTickCount();}
     cap >> frame;
 
@@ -56,7 +58,8 @@ int main( int argc, char** argv )
         orientationTest(frame, cascade);
       break;
       case 3:
-        numDetectionsTest(frame, cascade);
+        cameraFeed = false;
+        loop = numDetectionsTest(frame, cascade);
       break;
       default:
       break;
@@ -92,21 +95,21 @@ void orientationTest(Mat& image, CascadeClassifier& cascade)
     cout<<"right"<<endl;
 }
 
-void numDetectionsTest(Mat& img, CascadeClassifier& cascade)
+bool numDetectionsTest(Mat& img, CascadeClassifier& cascade)
 {
   cout<<"Press any button to run detection, 0 exits"<<endl;
-  int c = 1;
-  while(c != 0)
-  {
-      cout<<"Detections in camera feed: " <<image_getNumDetections(img, cascade, printDetectionTime)<<endl;
-      cin>>c;
-  }
+  int c;
+  cout<<"Detections in camera feed: " <<image_getNumDetections(img, cascade, printDetectionTime)<<endl;
+  fflush(stdin);
+  cin>>c;
+  if(c==0)
+    return false;
 }
 
 bool cParser( int argc, char** argv )
 {
   int opt;
-  while ((opt = getopt (argc, argv, "c:sfpd:h")) != -1)
+  while ((opt = getopt (argc, argv, "c:srpd:f:h")) != -1)
   {
     switch (opt)
     {
@@ -116,7 +119,7 @@ bool cParser( int argc, char** argv )
       case 's':
         cameraFeed = !cameraFeed;
         break;
-      case 'f':
+      case 'r':
         rotImage = !rotImage;
         break;
       case 'p':
@@ -125,32 +128,39 @@ bool cParser( int argc, char** argv )
       case 'd':
         demo = atoi(optarg);
         break;
-      case 'x':
+      case 'f':
         cascadeFile = optarg;
         break;
       case 'h':
         cout<<"-c [arg] capture device"<<endl;
-        cout<<"-x [arg] cascade file inside /cascades"<<endl;
-        cout<<"-f rotates the camera feed"<<endl;
+        cout<<"-f [arg] cascade file inside /cascades"<<endl;
+        cout<<"-r rotates the camera feed"<<endl;
         cout<<"-s show camera feed to user"<<endl;
         cout<<"-p turn on/off detection time prints"<<endl;
         cout<<"-d [arg] set what demo to use"<<endl;
+        cout<<endl;
 
         cout<<"Available demos:"<<endl;
         cout<<"1 - detectionTest"<<endl;
         cout<<"2 - orientationTest"<<endl;
         cout<<"3 - numDetectionsTest"<<endl;
         cout<<endl;
+        printSettings();
         return false;
         break;
     }
   }
-  cout<<"The program is run using these settings:"<<endl;
+  printSettings();
+  return true;
+}
+
+void printSettings()
+{
+  cout<<"The program currently has the settings:"<<endl;
   cout<<"Capture device: "<<cameraDevice<<endl;
   cout<<"Cascade file: "<<cascadeFile<<endl;
   cout<<"Rotation: "<<rotImage<<endl;
   cout<<"Camera feed: "<<cameraFeed<<endl;
   cout<<"Print cascade detection time: "<<printDetectionTime<<endl;
   cout<<"Demo: "<<demo<<endl;
-  return true;
 }
