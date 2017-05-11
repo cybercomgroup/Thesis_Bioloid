@@ -8,6 +8,16 @@ width: 640
 height: 480
 */
 
+
+//Config for detectMultiScale
+double scaleFactor = 1.3;
+int minNeighbors = 5;
+int flags = 0;
+Size minSize(60,60);
+Size maxSize(400,400);
+
+
+
 double countRBG(Mat img, Vec3b rgb, double diff);
 
 /*
@@ -114,7 +124,7 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print)
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, 1.3, 5, 0, Size(60,60));
+  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
 
@@ -134,7 +144,7 @@ int image_getNumDetections(Mat& img, CascadeClassifier& cascade, bool print)
 
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, 1.3, 5);
+  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
 
@@ -158,7 +168,7 @@ vector<Rect> image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray, detected, 1.3, 5);
+  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
   return detected;
@@ -173,7 +183,7 @@ Rect image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, int in
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray, detected, 1.3, 5);
+  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
   if(detected.size()>=index)
