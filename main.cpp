@@ -27,10 +27,15 @@ void testTimeDemo();
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
 
-bool rot = false;
+int cameraDevice = 0;
+string cascadeFile = "face_cascade.xml";
+bool rotImage = false;
+bool cameraFeed = false;
+bool printDetectionTime = false;
 int demo = 1;
 int comport = 16; //pNUMBER
 int baudrate = 57600; //bNUMBER
+
 
 //REMOVE THESE LATER
 unsigned char receive_buffer[RECEIVE_CHARS];
@@ -44,20 +49,16 @@ Example: ./main p123 sets the comport to 123
 */
 int main (int argc, char *argv[]) {
   //Set up:
-  if(argc > 1)
-  {
-    if(!cParser((argc),argv))
+  if(!cParser(argc, argv))
     return 0;
-  }
 
-  cout<<"The program is running these values:"<<endl;
-  cout<<"Demo: "<<demo<<endl;
+
   cout<<"Comport: "<<comport<<endl;
   cout<<"Baudrate: "<<baudrate<<endl;
 
 
   if(demo == 1)
-//testTimeDemo();   
+//testTimeDemo();
  demoImage();
 
   if(demo == 2)
@@ -78,10 +79,10 @@ void mainDemo(){
 	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
 	//Get voice Command
 	//switch(command){}
-	
 
 
-	
+
+
 	}
 	RS232_CloseComport(comport);
 
@@ -118,51 +119,51 @@ bool demoTurn()
       imshow("Image", img);
       cv::waitKey(1);
 	RS232_SendBuf(comport, send_buffer, 1);
-   	
+
 	switch(ori){
-		case 4: 
+		case 4:
 		cout<<"Left"<< endl;
-		send_buffer[0] = 'a'; 
+		send_buffer[0] = 'a';
 		end += 5;
 		break;
-		
+
 		case 5:
 		cout<<"Middle"<<endl;
 		send_buffer[0] = 'b';
 		found = true;
 		break;
-		
+
 		case 6:
 		cout<<"Right"<<endl;
 		send_buffer[0] = 'd';
 		end += 5;
 		break;
-		
+
 		default:
 		cout<<"Out of sight"<<endl;
 		send_buffer[0] = 'a';
-		break;		
+		break;
 	}
 
         RS232_SendBuf(comport, send_buffer, 1);
 //	send_buffer[0] = 'b';
       }
-        
-      } 
+
+      }
     return found;
     RS232_CloseComport(comport);
-  
+
 }
-void testTimeDemo(){	
+void testTimeDemo(){
 RS232_OpenComport(comport, baudrate, "8N1");
-time_t end = time(NULL) +  18; 
+time_t end = time(NULL) +  18;
 	while(time(NULL) < end){
 	send_buffer[0] = 'd';
 	RS232_SendBuf(comport, send_buffer, 1);
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, 1);
-	
-}	
+
+}
 
 //	time_t end = time(NULL) +5;
 //	while(time(NULL) < end)
@@ -219,47 +220,54 @@ void sysInt(){
   RS232_OpenComport(comport, baudrate, "8N1");
 }
 
-bool cParser(int argN, char *argv[])
+bool cParser( int argc, char** argv )
 {
-  int number;
-  string input;
-  for(int i = 1; i < argN; i++)
+  int opt;
+  while ((opt = getopt (argc, argv, "c:sfpd:h")) != -1)
   {
-    input = argv[i];
-    if(input.length() > 1)
+    switch (opt)
     {
-      number = stoi(string(argv[i]).substr(1).c_str(),nullptr);
-    }
-    switch(argv[i][0])
-    {
-      case 'r':
-      rot = true;
-      break;
-
-      case 'd':
-      demo = number;
-      break;
-
+      case 'c':
+        cameraDevice = atoi(optarg);
+        break;
+      case 's':
+        cameraFeed = !cameraFeed;
+        break;
+      case 'f':
+        rotImage = !rotImage;
+        break;
       case 'p':
-      comport = number;
-      break;
-
-      case 'b':
-      baudrate = number;
-      break;
-
+        printDetectionTime = !printDetectionTime;
+        break;
+      case 'd':
+        demo = atoi(optarg);
+        break;
+      case 'x':
+        cascadeFile = optarg;
+        break;
       case 'h':
-      cout<<"m for manual"<<endl;
-      cout<<"r to rotate camera image"<<endl;
-      cout<<"d<NUMBER> for demo"<<endl;
-      cout<<"p<NUMBER> for input of comport"<<endl;
-      cout<<"b<NUMBER> for input of baudrate"<<endl;
-      return false;
-      break;
+        cout<<"-c [arg] capture device"<<endl;
+        cout<<"-x [arg] cascade file inside /cascades"<<endl;
+        cout<<"-f rotates the camera feed"<<endl;
+        cout<<"-s show camera feed to user"<<endl;
+        cout<<"-p turn on/off detection time prints"<<endl;
+        cout<<"-d [arg] set what demo to use"<<endl;
 
-      default:
-      break;
+        cout<<"Available demos:"<<endl;
+        cout<<"1 - detectionTest"<<endl;
+        cout<<"2 - orientationTest"<<endl;
+        cout<<"3 - numDetectionsTest"<<endl;
+        cout<<endl;
+        return false;
+        break;
     }
-    return true;
   }
+  cout<<"The program is run using these settings:"<<endl;
+  cout<<"Capture device: "<<cameraDevice<<endl;
+  cout<<"Cascade file: "<<cascadeFile<<endl;
+  cout<<"Rotation: "<<rotImage<<endl;
+  cout<<"Camera feed: "<<cameraFeed<<endl;
+  cout<<"Print cascade detection time: "<<printDetectionTime<<endl;
+  cout<<"Demo: "<<demo<<endl;
+  return true;
 }
