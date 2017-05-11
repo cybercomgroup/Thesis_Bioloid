@@ -70,49 +70,7 @@ int main (int argc, char *argv[]) {
 
 void demoImage()
 {
-  int ori = -1;
-  bool turning = false;
-
-  VideoCapture cap(0);
-  if (!cap.isOpened()) {
-    cerr << "ERROR: Unable to open the camera" << endl;
-    return;
-  }
-
-  cv::CascadeClassifier cascade;
-  cascade.load("image/cascades/face_cascade.xml");
-  //SNABBARE OM DET ÄR INTEGER IST FÖR STRING
-
-  Mat img;
-
-  while(1)
-  {
-    cap >> img;
-    ori = image_whereIsCascade(img,cascade,false);
-    cout<<ori<<endl;
-//    imshow("Image", img);
-//    cv::waitKey(5);
-    if(ori != -1) //Outside
-    {
-      if(ori == 4){
-        cout<<"Left"<<endl;
-      }
-      if(ori == 5){
-        cout<<"Middle"<<endl;
-      }
-      if(ori == 6){
-        cout<<"Right"<<endl;
-      }
-    }
-    else
-    {
-      if(!turning){
-        turning = true;
-        cout<<"Turning left in search detection"<<endl;
-      }
-      //Timer för
-    }
-  }
+  demoTurn();
 }
 
 void mainDemo(){
@@ -196,7 +154,7 @@ void demoTurn()
         if(!turning){
           turning = true;
           cout<<"Turning left in search detection"<<endl;
-	  send_buffer[0] = 'a';
+	        send_buffer[0] = 'a';
        	  RS232_SendBuf(comport, send_buffer, 1);
         }
         //Timer för
