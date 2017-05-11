@@ -23,12 +23,13 @@ void mainDemo();
 bool turnToColor();
 int seeColor();
 inline void delay(unsigned long ms);
+void sysInt();
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
 
 bool rot = false;
-int demo = 3;
+int demo = 1;
 int comport = 16; //pNUMBER
 int baudrate = 57600; //bNUMBER
 
@@ -86,8 +87,8 @@ void mainDemo(){
 	while(!turnTo && i > 0){
 		cout<< "Did we get here" << endl;
 		turnTo = turnToColor();
-		i--;
-			delay(1000);
+	//	i--;
+	//		delay(1000);
 	}
 	cout<<"did we get here"<<endl;
 	while( i < 50 )
@@ -95,10 +96,10 @@ void mainDemo(){
 	send_buffer[0] = 'w';
 	RS232_SendBuf(comport, send_buffer, 1);
 	cout<<"in the while"<<endl;
-	object = RS232_PollComport(comport, receive_buffer, 1);
+	RS232_PollComport(comport, receive_buffer, 1);
 	cout<<receive_buffer<<endl;
 	if(receive_buffer[0]  == 'b') i++;
-	else i--;
+	//else i--;
 	}
 	send_buffer[0] = 'b';
 		RS232_SendBuf(comport, send_buffer, 1);
@@ -132,8 +133,8 @@ void demoTurn()
       cap >> img;
       ori = image_whereIsCascade(img,cascade,false);
       cout<<ori<<endl;
-      //imshow("Image", img);
-      //cv::waitKey(5);
+      imshow("Image", img);
+      cv::waitKey(1);
       if(ori != -1) //Outside
       {
         if(ori == 4){
@@ -211,7 +212,7 @@ void demoVoice()
 
 //Opens the porst and stuff
 void sysInt(){
-  RS232_OpenComport(comport, baudrate, "8N1")
+  RS232_OpenComport(comport, baudrate, "8N1");
 
 
 
@@ -241,7 +242,7 @@ int imageFind(){
   cap >> frame;
   imshow("Frame",frame);
   cv::waitKey(5);
-
+/*
 for(int i = 0; i < 100){
     tmp = image_whereIsCascade(frame,cascade,false);
     switch(tmp)
@@ -263,6 +264,7 @@ for(int i = 0; i < 100){
   int maxTmp = (left > right) ? left : right;
   int maxTmp2 = (mid > none) ? mid : none;
   return ((maxTmp > maxTmp2) ? maxTmp : maxTmp2 );
+*/
 }
 
 //Yeah turns to the right color, if there is one
