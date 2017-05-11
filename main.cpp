@@ -17,13 +17,12 @@ using namespace cv;
 
 void demoImage();
 void demoVoice();
-void demoTurn();
+bool demoTurn();
 void demodTurn();
 void mainDemo();
-bool turnToColor();
-int seeColor();
 inline void delay(unsigned long ms);
 void sysInt();
+void testTimeDemo();
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
@@ -58,13 +57,14 @@ int main (int argc, char *argv[]) {
 
 
   if(demo == 1)
-    demoImage();
+//testTimeDemo();   
+ demoImage();
 
   if(demo == 2)
     demoVoice();
 
   if(demo == 3)
-    mainDemo();
+//    mainDemo();
 
   return 0;
 }
@@ -73,52 +73,31 @@ void demoImage()
 {
   demoTurn();
 }
-
+/*
 void mainDemo(){
-  sysInt();
-	while(1){
+	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
+	//Get voice Command
+	//switch(command){}
+	
 
-		//voice command
-		//l�gg in n�got har som g�r att man f�r ett int v�rde som best�mmer vad vi g�r.
-	//	switch(command){
-	//	}
-	int i = 9;
-	bool turnTo = turnToColor();
-	while(!turnTo && i > 0){
-		cout<< "Did we get here" << endl;
-		turnTo = turnToColor();
-	//	i--;
-	//		delay(1000);
+
+	
 	}
-	cout<<"did we get here"<<endl;
-	while( i < 50 )
-	{
-	send_buffer[0] = 'w';
-	RS232_SendBuf(comport, send_buffer, 1);
-	cout<<"in the while"<<endl;
-	RS232_PollComport(comport, receive_buffer, 1);
-	cout<<receive_buffer<<endl;
-	if(receive_buffer[0]  == 'b') i++;
-	//else i--;
-	}
-	send_buffer[0] = 'b';
-		RS232_SendBuf(comport, send_buffer, 1);
-  }
 	RS232_CloseComport(comport);
 
 }
-
+*/
 //void walkToObject()
 
-void demoTurn()
+bool demoTurn()
 {
   int ori = -1;
-  bool turning = false;
+  bool found = false;
 
   VideoCapture cap(0);
   if (!cap.isOpened()) {
     cerr << "ERROR: Unable to open the camera" << endl;
-    return;
+    return false;
   }
 
   cv::CascadeClassifier cascade;
@@ -128,41 +107,66 @@ void demoTurn()
 
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   {
-    while(1)
+	    time_t end = time(NULL) + 28;
+	    while(time(NULL) <= end && !found)
     {
       cap >> img;
+//      cv::flip(img,img,-1); // to flip the camera uncomment this
+
       ori = image_whereIsCascade(img,cascade,false);
       cout<<ori<<endl;
       imshow("Image", img);
       cv::waitKey(1);
-      if(ori != -1) //Outside
-      {
-        if(ori == 4){
-          cout<<"Left"<<endl;
-        }
-        if(ori == 5){
-          cout<<"Middle"<<endl;
-        }
-        if(ori == 6){
-          cout<<"Right"<<endl;
-        }
-        send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, 1);
+   	
+	switch(ori){
+		case 4: 
+		cout<<"Left"<< endl;
+		send_buffer[0] = 'a'; 
+		end += 5;
+		break;
+		
+		case 5:
+		cout<<"Middle"<<endl;
+		send_buffer[0] = 'b';
+		found = true;
+		break;
+		
+		case 6:
+		cout<<"Right"<<endl;
+		send_buffer[0] = 'd';
+		end += 5;
+		break;
+		
+		default:
+		cout<<"Out of sight"<<endl;
+		send_buffer[0] = 'a';
+		break;		
+	}
+
         RS232_SendBuf(comport, send_buffer, 1);
-        break;
+//	send_buffer[0] = 'b';
       }
-      else
-      {
-        if(!turning){
-          turning = true;
-          cout<<"Turning left in search detection"<<endl;
-	        send_buffer[0] = 'a';
-       	  RS232_SendBuf(comport, send_buffer, 1);
-        }
-        //Timer för
-      }
-    }
+        
+      } 
+    return found;
     RS232_CloseComport(comport);
-  }
+  
+}
+void testTimeDemo(){	
+RS232_OpenComport(comport, baudrate, "8N1");
+time_t end = time(NULL) +  18; 
+	while(time(NULL) < end){
+	send_buffer[0] = 'd';
+	RS232_SendBuf(comport, send_buffer, 1);
+	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, 1);
+	
+}	
+
+//	time_t end = time(NULL) +5;
+//	while(time(NULL) < end)
+//	 cout<<"time: "<< time(NULL)<< endl;
 }
 
 void demoVoice()
@@ -213,108 +217,7 @@ void demoVoice()
 //Opens the porst and stuff
 void sysInt(){
   RS232_OpenComport(comport, baudrate, "8N1");
-
-
-
-
-
 }
-
-void testDemo()
-{
- send_buffer[0] = 'w';
- RS232_SendBuf(comport, send_buffer, 1);
-}
-
-int imageFind(){
-  int tmp = -1, left = 0, right = 0, mid = 0, none = 0;
-  VideoCapture cap(0);
-  if (!cap.isOpened()) {
-    cerr << "ERROR: Unable to open the camera" << endl;
-    return 0;
-  }
-
-  cv::CascadeClassifier cascade;
-  cascade.load("image/cascades/controller_cascade.xml");
-
-  Mat frame;
-
-  cap >> frame;
-  imshow("Frame",frame);
-  cv::waitKey(5);
-/*
-for(int i = 0; i < 100){
-    tmp = image_whereIsCascade(frame,cascade,false);
-    switch(tmp)
-    case 4:
-      left++;
-      break;
-    case 5:
-      mid++;
-      break;
-    case 6:
-      right++;
-      break;
-
-    default:
-      none++;
-      break;
-    }
-
-  int maxTmp = (left > right) ? left : right;
-  int maxTmp2 = (mid > none) ? mid : none;
-  return ((maxTmp > maxTmp2) ? maxTmp : maxTmp2 );
-*/
-}
-
-//Yeah turns to the right color, if there is one
-// Finds color return True
-// else false
-bool turnToColor(){
-
-
-
-  int i = 0;
-	int tmp = 0;
-  bool turning = false;
- 	//while( 1 ){
-
-    tmp = imageFind();
-	cout<<"Value is: " << tmp<< endl;
-	switch(tmp){
-	case 4:
-		send_buffer[0] = 'a'; break;
-	case 5:
-		return true; break;
-	case 6:
-		send_buffer[0] = 'd'; break;
-	default:
-		send_buffer[0] = 'd'; break;
-
-	}
-
-  //one Second delay.
-  delay(1000);
-
-	RS232_SendBuf(comport, send_buffer, 1);
-	send_buffer[0] = 'b';
-	RS232_SendBuf(comport, send_buffer, 1);
-
-	//}
-	cout<<"OUT OF WHILE LOOP"<<endl;
-	return false ;
-}
-
-int seeColor(){
-
-	return 1;
-}
-
-inline void delay(unsigned long ms){
-	usleep(ms * 1000);
-}
-
-
 
 bool cParser(int argN, char *argv[])
 {
