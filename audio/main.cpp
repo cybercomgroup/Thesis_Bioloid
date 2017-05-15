@@ -1,8 +1,7 @@
 #include "audio.h"
 #include <thread>
-using namespace std;
 
-string parseCommand(string s);
+using namespace std;
 
 int main(int argc, char *argv[])
 {
