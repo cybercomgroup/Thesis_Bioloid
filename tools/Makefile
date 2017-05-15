@@ -5,11 +5,13 @@ JAVA=$(JAVA_HOME)
 
 
 #USING RECURSIVE
-all: main.o INIReader.o ini.o
+all: main.o dep
 	$(CC) -std=c++11 main.o INIReader.o ini.o -o $(EX)
 
 main.o: main.cpp
 	$(CC) -std=c++11 -c -g  main.cpp
+
+dep: INIReader.o ini.o
 
 INIReader.o:	INIReader.cpp INIReader.h
 	$(CC) -std=c++11 -c -g  INIReader.cpp

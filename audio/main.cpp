@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
       cout<<"Listening.."<<endl;
       printM = false;
     }
-    if(audio_getCommandsSize() > 0){
+    if(audio_getCommandsSize() > -1){
       printM = true;
       cout<<"Heard this:"<<endl;
 

@@ -177,7 +177,7 @@ void demoVoice()
     string s,c = "";
     bool quit;
     audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
-    thread listen(audio_listenForCommand);
+    thread listen(audio_listen);
     while(!quit)
     {
       if(audio_getCommandsSize() > -1)
@@ -186,7 +186,7 @@ void demoVoice()
         s = audio_popCommand();
         cout<<"Popped command: "<<s<<endl;
         c = "";
-        c = audio_parseCommand(s);
+        c = audio_parseCommand("ROBOT",s);
         cout<<"Command: "<<c<<endl;
         if(!c.compare("TURN LEFT"))
         {

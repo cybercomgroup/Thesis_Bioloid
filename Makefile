@@ -1,6 +1,7 @@
 CC=g++
 EX=main
 JAVA=$(JAVA_HOME)
+SUBDIRS=audio comm image
 #CFLAGS=
 
 
@@ -26,10 +27,13 @@ clean:
 	rm -f *.o
 	rm -f $(EX)
 
-dep:
-	cd image && $(MAKE) dep
-	cd audio && $(MAKE) dep
-	cd comm && $(MAKE) dep
+#Subdirectories
+.PHONY: dep $(SUBDIRS)
+
+dep: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@
 
 #INSIDE SUBDIRS
 subdirs:
