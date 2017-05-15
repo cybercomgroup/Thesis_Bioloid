@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
   int pos;
   bool printM = true;
   audio_init("lib/2005.lm","lib/2005.dic");
-  thread listen(audio_listenForCommand);
+  thread listen(audio_listen);
   while(1)
   {
     if(printM)
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
       s="";
       s=audio_popCommand();
       cout<<"Popped command: "<<s<<endl;
-      cout<<"Command: "<<audio_parseCommand(s)<<endl;
+      cout<<"Command: "<<audio_parseCommand("ROBOT",s)<<endl;
     }
   }
   listen.join();

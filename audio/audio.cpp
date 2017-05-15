@@ -20,13 +20,13 @@ int16 buf[512];
 int rv, commandSize=-1;
 int32 score;
 
-string audio_parseCommand(string s)
+string audio_parseCommand(string keyword, string s)
 {
   //string command;
   int pos = s.find_first_of(" \t");
   if(pos != -1)
   {
-    if(s.substr(0,pos).compare("ROBOT") == 0)
+    if(s.substr(0,pos).compare(keyword) == 0)
     {
       return s.substr(pos+1);
     }
@@ -68,7 +68,7 @@ string audio_popCommand()
 	return commands[commandSize--];
 }
 
-int audio_listenForCommand()
+void audio_listen()
 {
 	ad_rec_t *ad;
 	int16 adbuf[2048];
@@ -117,54 +117,6 @@ int audio_listenForCommand()
 			usleep(100);
 	}
 	ad_close(ad);
-}
-
-void audio_listen()
-{
-    ad_rec_t *ad;
-    int16 adbuf[2048];
-    uint8 utt_started, in_speech;
-    int32 k;
-    char const *hyp;
-
-    if ((ad = ad_open_dev(cmd_ln_str_r(config, "-adcdev"),
-                          (int) cmd_ln_float32_r(config,
-                                                 "-samprate"))) == NULL)
-        E_FATAL("Failed to open audio device\n");
-    if (ad_start_rec(ad) < 0)
-        E_FATAL("Failed to start recording\n");
-
-    if (ps_start_utt(ps) < 0)
-        E_FATAL("Failed to start utterance\n");
-    utt_started = FALSE;
-    E_INFO("Ready....\n");
-
-    for (;;) {
-        if ((k = ad_read(ad, adbuf, 2048)) < 0)
-            E_FATAL("Failed to read audio\n");
-        ps_process_raw(ps, adbuf, k, FALSE, FALSE);
-        in_speech = ps_get_in_speech(ps);
-        if (in_speech && !utt_started) {
-            utt_started = TRUE;
-            E_INFO("Listening...\n");
-        }
-        if (!in_speech && utt_started) {
-            /* speech -> silence transition, time to start new utterance  */
-            ps_end_utt(ps);
-            hyp = ps_get_hyp(ps, NULL );
-            if (hyp != NULL) {
-                printf("%s\n", hyp);
-                fflush(stdout);
-            }
-
-            if (ps_start_utt(ps) < 0)
-                E_FATAL("Failed to start utterance\n");
-            utt_started = FALSE;
-            E_INFO("Ready....\n");
-        }
-        usleep(100);
-    }
-    ad_close(ad);
 }
 
 
