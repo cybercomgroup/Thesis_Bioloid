@@ -1,47 +1,26 @@
 CC=g++
 EX=main
-JAVA=$(JAVA_HOME)
 SUBDIRS=audio comm image
-#CFLAGS=
+STDFLAG=-std=c++11
 
 
-#USING RECURSIVE
+#MAKE USING RECURSIVE
 all: dep main.o
-	#Create exectuble
-	$(CC) -std=c++11 main.o comm/rs232.o image/image.o audio/audio.o `pkg-config --libs opencv pocketsphinx sphinxbase` -o $(EX)
+	$(CC) $(STDFLAG) main.o comm/rs232.o image/image.o audio/audio.o `pkg-config --libs opencv pocketsphinx sphinxbase` -o $(EX)
 
-redo: cleanall all
-
-#INSIDE THIS FOLDER
-allbasic: main.o rs232.o image/image.o
-	#Create exectuble
-	$(CC) -std=c++11 -L$(JAVA)/jre/lib/$(PROC)/server/ main.o rs232.o image/image.o `pkg-config --libs opencv` -o $(EX) -ljvm
-
-#main.o: main.cpp
-	#$(CC) -std=c++11 -c main.cpp
+dep:
+	@$(foreach dir,$(SUBDIRS),$(MAKE) -C $(dir);)
 
 main.o: main.cpp
-	$(CC) -std=c++11 -c -g  main.cpp
+	$(CC) $(STDFLAG) -c -g  main.cpp
 
+#USEFUL TOOLS
+redo: cleanall all
+
+#CLEAN
 clean:
 	rm -f *.o
 	rm -f $(EX)
 
-#Subdirectories
-.PHONY: dep $(SUBDIRS)
-
-dep: $(SUBDIRS)
-
-$(SUBDIRS):
-	$(MAKE) -C $@
-
-#INSIDE SUBDIRS
-subdirs:
-	$(MAKE) -C image
-	$(MAKE) -C audio
-
-#Removes all .o files and exectubles inside the project and subfolders
 cleanall: clean
-	cd image && $(MAKE) clean
-	cd audio && $(MAKE) clean
-	cd comm && $(MAKE) clean
+	@$(foreach dir,$(SUBDIRS),$(MAKE) -C $(dir) clean;)
