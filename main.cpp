@@ -76,10 +76,26 @@ void demoImage()
 }
 /*
 void mainDemo(){
+	bool object = false;
 	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
 	//Get voice Command
 	//switch(command){}
+	
+	object = demoTurn();
+	
+	send_buffer[0] = 'w';
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+	RS232_PollComport(comport, receive_buffer, 1);
+	while(receive_buffer[0] == 'g');
+	
+	if(object == true)
+		send_buffer[0] = 'c';
 
+	else
+		send_buffer[0] = 'g';
+		//do stuff so it will find right thing
+		
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 
 
 
@@ -106,8 +122,8 @@ bool demoTurn()
 
   Mat img;
 
-  if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
-  {
+ // if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
+  //{
 	    time_t end = time(NULL) + 28;
 	    while(time(NULL) <= end && !found)
     {
@@ -149,7 +165,7 @@ bool demoTurn()
 //	send_buffer[0] = 'b';
       }
 
-      }
+     // }
     return found;
     RS232_CloseComport(comport);
 
