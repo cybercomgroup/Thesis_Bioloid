@@ -95,7 +95,8 @@ void mainDemo(){
 		send_buffer[0] = 'g';
 		//do stuff so it will find right thing
 		
-	
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+
 
 
 	}
