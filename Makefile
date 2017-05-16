@@ -9,7 +9,7 @@ all: dep main.o
 	$(CC) $(STDFLAG) main.o comm/rs232.o image/image.o audio/audio.o `pkg-config --libs opencv pocketsphinx sphinxbase` -o $(EX)
 
 dep:
-	@$(foreach dir,$(SUBDIRS),$(MAKE) -C $(dir);)
+	@$(foreach dir,$(SUBDIRS),$(MAKE) -C $(dir) dep;)
 
 main.o: main.cpp
 	$(CC) $(STDFLAG) -c -g  main.cpp
