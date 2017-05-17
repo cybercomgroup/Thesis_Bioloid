@@ -39,7 +39,7 @@ int audio_init(string lm, string dict)
 {
 	err_set_logfp(NULL);
 	config = cmd_ln_init(NULL, ps_args(), TRUE,
-	"-hmm", MODELDIR "/en-us/en-us",
+	"-hmm", "lib/en-us",
 	"-lm", lm.c_str(),
 	"-dict", dict.c_str(),
   "-vad_threshold", "3.0", //Increase for sensitive microphone
