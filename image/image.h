@@ -1,3 +1,6 @@
+#ifndef image_INCLUDED
+#define image_INCLUDED
+
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
@@ -13,3 +16,5 @@ int image_whereIsCascade(Mat&, CascadeClassifier&, bool);
 int image_getNumDetections(Mat& img, CascadeClassifier&, bool);
 bool image_isInside(Rect, Rect, int, int);
 int image_capture(int, int);
+
+#endif
