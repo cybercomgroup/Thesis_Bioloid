@@ -14,8 +14,12 @@ height: 480
 double scaleFactor = 1.3;
 int minNeighbors = 5;
 int flags = 0;
-int minSize = 60;
-int maxSize = 400;
+int minSizeW = 60;
+int minSizeH = 60;
+int maxSizeW = 400;
+int maxSizeH = 400;
+Size minSize(minSizeW,minSizeH);
+Size maxSize(maxSizeW,maxSizeH);
 
 
 double countRBG(Mat img, Vec3b rgb, double diff);
@@ -32,8 +36,10 @@ bool image_initConf(string file)
   scaleFactor = reader.GetReal("detectMultiScale", "scaleFactor", scaleFactor);
   minNeighbors = reader.GetInteger("detectMultiScale", "minNeighbors", minNeighbors);
   flags = reader.GetInteger("detectMultiScale", "flags", flags);
-  minSize = reader.GetInteger("detectMultiScale", "minSize", minSize);
-  maxSize = reader.GetInteger("detectMultiScale", "maxSize", maxSize);
+  minSizeW = reader.GetInteger("detectMultiScale", "minSizeW", minSizeW);
+  minSizeH = reader.GetInteger("detectMultiScale", "minSizeH", minSizeH);
+  maxSizeW = reader.GetInteger("detectMultiScale", "maxSizeW", maxSizeW);
+  maxSizeH = reader.GetInteger("detectMultiScale", "maxSizeH", maxSizeH);
 }
 
 
@@ -141,7 +147,7 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print)
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, Size(minSize,minSize), Size(maxSize,maxSize));
+  cascade.detectMultiScale(gray, detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
 
@@ -161,7 +167,7 @@ int image_getNumDetections(Mat& img, CascadeClassifier& cascade, bool print)
 
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, Size(minSize,minSize), Size(maxSize,maxSize));
+  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
 
@@ -185,7 +191,7 @@ vector<Rect> image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, Size(minSize,minSize), Size(maxSize,maxSize));
+  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
   return detected;
@@ -200,7 +206,7 @@ Rect image_detectAndGet(Mat& img, CascadeClassifier& cascade, bool print, int in
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, Size(minSize,minSize), Size(maxSize,maxSize));
+  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
   if(detected.size()>=index)
