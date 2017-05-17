@@ -27,9 +27,11 @@ cleanall: clean
 	@$(foreach dir,$(SUBDIRS),$(MAKE) -C $(dir) clean;)
 
 #OPTIMIZE
-optimize: depoptimize
-	$(CC) $(STDFLAG) -O3 -c -g  main.cpp
+optimizeall: optimize optimizedep
 	$(CC) $(STDFLAG) -O3 main.o $(LINKFILES) `pkg-config --libs opencv pocketsphinx sphinxbase` -o $(EX)
 
-depoptimize:
+optimize:
+	$(CC) $(STDFLAG) -O3 -c -g  main.cpp
+
+optimizedep:
 	@$(foreach dir,$(SUBDIRS),$(MAKE) -C $(dir) depoptimize;)
