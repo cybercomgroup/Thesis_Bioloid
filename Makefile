@@ -9,6 +9,7 @@ STDFLAG=-std=c++11
 all: dep $(LINKFILES)
 	$(CC) $(STDFLAG) $(LINKFILES) `pkg-config --libs opencv pocketsphinx sphinxbase` -o $(EX)
 
+#This call will go into every SUBDIR and use the makefile inside with 'dep' variable
 dep:
 	@$(foreach dir,$(SUBDIRS),$(MAKE) -C $(dir) dep;)
 
