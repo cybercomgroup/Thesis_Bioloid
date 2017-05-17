@@ -44,6 +44,7 @@ string INIReader::Get(const string& section, const string& name, const string& d
     if(_values.count(key))
     {
       string str = _values.find(key)->second;
+      size_t commentStart = str.find(";");
       str = str.substr(0,str.find(";"));
       str = str.substr(0,str.find_last_not_of(" ")+1);
       return str;

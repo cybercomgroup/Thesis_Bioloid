@@ -80,21 +80,21 @@ void mainDemo(){
 	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
 	//Get voice Command
 	//switch(command){}
-	
+
 	object = demoTurn();
-	
+
 	send_buffer[0] = 'w';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	RS232_PollComport(comport, receive_buffer, 1);
 	while(receive_buffer[0] == 'g');
-	
+
 	if(object == true)
 		send_buffer[0] = 'c';
 
 	else
 		send_buffer[0] = 'g';
 		//do stuff so it will find right thing
-		
+
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 
 
@@ -192,7 +192,7 @@ void demoVoice()
   {
     string s,c = "";
     bool quit;
-    audio_init("audio/lib/2005.lm","audio/lib/2005.dic");
+    audio_init("audio/lib/en-us","audio/lib/2005.lm","audio/lib/2005.dic");
     thread listen(audio_listen);
     while(!quit)
     {
