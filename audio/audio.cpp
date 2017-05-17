@@ -5,10 +5,8 @@
 #include "pocketsphinx.h"
 
 #ifdef __arm__
-#define MODELDIR "/home/pi/Downloads/sphinx/pocketsphinx-5prealpha/model"
 #define MIC "hw:0,0"
 #else
-#define MODELDIR "/home/tobbeh/Downloads/sphinx/pocketsphinx-5prealpha/model"
 #define MIC NULL
 #endif
 
@@ -35,11 +33,11 @@ string audio_parseCommand(string keyword, string s)
 }
 
 
-int audio_init(string lm, string dict)
+int audio_init(string hmm, string lm, string dict)
 {
 	err_set_logfp(NULL);
 	config = cmd_ln_init(NULL, ps_args(), TRUE,
-	"-hmm", "lib/en-us",
+	"-hmm", hmm.c_str(),
 	"-lm", lm.c_str(),
 	"-dict", dict.c_str(),
   "-vad_threshold", "3.0", //Increase for sensitive microphone

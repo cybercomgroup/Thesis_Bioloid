@@ -10,6 +10,7 @@
 
 #include <map>
 #include <string>
+#include <iostream>
 
 // Read an INI file into easy-to-access name/value pairs. (Note that I've gone
 // for simplicity here rather than speed, but it should be pretty decent.)
