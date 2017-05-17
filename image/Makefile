@@ -2,8 +2,8 @@ CC=g++
 EX=main
 STDFLAG=-std=c++11
 
-all: main.o image.o
-	$(CC) $(STDFLAG) main.o image.o `pkg-config --libs opencv` -o $(EX)
+all: main.o dep
+	$(CC) $(STDFLAG) main.o image.o ../tools/INIReader.o `pkg-config --libs opencv` -o $(EX)
 
 main.o: main.cpp
 	$(CC) $(STDFLAG) -c main.cpp
@@ -11,7 +11,7 @@ main.o: main.cpp
 image.o: image.cpp image.h
 	$(CC) $(STDFLAG) -c `pkg-config --cflags opencv` image.cpp
 
-dep: image.o
+dep: image.o ../tools/INIReader.o
 
 clean:
 	rm -f *.o

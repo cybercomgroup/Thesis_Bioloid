@@ -5,6 +5,7 @@
 using namespace std;
 using namespace cv;
 
+bool image_initConf(string);
 void image_detectAndDraw(Mat&, CascadeClassifier&, bool);
 vector<Rect> image_detectAndGet(Mat&, CascadeClassifier&, bool);
 Rect image_detectAndGet(Mat&, CascadeClassifier&, bool, int);

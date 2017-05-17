@@ -29,6 +29,7 @@ bool numDetectionsTest(Mat& img, CascadeClassifier& cascade);
 
 int main( int argc, char** argv )
 {
+  image_initConf("test.ini");
   if(!cParser(argc, argv))
     return 0;
 
