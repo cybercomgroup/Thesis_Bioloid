@@ -1,9 +1,10 @@
 CC=g++
 EX=main
+LINKFILES=main.o image.o ../tools/INIReader.o
 STDFLAG=-std=c++11
 
-all: main.o dep
-	$(CC) $(STDFLAG) main.o image.o ../tools/INIReader.o `pkg-config --libs opencv` -o $(EX)
+all: $(LINKFILES)
+	$(CC) $(STDFLAG) $(LINKFILES) `pkg-config --libs opencv` -o $(EX)
 
 main.o: main.cpp
 	$(CC) $(STDFLAG) -c main.cpp

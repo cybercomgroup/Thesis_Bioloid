@@ -1,13 +1,13 @@
 CC=g++
 EX=main
 SUBDIRS=audio comm image
-LINKFILES=comm/rs232.o image/image.o audio/audio.o
+LINKFILES=main.o comm/rs232.o image/image.o audio/audio.o tools/INIReader.o
 STDFLAG=-std=c++11
 
 
 #MAKE USING RECURSIVE
-all: dep main.o
-	$(CC) $(STDFLAG) main.o $(LINKFILES) `pkg-config --libs opencv pocketsphinx sphinxbase` -o $(EX)
+all: dep $(LINKFILES)
+	$(CC) $(STDFLAG) $(LINKFILES) `pkg-config --libs opencv pocketsphinx sphinxbase` -o $(EX)
 
 dep:
 	@$(foreach dir,$(SUBDIRS),$(MAKE) -C $(dir) dep;)

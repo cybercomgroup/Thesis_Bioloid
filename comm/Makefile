@@ -1,9 +1,10 @@
 CC=g++
 EX=main
+LINKFILES=main.o comm.o rs232.o
 STDFLAG=-std=c++11
 
-all: main.o comm.o rs232.o
-	$(CC) $(STDFLAG) main.o comm.o rs232.o -o $(EX)
+all: $(LINKFILES)
+	$(CC) $(STDFLAG) $(LINKFILES) -o $(EX)
 
 main.o: main.cpp
 	$(CC) $(STDFLAG) -c main.cpp

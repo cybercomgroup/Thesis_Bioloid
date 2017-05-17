@@ -1,9 +1,10 @@
 CC=g++
 EX=main
+LINKFILES=main.o audio.o
 STDFLAG=-std=c++11
 
 all: audio.o main.o
-	$(CC) $(STDFLAG) main.o audio.o -o $(EX) `pkg-config --libs pocketsphinx sphinxbase`
+	$(CC) $(STDFLAG) $(LINKFILES) -o $(EX) `pkg-config --libs pocketsphinx sphinxbase`
 
 main.o: main.cpp
 	$(CC) $(STDFLAG) -c main.cpp
