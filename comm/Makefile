@@ -19,3 +19,6 @@ clean:
 	rm -f $(EX)
 
 dep: rs232.o
+
+depoptimize:
+	$(CC) $(STDFLAG) -O3 -c rs232.c
