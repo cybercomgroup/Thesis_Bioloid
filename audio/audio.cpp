@@ -20,14 +20,14 @@ int32 score;
 string mic = "";
 string threshold = "2.0";
 
-bool audio_initConf(string file)
+bool audio_initConf(string file, string conf)
 {
   INIReader reader(file);
   if (reader.ParseError() < 0) {
       std::cout << "Can't load 'test.ini'\n";
       return false;
   }
-  mic = reader.Get("audio", "mic", mic);
+  mic = reader.Get(conf, "mic", mic);
   threshold = reader.Get("audio", "threshold", threshold);
 }
 

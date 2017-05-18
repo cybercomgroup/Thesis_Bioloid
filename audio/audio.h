@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool audio_initConf(string);
+bool audio_initConf(string, string);
 void audio_printConf();
 int audio_init(string, string, string);
 void audio_listen();
