@@ -1,4 +1,5 @@
 #include "image.h"
+#include "../tools/INIReader.h"
 
 using namespace cv;
 using namespace std;
@@ -13,12 +14,34 @@ height: 480
 double scaleFactor = 1.3;
 int minNeighbors = 5;
 int flags = 0;
-Size minSize(60,60);
-Size maxSize(400,400);
-
+int minSizeW = 60;
+int minSizeH = 60;
+int maxSizeW = 400;
+int maxSizeH = 400;
+Size minSize(minSizeW,minSizeH);
+Size maxSize(maxSizeW,maxSizeH);
 
 
 double countRBG(Mat img, Vec3b rgb, double diff);
+
+
+bool image_initConf(string file)
+{
+  INIReader reader(file);
+  if (reader.ParseError() < 0) {
+      std::cout << "Can't load 'test.ini'\n";
+      return false;
+  }
+
+  scaleFactor = reader.GetReal("detectMultiScale", "scaleFactor", scaleFactor);
+  minNeighbors = reader.GetInteger("detectMultiScale", "minNeighbors", minNeighbors);
+  flags = reader.GetInteger("detectMultiScale", "flags", flags);
+  minSizeW = reader.GetInteger("detectMultiScale", "minSizeW", minSizeW);
+  minSizeH = reader.GetInteger("detectMultiScale", "minSizeH", minSizeH);
+  maxSizeW = reader.GetInteger("detectMultiScale", "maxSizeW", maxSizeW);
+  maxSizeH = reader.GetInteger("detectMultiScale", "maxSizeH", maxSizeH);
+}
+
 
 /*
 NAME IS TEMP
@@ -124,7 +147,7 @@ void image_detectAndDraw(Mat& img, CascadeClassifier& cascade, bool print)
   cvtColor( img, gray, COLOR_BGR2GRAY );
 
   if(print){t = (double)getTickCount();}
-  cascade.detectMultiScale(gray,detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
+  cascade.detectMultiScale(gray, detected, scaleFactor, minNeighbors, flags, minSize, maxSize);
   if(print){t = (double)getTickCount() - t; printf( "detection time = %g ms\n", t*1000/getTickFrequency());}
 
 

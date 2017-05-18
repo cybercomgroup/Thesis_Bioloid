@@ -1,4 +1,3 @@
-#include <iostream>
 #include "INIReader.h"
 
 int main()
