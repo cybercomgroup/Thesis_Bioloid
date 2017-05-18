@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
   string s;
   int pos;
   bool printM = true;
-  audio_initConf("../config.ini","audio-ubuntu");
+  audio_initConf("../config.ini");
   audio_printConf();
   audio_init("lib/en-us","lib/2005.lm","lib/2005.dic");
   thread listen(audio_listen);
