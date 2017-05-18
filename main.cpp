@@ -7,6 +7,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <thread>
+#include <unistd.h> 
 
 using namespace std;
 using namespace cv;
@@ -18,10 +19,9 @@ using namespace cv;
 void demoImage();
 void demoVoice();
 bool demoTurn();
-void demodTurn();
-void mainDemo();
+//void demodTurn();
+void realDemoa();
 inline void delay(unsigned long ms);
-void sysInt();
 void testTimeDemo();
 
 //Parser and global belonging variables
@@ -57,9 +57,10 @@ int main (int argc, char *argv[]) {
   cout<<"Baudrate: "<<baudrate<<endl;
 
 
-  if(demo == 1)
+  if(demo == 1) 
 //testTimeDemo();
  demoImage();
+
 
   if(demo == 2)
     demoVoice();
@@ -72,22 +73,40 @@ int main (int argc, char *argv[]) {
 
 void demoImage()
 {
-  demoTurn();
+ realDemoa(); 
+// demoTurn();
 }
-/*
-void mainDemo(){
+
+void realDemoa(){
 	bool object = false;
 	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
 	//Get voice Command
 	//switch(command){}
 
 	object = demoTurn();
-
+//	delay(1000);
+	usleep(750000);
+	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+	cout<<object<<" Did We get here "<< endl;	
 	send_buffer[0] = 'w';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	RS232_PollComport(comport, receive_buffer, 1);
-	while(receive_buffer[0] == 'g');
-
+	char tmp = receive_buffer[0]; 
+	cout<<tmp<<endl; 
+	while(tmp == 'g'){
+		//send_buffer[0]= 'w';
+		//RS232_SendBuf(comport, send_buffer,SEND_CHARS);
+		 RS232_PollComport(comport, receive_buffer, 1);
+		tmp = receive_buffer[0];
+		cout<<tmp<<endl; 
+	}
+//	delay(5000); 
+	usleep(10000);
+	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
+//k	delay(1000);
+	usleep(2000000);
 	if(object == true)
 		send_buffer[0] = 'c';
 
@@ -98,12 +117,11 @@ void mainDemo(){
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 
 
-
 	}
 	RS232_CloseComport(comport);
 
 }
-*/
+
 //void walkToObject()
 
 bool demoTurn()
@@ -124,18 +142,16 @@ bool demoTurn()
 
  // if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   //{
-	    time_t end = time(NULL) + 28;
-	    while(time(NULL) <= end && !found)
+    time_t end = time(NULL) + 18;
+    while(time(NULL) <= end && !found)
     {
       cap >> img;
 //      cv::flip(img,img,-1); // to flip the camera uncomment this
 
       ori = image_whereIsCascade(img,cascade,false);
-      cout<<ori<<endl;
+      cout<<"Time right Now: "<<time(NULL)<< " Time we aim for: "<< end <<endl;
       imshow("Image", img);
       cv::waitKey(1);
-	RS232_SendBuf(comport, send_buffer, 1);
-
 	switch(ori){
 		case 4:
 		cout<<"Left"<< endl;
@@ -230,11 +246,10 @@ void demoVoice()
     //audio_destroy();
   }
 }
-
-//Opens the porst and stuff
-void sysInt(){
-  RS232_OpenComport(comport, baudrate, "8N1");
+inline void delay(unsigned long ms){
+	usleep(ms * 1000); 
 }
+
 
 bool cParser( int argc, char** argv )
 {
