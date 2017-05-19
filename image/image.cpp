@@ -9,6 +9,12 @@ width: 640
 height: 480
 */
 
+//Config
+/*
+int cameraDevice = 0;
+bool rotImage = false;
+bool cameraFeed = false;
+bool printDetectionTime = false;*/
 
 //Config for detectMultiScale
 double scaleFactor = 1.3;
@@ -32,7 +38,14 @@ bool image_initConf(string file)
       std::cout << "Can't load 'test.ini'\n";
       return false;
   }
+  /*
+  cameraDevice = reader.GetInteger("image", "cameraDevice", cameraDevice);;
+  rotImage = reader.GetBoolean("image", "rotImage", rotImage);
+  cameraFeed = reader.GetBoolean("image", "cameraFeed", cameraFeed);
+  printDetectionTime = reader.GetBoolean("image", "printDetectionTime", printDetectionTime);*/
 
+
+  //Multiscale
   scaleFactor = reader.GetReal("detectMultiScale", "scaleFactor", scaleFactor);
   minNeighbors = reader.GetInteger("detectMultiScale", "minNeighbors", minNeighbors);
   flags = reader.GetInteger("detectMultiScale", "flags", flags);
@@ -41,8 +54,32 @@ bool image_initConf(string file)
   maxSizeW = reader.GetInteger("detectMultiScale", "maxSizeW", maxSizeW);
   maxSizeH = reader.GetInteger("detectMultiScale", "maxSizeH", maxSizeH);
 }
+/*
 
+void image_findCascade(CascadeClassifier& cascade, int& dir)
+{
+  VideoCapture cap(cameraDevice);
+  if (!cap.isOpened()) {
+    cerr << "ERROR: Unable to open the camera" << endl;
+    return;
+  }
+  Mat frame;
+  while(1)
+  {
+    cap >> frame;
+    if(rotImage)
+      flip(frame, frame, -1);
 
+    if(cameraFeed)
+    {
+      imshow("CameraFeed", frame);
+      cv::waitKey(5);
+    }
+
+    dir = image_whereIsCascade(frame,cascade,printDetectionTime);
+  }
+}
+*/
 /*
 NAME IS TEMP
 This function finds the first cascade in the image and then returns it's
