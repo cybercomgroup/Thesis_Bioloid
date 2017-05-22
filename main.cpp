@@ -27,8 +27,12 @@ void testTimeDemo();
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
+void printSettings();
+bool initConf(string);
+void initAll(string);
 
 int cameraDevice = 0;
+string config = "config-rasp.ini";
 string cascadeFile = "face_cascade.xml";
 bool rotImage = false;
 bool cameraFeed = false;
@@ -49,9 +53,12 @@ To change running parameters use add the arguments described above when running 
 Example: ./main p123 sets the comport to 123
 */
 int main (int argc, char *argv[]) {
+
   //Set up:
-  if(!cParser(argc, argv))
+  if(!cParser(argc,argv))
     return 0;
+  initAll(config);
+  printSettings();
 
 
   cout<<"Comport: "<<comport<<endl;
@@ -258,45 +265,40 @@ bool initConf(string file)
       std::cout << "Can't load 'test.ini'\n";
       return false;
   }
-  cameraDevice = reader.GetInteger("image", "cameraDevice", cameraDevice);;
+  //image
+  cameraDevice = reader.GetInteger("image", "cameraDevice", cameraDevice);
   rotImage = reader.GetBoolean("image", "rotImage", rotImage);
   cameraFeed = reader.GetBoolean("image", "cameraFeed", cameraFeed);
   printDetectionTime = reader.GetBoolean("image", "printDetectionTime", printDetectionTime);
   cascadeFile = reader.Get("image", "cascadeFile", cascadeFile);
+  //comm
+  comport = reader.GetInteger("comm", "comport", comport);
+  baudrate = reader.GetInteger("comm", "baudrate", baudrate);
+}
+
+void initAll(string file)
+{
+  initConf(file);
+  image_initConf(file);
+  audio_initConf(file);
 }
 
 
 bool cParser( int argc, char** argv )
 {
   int opt;
-  while ((opt = getopt (argc, argv, "c:sfpd:h")) != -1)
+  while ((opt = getopt (argc, argv, "c:d:h")) != -1)
   {
     switch (opt)
     {
       case 'c':
-        cameraDevice = atoi(optarg);
-        break;
-      case 's':
-        cameraFeed = !cameraFeed;
-        break;
-      case 'f':
-        rotImage = !rotImage;
-        break;
-      case 'p':
-        printDetectionTime = !printDetectionTime;
+        config = atoi(optarg);
         break;
       case 'd':
         demo = atoi(optarg);
         break;
-      case 'x':
-        cascadeFile = optarg;
-        break;
       case 'h':
-        cout<<"-c [arg] capture device"<<endl;
-        cout<<"-x [arg] cascade file inside /cascades"<<endl;
-        cout<<"-f rotates the camera feed"<<endl;
-        cout<<"-s show camera feed to user"<<endl;
-        cout<<"-p turn on/off detection time prints"<<endl;
+        cout<<"-c [arg] for setting config-file"<<endl;
         cout<<"-d [arg] set what demo to use"<<endl;
 
         cout<<"Available demos:"<<endl;
@@ -308,6 +310,12 @@ bool cParser( int argc, char** argv )
         break;
     }
   }
+  printSettings();
+  return true;
+}
+
+void printSettings()
+{
   cout<<"The program is run using these settings:"<<endl;
   cout<<"Capture device: "<<cameraDevice<<endl;
   cout<<"Cascade file: "<<cascadeFile<<endl;
@@ -315,5 +323,4 @@ bool cParser( int argc, char** argv )
   cout<<"Camera feed: "<<cameraFeed<<endl;
   cout<<"Print cascade detection time: "<<printDetectionTime<<endl;
   cout<<"Demo: "<<demo<<endl;
-  return true;
 }
