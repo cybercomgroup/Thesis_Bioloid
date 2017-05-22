@@ -1,13 +1,14 @@
 #include "comm/rs232.h"
 #include "image/image.h"
 #include "audio/audio.h"
+#include "tools/INIReader.h"
 
 #include <iostream>
 #include <string>
 #include <cstring>
 #include <cstdlib>
 #include <thread>
-#include <unistd.h> 
+#include <unistd.h>
 
 using namespace std;
 using namespace cv;
@@ -57,7 +58,7 @@ int main (int argc, char *argv[]) {
   cout<<"Baudrate: "<<baudrate<<endl;
 
 
-  if(demo == 1) 
+  if(demo == 1)
 //testTimeDemo();
  demoImage();
 
@@ -73,7 +74,7 @@ int main (int argc, char *argv[]) {
 
 void demoImage()
 {
- realDemoa(); 
+ realDemoa();
 // demoTurn();
 }
 
@@ -88,23 +89,23 @@ void realDemoa(){
 	usleep(750000);
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-	cout<<object<<" Did We get here "<< endl;	
+	cout<<object<<" Did We get here "<< endl;
 	send_buffer[0] = 'w';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	RS232_PollComport(comport, receive_buffer, 1);
-	char tmp = receive_buffer[0]; 
-	cout<<tmp<<endl; 
+	char tmp = receive_buffer[0];
+	cout<<tmp<<endl;
 	while(tmp == 'g'){
 		//send_buffer[0]= 'w';
 		//RS232_SendBuf(comport, send_buffer,SEND_CHARS);
 		 RS232_PollComport(comport, receive_buffer, 1);
 		tmp = receive_buffer[0];
-		cout<<tmp<<endl; 
+		cout<<tmp<<endl;
 	}
-//	delay(5000); 
+//	delay(5000);
 	usleep(10000);
 	send_buffer[0] = 'b';
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 //k	delay(1000);
 	usleep(2000000);
 	if(object == true)
@@ -247,7 +248,21 @@ void demoVoice()
   }
 }
 inline void delay(unsigned long ms){
-	usleep(ms * 1000); 
+	usleep(ms * 1000);
+}
+
+bool initConf(string file)
+{
+  INIReader reader(file);
+  if (reader.ParseError() < 0) {
+      std::cout << "Can't load 'test.ini'\n";
+      return false;
+  }
+  cameraDevice = reader.GetInteger("image", "cameraDevice", cameraDevice);;
+  rotImage = reader.GetBoolean("image", "rotImage", rotImage);
+  cameraFeed = reader.GetBoolean("image", "cameraFeed", cameraFeed);
+  printDetectionTime = reader.GetBoolean("image", "printDetectionTime", printDetectionTime);
+  cascadeFile = reader.Get("image", "cascadeFile", cascadeFile);
 }
 
 
