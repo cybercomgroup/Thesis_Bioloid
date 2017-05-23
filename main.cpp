@@ -23,6 +23,8 @@ bool demoTurn();
 void realDemoa();
 inline void delay(unsigned long ms);
 void testTimeDemo();
+void findThing();
+void sendStop();
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
@@ -95,8 +97,8 @@ void realDemoa(){
 	char tmp = receive_buffer[0]; 
 	cout<<tmp<<endl; 
 	while(tmp == 'g'){
-		//send_buffer[0]= 'w';
-		//RS232_SendBuf(comport, send_buffer,SEND_CHARS);
+		send_buffer[0]= 'w';
+		RS232_SendBuf(comport, send_buffer,SEND_CHARS);
 		 RS232_PollComport(comport, receive_buffer, 1);
 		tmp = receive_buffer[0];
 		cout<<tmp<<endl; 
@@ -105,21 +107,42 @@ void realDemoa(){
 	usleep(10000);
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
-//k	delay(1000);
-	usleep(2000000);
-	if(object == true)
-		send_buffer[0] = 'c';
-
-	else
-		send_buffer[0] = 'g';
-		//do stuff so it will find right thing
-
+	usleep(15000);
+	send_buffer[0] = 'u';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 
-
+	usleep(25000);	
+	if(object == true){
+		send_buffer[0] = 'c';
+		RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+}
+	else
+		findThing();
+		
+	//RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	}
 	RS232_CloseComport(comport);
 
+}
+
+void findThing(){
+ int tmp = rand() % 2;
+
+	if(tmp == 0)
+		send_buffer[0] = 'a';
+	else 
+	  	send_buffer[0] = 'd';
+
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
+	usleep(1000000);
+	sendStop();
+	
+	
+}
+
+void sendStop(){
+	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);	
 }
 
 //void walkToObject()
@@ -146,11 +169,11 @@ bool demoTurn()
     while(time(NULL) <= end && !found)
     {
       cap >> img;
-//      cv::flip(img,img,-1); // to flip the camera uncomment this
+      cv::flip(img,img,-1); // to flip the camera uncomment this
 
       ori = image_whereIsCascade(img,cascade,false);
       cout<<"Time right Now: "<<time(NULL)<< " Time we aim for: "<< end <<endl;
-      imshow("Image", img);
+      //imshow("Image", img);
       cv::waitKey(1);
 	switch(ori){
 		case 4:
