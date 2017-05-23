@@ -310,7 +310,7 @@ bool cParser( int argc, char** argv )
         break;
     }
   }
-  printSettings();
+  //printSettings();
   return true;
 }
 

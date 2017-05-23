@@ -118,7 +118,8 @@ int image_whereIsCascade(Mat& img, CascadeClassifier& cascade, bool print)
   return -1;
 }
 
-int image_capture()
+template<typename T>
+int image_capture(CascadeClassifier& cascade, T&& func)
 {
   VideoCapture cap(0);
   if (!cap.isOpened()) {
@@ -139,15 +140,7 @@ int image_capture()
       cerr << "ERROR: Unable to grab from the camera" << endl;
       break;
     }
-    if(1)
-    {
-      imshow("Live",frame);
-      int key = cv::waitKey(5);
-    }
-
-
-
-
+    func(frame,cascade,false);
   }
 
   cap.release();

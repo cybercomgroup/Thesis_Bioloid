@@ -16,6 +16,6 @@ Rect image_detectAndGet(Mat&, CascadeClassifier&, bool, int);
 int image_whereIsCascade(Mat&, CascadeClassifier&, bool);
 int image_getNumDetections(Mat& img, CascadeClassifier&, bool);
 bool image_isInside(Rect, Rect, int, int);
-int image_capture(int, int);
+int image_capture();
 
 #endif
