@@ -1,15 +1,13 @@
 #include "audio.h"
+#include "../tools/INIReader.h"
+
 #include <unistd.h>
 #include <sphinxbase/err.h>
 #include <sphinxbase/ad.h>
 #include "pocketsphinx.h"
 
-#ifdef __arm__
-#define MIC "hw:0,0"
-#else
-#define MIC NULL
-#endif
 
+//Needed variables
 ps_decoder_t *ps;
 cmd_ln_t *config;
 char const *hyp, *uttid;
@@ -18,19 +16,26 @@ int16 buf[512];
 int rv, commandSize=-1;
 int32 score;
 
-string audio_parseCommand(string keyword, string s)
+//Config
+string mic = "";
+string threshold = "2.0";
+
+bool audio_initConf(string file)
 {
-  //string command;
-  int pos = s.find_first_of(" \t");
-  if(pos != -1)
-  {
-    if(s.substr(0,pos).compare(keyword) == 0)
-    {
-      return s.substr(pos+1);
-    }
+  INIReader reader(file);
+  if (reader.ParseError() < 0) {
+      std::cout << "Can't load 'test.ini'\n";
+      return false;
   }
-	return "";
+  mic = reader.Get("audio", "mic", mic);
+  threshold = reader.Get("audio", "threshold", threshold);
 }
+
+void audio_printConf()
+{
+  cout<<"Mic: "<<mic<<endl;
+}
+
 
 
 int audio_init(string hmm, string lm, string dict)
@@ -40,7 +45,7 @@ int audio_init(string hmm, string lm, string dict)
 	"-hmm", hmm.c_str(),
 	"-lm", lm.c_str(),
 	"-dict", dict.c_str(),
-  "-vad_threshold", "3.0", //Increase for sensitive microphone
+  "-vad_threshold", threshold.c_str(), //Increase for sensitive microphone
 	NULL);
 	if (config == NULL) {
 		fprintf(stderr, "Failed to create config object, see log for details\n");
@@ -74,7 +79,7 @@ void audio_listen()
 	int32 k;
 	string hyp = "";
 
-	if ((ad = ad_open_dev(MIC,(int) cmd_ln_float32_r(config,"-samprate"))) == NULL)
+	if ((ad = ad_open_dev(mic.empty() ? NULL : mic.c_str(),(int) cmd_ln_float32_r(config,"-samprate"))) == NULL)
 			E_FATAL("Failed to open audio device\n");
 	if (ad_start_rec(ad) < 0)
 			E_FATAL("Failed to start recording\n");
@@ -135,4 +140,18 @@ int audio_interpetFile(FILE *fh)
 	fclose(fh);
 	ps_free(ps);
 	cmd_ln_free_r(config);
+}
+
+string audio_parseCommand(string keyword, string s)
+{
+  //string command;
+  int pos = s.find_first_of(" \t");
+  if(pos != -1)
+  {
+    if(s.substr(0,pos).compare(keyword) == 0)
+    {
+      return s.substr(pos+1);
+    }
+  }
+	return "";
 }

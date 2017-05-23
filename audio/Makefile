@@ -1,6 +1,6 @@
 CC=g++
 EX=main
-LINKFILES=main.o audio.o
+LINKFILES=main.o audio.o ../tools/INIReader.o
 STDFLAG=-std=c++11
 
 all: audio.o main.o

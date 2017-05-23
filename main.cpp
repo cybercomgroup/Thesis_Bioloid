@@ -1,13 +1,14 @@
 #include "comm/rs232.h"
 #include "image/image.h"
 #include "audio/audio.h"
+#include "tools/INIReader.h"
 
 #include <iostream>
 #include <string>
 #include <cstring>
 #include <cstdlib>
 #include <thread>
-#include <unistd.h> 
+#include <unistd.h>
 
 using namespace std;
 using namespace cv;
@@ -28,8 +29,12 @@ void sendStop();
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
+void printSettings();
+bool initConf(string);
+void initAll(string);
 
 int cameraDevice = 0;
+string config = "config-rasp.ini";
 string cascadeFile = "face_cascade.xml";
 bool rotImage = false;
 bool cameraFeed = false;
@@ -50,16 +55,19 @@ To change running parameters use add the arguments described above when running 
 Example: ./main p123 sets the comport to 123
 */
 int main (int argc, char *argv[]) {
+
   //Set up:
-  if(!cParser(argc, argv))
+  if(!cParser(argc,argv))
     return 0;
+  initAll(config);
+  printSettings();
 
 
   cout<<"Comport: "<<comport<<endl;
   cout<<"Baudrate: "<<baudrate<<endl;
 
 
-  if(demo == 1) 
+  if(demo == 1)
 //testTimeDemo();
  demoImage();
 
@@ -75,7 +83,7 @@ int main (int argc, char *argv[]) {
 
 void demoImage()
 {
- realDemoa(); 
+ realDemoa();
 // demoTurn();
 }
 
@@ -86,31 +94,28 @@ void realDemoa(){
 	//switch(command){}
 
 	object = demoTurn();
-//	delay(1000);
 	usleep(750000);
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-	cout<<object<<" Did We get here "<< endl;	
+	cout<<object<<" Did We get here "<< endl;
 	send_buffer[0] = 'w';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	RS232_PollComport(comport, receive_buffer, 1);
-	char tmp = receive_buffer[0]; 
-	cout<<tmp<<endl; 
+	char tmp = receive_buffer[0];
+	cout<<tmp<<endl;
 	while(tmp == 'g'){
 		send_buffer[0]= 'w';
 		RS232_SendBuf(comport, send_buffer,SEND_CHARS);
 		 RS232_PollComport(comport, receive_buffer, 1);
 		tmp = receive_buffer[0];
-		cout<<tmp<<endl; 
+		cout<<tmp<<endl;
 	}
-//	delay(5000); 
 	usleep(10000);
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
 	usleep(15000);
 	send_buffer[0] = 'u';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-
 	usleep(25000);	
 	if(object == true){
 		send_buffer[0] = 'c';
@@ -270,41 +275,50 @@ void demoVoice()
   }
 }
 inline void delay(unsigned long ms){
-	usleep(ms * 1000); 
+	usleep(ms * 1000);
+}
+
+bool initConf(string file)
+{
+  INIReader reader(file);
+  if (reader.ParseError() < 0) {
+      std::cout << "Can't load 'test.ini'\n";
+      return false;
+  }
+  //image
+  cameraDevice = reader.GetInteger("image", "cameraDevice", cameraDevice);
+  rotImage = reader.GetBoolean("image", "rotImage", rotImage);
+  cameraFeed = reader.GetBoolean("image", "cameraFeed", cameraFeed);
+  printDetectionTime = reader.GetBoolean("image", "printDetectionTime", printDetectionTime);
+  cascadeFile = reader.Get("image", "cascadeFile", cascadeFile);
+  //comm
+  comport = reader.GetInteger("comm", "comport", comport);
+  baudrate = reader.GetInteger("comm", "baudrate", baudrate);
+}
+
+void initAll(string file)
+{
+  initConf(file);
+  image_initConf(file);
+  audio_initConf(file);
 }
 
 
 bool cParser( int argc, char** argv )
 {
   int opt;
-  while ((opt = getopt (argc, argv, "c:sfpd:h")) != -1)
+  while ((opt = getopt (argc, argv, "c:d:h")) != -1)
   {
     switch (opt)
     {
       case 'c':
-        cameraDevice = atoi(optarg);
-        break;
-      case 's':
-        cameraFeed = !cameraFeed;
-        break;
-      case 'f':
-        rotImage = !rotImage;
-        break;
-      case 'p':
-        printDetectionTime = !printDetectionTime;
+        config = atoi(optarg);
         break;
       case 'd':
         demo = atoi(optarg);
         break;
-      case 'x':
-        cascadeFile = optarg;
-        break;
       case 'h':
-        cout<<"-c [arg] capture device"<<endl;
-        cout<<"-x [arg] cascade file inside /cascades"<<endl;
-        cout<<"-f rotates the camera feed"<<endl;
-        cout<<"-s show camera feed to user"<<endl;
-        cout<<"-p turn on/off detection time prints"<<endl;
+        cout<<"-c [arg] for setting config-file"<<endl;
         cout<<"-d [arg] set what demo to use"<<endl;
 
         cout<<"Available demos:"<<endl;
@@ -316,6 +330,12 @@ bool cParser( int argc, char** argv )
         break;
     }
   }
+  printSettings();
+  return true;
+}
+
+void printSettings()
+{
   cout<<"The program is run using these settings:"<<endl;
   cout<<"Capture device: "<<cameraDevice<<endl;
   cout<<"Cascade file: "<<cascadeFile<<endl;
@@ -323,5 +343,4 @@ bool cParser( int argc, char** argv )
   cout<<"Camera feed: "<<cameraFeed<<endl;
   cout<<"Print cascade detection time: "<<printDetectionTime<<endl;
   cout<<"Demo: "<<demo<<endl;
-  return true;
 }

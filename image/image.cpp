@@ -9,6 +9,12 @@ width: 640
 height: 480
 */
 
+//Config
+/*
+int cameraDevice = 0;
+bool rotImage = false;
+bool cameraFeed = false;
+bool printDetectionTime = false;*/
 
 //Config for detectMultiScale
 double scaleFactor = 1.3;
@@ -32,7 +38,14 @@ bool image_initConf(string file)
       std::cout << "Can't load 'test.ini'\n";
       return false;
   }
+  /*
+  cameraDevice = reader.GetInteger("image", "cameraDevice", cameraDevice);;
+  rotImage = reader.GetBoolean("image", "rotImage", rotImage);
+  cameraFeed = reader.GetBoolean("image", "cameraFeed", cameraFeed);
+  printDetectionTime = reader.GetBoolean("image", "printDetectionTime", printDetectionTime);
 
+*/
+  //Multiscale
   scaleFactor = reader.GetReal("detectMultiScale", "scaleFactor", scaleFactor);
   minNeighbors = reader.GetInteger("detectMultiScale", "minNeighbors", minNeighbors);
   flags = reader.GetInteger("detectMultiScale", "flags", flags);
@@ -41,8 +54,32 @@ bool image_initConf(string file)
   maxSizeW = reader.GetInteger("detectMultiScale", "maxSizeW", maxSizeW);
   maxSizeH = reader.GetInteger("detectMultiScale", "maxSizeH", maxSizeH);
 }
+/*
 
+void image_findCascade(CascadeClassifier& cascade, int& dir)
+{
+  VideoCapture cap(cameraDevice);
+  if (!cap.isOpened()) {
+    cerr << "ERROR: Unable to open the camera" << endl;
+    return;
+  }
+  Mat frame;
+  while(1)
+  {
+    cap >> frame;
+    if(rotImage)
+      flip(frame, frame, -1);
 
+    if(cameraFeed)
+    {
+      imshow("CameraFeed", frame);
+      cv::waitKey(5);
+    }
+
+    dir = image_whereIsCascade(frame,cascade,printDetectionTime);
+  }
+}
+*/
 /*
 NAME IS TEMP
 This function finds the first cascade in the image and then returns it's
@@ -81,7 +118,7 @@ int image_whereIsCascade(Mat& img, CascadeClassifier& cascade, bool print)
   return -1;
 }
 
-int image_capture(int width, int height)
+int image_capture()
 {
   VideoCapture cap(0);
   if (!cap.isOpened()) {
@@ -89,52 +126,32 @@ int image_capture(int width, int height)
     return 0;
   }
 
-
+/*
   cap.set(CV_CAP_PROP_FRAME_WIDTH, width);
   cap.set(CV_CAP_PROP_FRAME_HEIGHT, height);
+*/
 
-  Mat frame, hsv, hsv_s;
-  cout << "Start grabbing, press a key on Live window to terminate" << endl;
+  Mat frame;
   while(1) {
     cap >> frame;
 
-
-    cvtColor(frame, hsv, COLOR_BGR2HSV);
-
-    inRange(hsv, cv::Scalar(125, 125, 150), cv::Scalar(200, 200, 255), hsv_s);
-
-    GaussianBlur(hsv_s, hsv_s, cv::Size(9, 9), 2, 2);
-
-    vector<vector<Point>> contours;
-    vector<Vec4i> hierarchy;
-
-    findContours( hsv_s, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
-
-    for( int i = 0; i < contours.size(); i++ )
-    {
-      cout<<contours[0].size()<<endl;
-      Scalar color = Scalar(0,0,255);
-      drawContours( frame, contours, i, color, 2, 8, hierarchy, 0, Point() );
-    }
     if (frame.empty()) {
       cerr << "ERROR: Unable to grab from the camera" << endl;
       break;
     }
-    imshow("Live",frame);
-    //    imshow("Hsv",hsv_s);
-    //imshow("Contours",contours);
+    if(1)
+    {
+      imshow("Live",frame);
+      int key = cv::waitKey(5);
+    }
 
 
-    int key = cv::waitKey(5);
-    key = (key==255) ? -1 : key; //#Solve bug in 3.2.0
-    if (key>=0)
-    break;
+
+
   }
 
-  cout << "Closing the camera" << endl;
   cap.release();
   destroyAllWindows();
-  cout << "bye!" <<endl;
   return 0;
 }
 
