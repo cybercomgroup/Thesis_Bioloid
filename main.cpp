@@ -34,7 +34,7 @@ bool initConf(string);
 void initAll(string);
 
 int cameraDevice = 0;
-string config = "config-rasp.ini";
+string configFile = "tools/config-rasp.ini";
 string cascadeFile = "face_cascade.xml";
 bool rotImage = false;
 bool cameraFeed = false;
@@ -112,18 +112,18 @@ void realDemoa(){
 	}
 	usleep(10000);
 	send_buffer[0] = 'b';
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	usleep(15000);
 	send_buffer[0] = 'u';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-	usleep(25000);	
+	usleep(25000);
 	if(object == true){
 		send_buffer[0] = 'c';
 		RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 }
 	else
 		findThing();
-		
+
 	//RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	}
 	RS232_CloseComport(comport);
@@ -135,19 +135,19 @@ void findThing(){
 
 	if(tmp == 0)
 		send_buffer[0] = 'a';
-	else 
+	else
 	  	send_buffer[0] = 'd';
 
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	usleep(1000000);
 	sendStop();
-	
-	
+
+
 }
 
 void sendStop(){
 	send_buffer[0] = 'b';
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS);	
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 }
 
 //void walkToObject()
