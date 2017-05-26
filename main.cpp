@@ -26,6 +26,7 @@ inline void delay(unsigned long ms);
 void testTimeDemo();
 void findThing();
 void sendStop();
+void walkStright();
 
 //Parser and global belonging variables
 bool cParser(int argN, char *argv[]);
@@ -34,7 +35,7 @@ bool initConf(string);
 void initAll(string);
 
 int cameraDevice = 0;
-string config = "config-rasp.ini";
+string configd = "config-rasp.ini";
 string cascadeFile = "face_cascade.xml";
 bool rotImage = false;
 bool cameraFeed = false;
@@ -59,7 +60,7 @@ int main (int argc, char *argv[]) {
   //Set up:
   if(!cParser(argc,argv))
     return 0;
-  initAll(config);
+  initAll(configd);
   printSettings();
 
 
@@ -92,39 +93,22 @@ void realDemoa(){
 	if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
 	//Get voice Command
 	//switch(command){}
-
+	do{
 	object = demoTurn();
-	usleep(750000);
-	send_buffer[0] = 'b';
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-	cout<<object<<" Did We get here "<< endl;
-	send_buffer[0] = 'w';
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-	RS232_PollComport(comport, receive_buffer, 1);
-	char tmp = receive_buffer[0];
-	cout<<tmp<<endl;
-	while(tmp == 'g'){
-		send_buffer[0]= 'w';
-		RS232_SendBuf(comport, send_buffer,SEND_CHARS);
-		 RS232_PollComport(comport, receive_buffer, 1);
-		tmp = receive_buffer[0];
-		cout<<tmp<<endl;
-	}
-	usleep(10000);
-	send_buffer[0] = 'b';
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
-	usleep(15000);
+	sleep(3);
+	
+	walkStright();
+
 	send_buffer[0] = 'u';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-	usleep(25000);	
+	sleep(3);
+	
 	if(object == true){
 		send_buffer[0] = 'c';
 		RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 }
-	else
-		findThing();
-		
-	//RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+			
+}while(!object);
 	}
 	RS232_CloseComport(comport);
 
@@ -132,17 +116,33 @@ void realDemoa(){
 
 void findThing(){
  int tmp = rand() % 2;
-
+ cout<<"plz"<<endl;
 	if(tmp == 0)
 		send_buffer[0] = 'a';
 	else 
 	  	send_buffer[0] = 'd';
 
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS); 
-	usleep(1000000);
-	sendStop();
+	RS232_SendBuf(comport, send_buffer, 1); 
+
+	sleep(4);
+	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, 1);
 	
 	
+}
+
+void walkStright(){
+	send_buffer[0] = 'w';
+	RS232_SendBuf(comport, send_buffer, 1);	
+
+	char tmp = 'g';
+	while(tmp != 'b'){
+	RS232_PollComport(comport, receive_buffer, 1);
+	tmp = receive_buffer[0];  
+	}
+	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, 1);
+	sleep(3);
 }
 
 void sendStop(){
@@ -170,7 +170,7 @@ bool demoTurn()
 
  // if(RS232_OpenComport(comport, baudrate, "8N1") != 1)
   //{
-    time_t end = time(NULL) + 18;
+    time_t end = time(NULL) +3 ;
     while(time(NULL) <= end && !found)
     {
       cap >> img;
@@ -205,10 +205,12 @@ bool demoTurn()
 		break;
 	}
 
-        RS232_SendBuf(comport, send_buffer, 1);
+     //   RS232_SendBuf(comport, send_buffer, 1);
 //	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer, 1);
       }
-
+	send_buffer[0] = 'b';
+	RS232_SendBuf(comport, send_buffer,1);	
      // }
     return found;
     RS232_CloseComport(comport);
@@ -312,7 +314,7 @@ bool cParser( int argc, char** argv )
     switch (opt)
     {
       case 'c':
-        config = atoi(optarg);
+        configd = atoi(optarg);
         break;
       case 'd':
         demo = atoi(optarg);
