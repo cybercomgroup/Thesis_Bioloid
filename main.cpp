@@ -35,7 +35,7 @@ bool initConf(string);
 void initAll(string);
 
 int cameraDevice = 0;
-string configd = "config-rasp.ini";
+string configFile = "tools/config-rasp.ini";
 string cascadeFile = "face_cascade.xml";
 bool rotImage = false;
 bool cameraFeed = false;
@@ -60,7 +60,7 @@ int main (int argc, char *argv[]) {
   //Set up:
   if(!cParser(argc,argv))
     return 0;
-  initAll(configd);
+  initAll(configFile);
   printSettings();
 
 
@@ -104,12 +104,15 @@ void realDemoa(){
 	sleep(3);
 	
 	if(object == true){
-		send_buffer[0] = 'c';
-		RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-}
+	send_buffer[0] = 'c';
+	RS232_SendBuf(comport, send_buffer, 1);
+	}
+
 			
 }while(!object);
-	}
+
+	//RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+}
 	RS232_CloseComport(comport);
 
 }
@@ -119,7 +122,7 @@ void findThing(){
  cout<<"plz"<<endl;
 	if(tmp == 0)
 		send_buffer[0] = 'a';
-	else 
+	else
 	  	send_buffer[0] = 'd';
 
 	RS232_SendBuf(comport, send_buffer, 1); 
@@ -147,7 +150,7 @@ void walkStright(){
 
 void sendStop(){
 	send_buffer[0] = 'b';
-	RS232_SendBuf(comport, send_buffer, SEND_CHARS);	
+	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 }
 
 //void walkToObject()
@@ -314,7 +317,7 @@ bool cParser( int argc, char** argv )
     switch (opt)
     {
       case 'c':
-        configd = atoi(optarg);
+        configFile = atoi(optarg);
         break;
       case 'd':
         demo = atoi(optarg);

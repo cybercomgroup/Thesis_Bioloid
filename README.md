@@ -47,7 +47,9 @@ http://pklab.net/?id=392&lang=EN
 
 
 3. USAGE
-The project is split in separate modules, comm, image and audio. The project has an makefile in each folder aswell as the main folder.
+The project is split in separate modules, comm, image and audio. The project has an makefile in each folder as well as the main folder.
 The makefile in the project folder can be used to control the whole project. Inside the module folders are separate makefiles used to build separate executables that can be used for testing. These executables might not be updated with all functionality.
+
+Inside tools are two ini files that can be used to make the system run diffrently. The default is config-rasp.ini.
 
 After getting the repo on your local device use "make" in the terminal to contruct the project. Then use "./main -h" in the terminal to get instructions on how to run the program.
