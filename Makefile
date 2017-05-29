@@ -1,6 +1,6 @@
 CC=g++
 EX=main
-SUBDIRS=audio comm image
+SUBDIRS=audio comm image tools
 LINKFILES=main.o comm/rs232.o image/image.o audio/audio.o tools/INIReader.o
 STDFLAG=-std=c++11
 
