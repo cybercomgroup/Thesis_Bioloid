@@ -64,9 +64,6 @@ int main (int argc, char *argv[]) {
   printSettings();
 
 
-  cout<<"Comport: "<<comport<<endl;
-  cout<<"Baudrate: "<<baudrate<<endl;
-
 
   if(demo == 1)
 //testTimeDemo();
@@ -96,19 +93,19 @@ void realDemoa(){
 	do{
 	object = demoTurn();
 	sleep(3);
-	
+
 	walkStright();
 
 	send_buffer[0] = 'u';
 	RS232_SendBuf(comport, send_buffer, SEND_CHARS);
 	sleep(3);
-	
+
 	if(object == true){
 	send_buffer[0] = 'c';
 	RS232_SendBuf(comport, send_buffer, 1);
 	}
 
-			
+
 }while(!object);
 
 	//RS232_SendBuf(comport, send_buffer, SEND_CHARS);
@@ -125,23 +122,23 @@ void findThing(){
 	else
 	  	send_buffer[0] = 'd';
 
-	RS232_SendBuf(comport, send_buffer, 1); 
+	RS232_SendBuf(comport, send_buffer, 1);
 
 	sleep(4);
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, 1);
-	
-	
+
+
 }
 
 void walkStright(){
 	send_buffer[0] = 'w';
-	RS232_SendBuf(comport, send_buffer, 1);	
+	RS232_SendBuf(comport, send_buffer, 1);
 
 	char tmp = 'g';
 	while(tmp != 'b'){
 	RS232_PollComport(comport, receive_buffer, 1);
-	tmp = receive_buffer[0];  
+	tmp = receive_buffer[0];
 	}
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, 1);
@@ -213,7 +210,7 @@ bool demoTurn()
 	RS232_SendBuf(comport, send_buffer, 1);
       }
 	send_buffer[0] = 'b';
-	RS232_SendBuf(comport, send_buffer,1);	
+	RS232_SendBuf(comport, send_buffer,1);
      // }
     return found;
     RS232_CloseComport(comport);
@@ -348,4 +345,6 @@ void printSettings()
   cout<<"Camera feed: "<<cameraFeed<<endl;
   cout<<"Print cascade detection time: "<<printDetectionTime<<endl;
   cout<<"Demo: "<<demo<<endl;
+  cout<<"Comport: "<<comport<<endl;
+  cout<<"Baudrate: "<<baudrate<<endl;
 }
