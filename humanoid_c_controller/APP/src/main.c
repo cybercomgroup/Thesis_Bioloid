@@ -33,7 +33,7 @@ void checkSensor();
 
 
 u16  irMidOld = 0, irLeftFootOld = 0;
-byte oldUtPutStatus = OUTPUT_OK;
+byte oldUtPutStatus = 0;
 
 
 void inputMotion(byte ReceivedData);
@@ -287,7 +287,7 @@ void checkSensor(){
 	if(irMid > 0x00E0 || irLeftFoot > 0x0010){
 			outPutStatus = OUTPUT_STOP;
 
-			if(irMidOld > irMid + 0x0010 && irLeftFootOld > irLeftFoot + 0x000A)
+			if(irMidOld > irMid + 0x0010 && irLeftFootOld > irLeftFoot + 0x0005)
 				outPutStatus = OUTPUT_OK;
 	}else
 		outPutStatus = OUTPUT_OK;
@@ -295,7 +295,15 @@ void checkSensor(){
 
 	//PrintString("\n OutPut: ");
 		//Skickar status till sändaren
-		TxDByte_PC(outPutStatus);
+
+		if(oldUtPutStatus != outPutStatus){
+			TxDByte_PC(outPutStatus);
+			oldUtPutStatus = outPutStatus;
+			//PrintString("\n Test should not be here: ");
+		}
+
+
+
 //		PrintString("\n Value in hex: ");
 //		TxDWord16(irLeftFoot);
 
