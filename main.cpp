@@ -103,7 +103,11 @@ void realDemoa(){
 	if(object == true){
 	send_buffer[0] = 'c';
 	RS232_SendBuf(comport, send_buffer, 1);
+	break;
 	}
+
+	findThing();
+
 
 
 }while(!object);
@@ -114,7 +118,14 @@ void realDemoa(){
 
 }
 
+
 void findThing(){
+ send_buffer[0] = 's';
+ RS232_SendBuf(comport, send_buffer, 1);
+ sleep(2);
+ send_buffer[0] = 'b';
+ RS232_SendBuf(comport, send_buffer, 1); 
+sleep(2);
  int tmp = rand() % 2;
  cout<<"plz"<<endl;
 	if(tmp == 0)
@@ -132,13 +143,16 @@ void findThing(){
 }
 
 void walkStright(){
+	unsigned char receive1[RECEIVE_CHARS];
+
 	send_buffer[0] = 'w';
 	RS232_SendBuf(comport, send_buffer, 1);
 
-	char tmp = 'g';
+	char tmp;
 	while(tmp != 'b'){
-	RS232_PollComport(comport, receive_buffer, 1);
-	tmp = receive_buffer[0];
+	RS232_PollComport(comport, receive1, 1);
+	tmp = receive1[0];
+	cout<<tmp<<endl;
 	}
 	send_buffer[0] = 'b';
 	RS232_SendBuf(comport, send_buffer, 1);
@@ -178,7 +192,7 @@ bool demoTurn()
 
       ori = image_whereIsCascade(img,cascade,false);
       cout<<"Time right Now: "<<time(NULL)<< " Time we aim for: "<< end <<endl;
-      //imshow("Image", img);
+      imshow("Image", img);
       cv::waitKey(1);
 	switch(ori){
 		case 4:
