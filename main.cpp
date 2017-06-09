@@ -201,7 +201,7 @@ bool turnTo(string cascade)
   }
 
   cv::CascadeClassifier cascade;
-  cascade.load("image/cascades/" + cascade);
+  cascade.load("image/cascades/" += cascade);
 
   Mat img;
 
@@ -341,24 +341,16 @@ void initAll(string file)
 bool cParser( int argc, char** argv )
 {
   int opt;
-  while ((opt = getopt (argc, argv, "c:d:h")) != -1)
+  while ((opt = getopt (argc, argv, "c:h")) != -1)
   {
     switch (opt)
     {
       case 'c':
       configFile = atoi(optarg);
       break;
-      case 'd':
-      demo = atoi(optarg);
       break;
       case 'h':
       cout<<"-c [arg] for setting config-file"<<endl;
-      cout<<"-d [arg] set what demo to use"<<endl;
-
-      cout<<"Available demos:"<<endl;
-      cout<<"1 - detectionTest"<<endl;
-      cout<<"2 - orientationTest"<<endl;
-      cout<<"3 - numDetectionsTest"<<endl;
       cout<<endl;
       return false;
       break;
