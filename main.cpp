@@ -112,32 +112,27 @@ void demo()
 
 void findObject(string cascadef){
   bool object = false;
-  if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
-    do{
-      object = turnTo(cascadef);
-      sleep(3);
+  do{
+    object = turnTo(cascadef);
+    sleep(3);
 
-      walkForward();
+    walkForward();
 
-      send_buffer[0] = 'u';
-      RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-      sleep(3);
+    send_buffer[0] = 'u';
+    RS232_SendBuf(comport, send_buffer, SEND_CHARS);
+    sleep(3);
 
-      if(object == true){
-        send_buffer[0] = 'c';
-        RS232_SendBuf(comport, send_buffer, 1);
-        break;
-      }
+    if(object == true){
+      send_buffer[0] = 'c';
+      RS232_SendBuf(comport, send_buffer, 1);
+      break;
+    }
 
-      avoidObstacle();
-
+    avoidObstacle();
 
 
-    }while(!object);
 
-    //RS232_SendBuf(comport, send_buffer, SEND_CHARS);
-  }
-  RS232_CloseComport(comport);
+  }while(!object);
 
 }
 
