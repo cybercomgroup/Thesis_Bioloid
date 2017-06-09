@@ -97,7 +97,7 @@ void demo()
         }
         else if(!c.compare("FIND FACE"))
         {
-          findObject("face_cascade.xml")
+          findObject("image/cascades/face_cascade.xml");
         }
       }
     }
@@ -201,7 +201,7 @@ bool turnTo(string cascade)
   }
 
   cv::CascadeClassifier cascade;
-  cascade.load("image/cascades/" += cascade);
+  cascade.load(cascade);
 
   Mat img;
 
