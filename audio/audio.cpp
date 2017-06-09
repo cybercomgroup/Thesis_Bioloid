@@ -34,6 +34,7 @@ bool audio_initConf(string file)
 void audio_printConf()
 {
   cout<<"Mic: "<<mic<<endl;
+  cout<<"Threshold: "<<threshold<<endl;
 }
 
 

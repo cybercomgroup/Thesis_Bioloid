@@ -58,6 +58,7 @@ int main (int argc, char *argv[]) {
   return 0;
   initAll(configFile);
   printSettings();
+  audio_printConf();
 
   demo();
   return 0;
