@@ -109,11 +109,11 @@ void demo()
 
 
 
-void findObject(string cascade){
+void findObject(string cascadef){
   bool object = false;
   if(RS232_OpenComport(comport, baudrate, "8N1") != 1){
     do{
-      object = turnTo(cascade);
+      object = turnTo(cascadef);
       sleep(3);
 
       walkForward();
@@ -189,7 +189,7 @@ void sendStop(){
 
 //void walkToObject()
 
-bool turnTo(string cascade)
+bool turnTo(string cascadef)
 {
   int ori = -1;
   bool found = false;
@@ -201,7 +201,7 @@ bool turnTo(string cascade)
   }
 
   cv::CascadeClassifier cascade;
-  cascade.load(cascade);
+  cascade.load(cascadef);
 
   Mat img;
 
@@ -248,21 +248,6 @@ bool turnTo(string cascade)
   RS232_CloseComport(comport);
 
 }
-void testTimeDemo(){
-  RS232_OpenComport(comport, baudrate, "8N1");
-  time_t end = time(NULL) +  18;
-  while(time(NULL) < end){
-    send_buffer[0] = 'd';
-    RS232_SendBuf(comport, send_buffer, 1);
-    send_buffer[0] = 'b';
-    RS232_SendBuf(comport, send_buffer, 1);
-
-  }
-
-  //	time_t end = time(NULL) +5;
-  //	while(time(NULL) < end)
-  //	 cout<<"time: "<< time(NULL)<< endl;
-}
 
 void demoVoice()
 {
@@ -307,9 +292,6 @@ void demoVoice()
     listen.join();
     //audio_destroy();
   }
-}
-inline void delay(unsigned long ms){
-  usleep(ms * 1000);
 }
 
 bool initConf(string file)
