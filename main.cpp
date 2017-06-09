@@ -17,12 +17,9 @@ using namespace cv;
 #define RECEIVE_CHARS   8      // or whatever size of buffer you want to receive
 #define SEND_CHARS      10      // or whatever size of buffer you want to send
 
-void demoImage();
 void demoVoice();
-bool demoTurn();
-//void demodTurn();
-void realDemoa();
 void demo();
+void findObject(string cascade);
 bool turnTo(string cascade);
 void avoidObstacle();
 void sendStop();
