@@ -205,12 +205,15 @@ bool turnTo(string cascadef)
   while(time(NULL) <= end && !found)
   {
     cap >> img;
-    cv::flip(img,img,-1); // to flip the camera uncomment this
+    if(rotImage)
+      cv::flip(img,img,-1); // to flip the camera uncomment this
 
     ori = image_whereIsCascade(img,cascade,false);
-    cout<<"Time right Now: "<<time(NULL)<< " Time we aim for: "<< end <<endl;
-    imshow("Image", img);
-    cv::waitKey(1);
+    //cout<<"Time right Now: "<<time(NULL)<< " Time we aim for: "<< end <<endl;
+    if(cameraFeed){
+      imshow("Image", img);
+      cv::waitKey(1);
+    }
     switch(ori){
       case 4:
       cout<<"Left"<< endl;
