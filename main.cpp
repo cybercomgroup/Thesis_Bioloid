@@ -209,7 +209,7 @@ bool turnTo(string cascadef)
 
   Mat img;
 
-  time_t end = time(NULL) +3 ;
+  time_t end = time(NULL) +15 ;
   while(time(NULL) <= end && !found)
   {
     cap >> img;
