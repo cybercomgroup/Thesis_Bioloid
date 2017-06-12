@@ -100,6 +100,14 @@ void demo()
         {
           findObject("image/cascades/face_cascade.xml");
         }
+        else if(!c.compare("FIND CONTROLLER"))
+        {
+          findObject("image/cascades/controller_cascade.xml");
+        }
+        else if(!c.compare("FIND BANANA"))
+        {
+          findObject("image/cascades/face_cascade.xml");
+        }
       }
     }
     listen.join();

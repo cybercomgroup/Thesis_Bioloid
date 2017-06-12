@@ -16,7 +16,7 @@ bool rotImage = false;
 bool cameraFeed = true;
 bool printDetectionTime = true;
 bool printRunTime = false;
-string cascadeFile = "face_cascade.xml";
+string cascadeFile = "controller_cascade.xml";
 
 
 bool cParser( int argc, char** argv );
