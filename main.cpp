@@ -106,7 +106,7 @@ void demo()
         }
         else if(!c.compare("FIND BANANA"))
         {
-          findObject("image/cascades/face_cascade.xml");
+          findObject("image/cascades/banana_cascade.xml");
         }
       }
     }
@@ -131,8 +131,8 @@ void findObject(string cascadef){
     sleep(3);
 
     if(object == true){
-      send_buffer[0] = 'c';
-      RS232_SendBuf(comport, send_buffer, 1);
+      //send_buffer[0] = 'c';
+      //RS232_SendBuf(comport, send_buffer, 1);
       break;
     }
 
